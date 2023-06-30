@@ -1,0 +1,4 @@
+[submodule "AdvancedAutoGG"]
+	path = AdvancedAutoGG
+	url = https://github.com/Plextora/AdvancedAutoGG.git
+	branch = master
