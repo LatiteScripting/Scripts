@@ -13,3 +13,7 @@ Use this command to clone the repository and all scripts inside it:
 ```console
 git clone git@github.com:LatiteScripting/Scripts.git --recursive
 ```
+
+##
+
+For scripting documentation, go to https://latitescripting.github.io/
