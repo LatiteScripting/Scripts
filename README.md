@@ -11,7 +11,7 @@ Cloning this repository is a good way to get scripts.
 
 Use this command to clone the repository and all scripts inside it:
 ```console
-git clone git@github.com:LatiteScripting/Scripts.git --recursive
+git clone https://github.com/LatiteScripting/Scripts.git --recursive
 ```
 
 ##
