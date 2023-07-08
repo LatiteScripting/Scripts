@@ -1,8 +1,8 @@
 [submodule "AdvancedAutoGG"]
-	path = AdvancedAutoGG
-	url = https://github.com/Plextora/AdvancedAutoGG.git
-	branch = master
+  path = AdvancedAutoGG
+  url = https://github.com/Plextora/AdvancedAutoGG.git
+  branch = master
 [submodule "ChatLogger"]
-	path = ChatLogger
-	url = https://github.com/Plextora/ChatLogger.git
-        branch = master
+  path = ChatLogger
+  url = https://github.com/Plextora/ChatLogger.git
+  branch = master
