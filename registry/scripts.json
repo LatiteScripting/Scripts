@@ -1,0 +1,22 @@
+{
+    "scripts": [
+        {
+            "name": "AdvancedAutoGG",
+            "author": "Plextora",
+            "description": "Only works on The Hive Skywars!",
+            "version": "1.0.0",
+            "files": [
+                "index.js"
+            ]
+        },
+        {
+            "name": "ChatLogger",
+            "author": "Plextora",
+            "description": "Logs all chat messages to a text file.",
+            "version": "0.0.0",
+            "files": [
+                "index.js"
+            ]
+        }
+    ]
+}
