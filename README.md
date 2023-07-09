@@ -6,6 +6,9 @@
 ## How to get your script added
 For now, you can request your script to be added in [#beta-chat](https://discord.com/channels/885656043521179680/1058027973065842698) in the Discord server. You must have a GitHub repository that contains your script. Your script will **NOT** auto update in this repository for security reasons. We will check your code and update it in this repostiory every once in awhile
 
+## Using the .script command in game
+To install those scripts, run `.script install <scriptname>` ingame. For example, do `.script install chatlogger` to install the ChatLogger script.
+
 ## Cloning this repository
 Cloning this repository is a good way to get scripts.
 
