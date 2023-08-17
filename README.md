@@ -9,6 +9,16 @@ The Latite Scripting API allows the community to add custom features (like mods 
 
 Latite's scripting API uses JavaScript. To be able to use scripts, you need to have Latite Beta. Join the discord for more information.
 
+## How to make a script
+
+You can view a quick guide/quickstart [here](https://github.com/LatiteScripting/Scripts/tree/master/how-to-make-a-script.md)
+
+For scripting documentation, go to https://latitescripting.github.io/
+
+## Debugging
+
+You can [debug your scripts](https://github.com/LatiteScripting/Scripts/tree/master/debugging.md) in Latite Client using Visual Studio.
+
 ## How to get your script added
 For now, you can request your script to be added in [#beta-chat](https://discord.com/channels/885656043521179680/1058027973065842698) in the Discord server. You must have a GitHub repository that contains your script. Your script will **NOT** auto update in this repository for security reasons. We will check your code and update it in this repostiory every once in awhile
 
@@ -22,9 +32,3 @@ Use this command to clone the repository and all scripts inside it:
 ```console
 git clone https://github.com/LatiteScripting/Scripts.git --recursive
 ```
-
-## Debugging
-
-You can [debug your scripts](https://github.com/LatiteScripting/Scripts/tree/master/docs/debugging.md) in Latite Client using Visual Studio.
-
-For scripting documentation, go to https://latitescripting.github.io/
