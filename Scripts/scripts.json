@@ -17,6 +17,15 @@
             "files": [
                 "index.js"
             ]
+        },
+        {
+            "name": "SlimeChunkIndicator",
+            "author": "@raspberryepicly",
+            "description": "Shows whethere you're in a slime chunk or not",
+            "version": "1.0.0",
+            "files": [
+                "index.js"
+            ]
         }
     ]
 }
