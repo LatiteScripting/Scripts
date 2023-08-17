@@ -2,7 +2,7 @@
 
 ## Prerequisites
 - A Latite Client script
-- Visual Studio 2022 (with Just-in-Time debugging enabled)
+- [Visual Studio 2022](https://visualstudio.microsoft.com/vs/) (with [Just-in-Time debugging](https://learn.microsoft.com/en-us/visualstudio/debugger/debug-using-the-just-in-time-debugger?view=vs-2022) enabled)
 
 To enable JIT debugging, go to Visual Studio Installer and make sure Just-in-Time option
 is enabled from Individual Components
