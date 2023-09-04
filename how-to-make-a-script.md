@@ -21,15 +21,14 @@ If you plan to debug using the Visual Studio workspace, click [here](https://.co
 ## Setting up the workspace
 Using JS with autocomplete (do //@ts-check at the top of the document) or TS is highly recommended.
 
-You must put the definitions in the workspace for autocomplete/checking.
+If you want a simple template to get started with scripting, see the [scripting template](https://github.com/LatiteScripting/Template) repo
 
 ## OK, I did that, what now?
 It's time to make some scripts!
 
 You can debug your code using the Visual Studio workspace.
 
-[Here are the actual docs](https://latitescripting.github.io/)  
-[List of events]()
+See the [documentation](https://latitescripting.github.io/) for everything you can do with the scripting API
 
 
 
