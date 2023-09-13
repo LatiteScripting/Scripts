@@ -28,7 +28,7 @@
             ]
         },
 		{
-            "name": "debug",
+            "name": "Debug",
             "author": "JayRSky",
             "description": "Adds a .execute command to run JS code!",
             "version": "0.0.0",
