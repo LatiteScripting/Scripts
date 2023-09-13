@@ -27,5 +27,14 @@
                 "index.js"
             ]
         }
+		{
+			"name": "debug",
+			"author": "JayRSky",
+			"description": "Adds a .execute command to run JS code!"
+			"version": "0.0.0",
+			"files": [
+				"index.js"
+			]
+		}
     ]
 }
