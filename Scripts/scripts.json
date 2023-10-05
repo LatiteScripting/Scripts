@@ -37,7 +37,8 @@
             ]
         },
 		{
-			"name": "NBS Radio",
+			"name": "NBSRadio",
+			"author": "JayRSky",
 			"description": "Plays Note Block sound files!",
 			"version": "0.0.0",
 			"files": [
