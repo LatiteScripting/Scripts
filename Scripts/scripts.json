@@ -34,6 +34,13 @@
       "description": "Plays Note Block sound files!",
       "version": "0.0.0",
       "files": ["index.js"]
+    },
+    {
+      "name": "KillNotif",
+      "author": "Plextora",
+      "description": "Plays a sound whenever you kill someone on supported servers",
+      "version": "1.3.2",
+      "files": ["index.js"]
     }
   ]
 }
