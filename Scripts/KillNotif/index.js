@@ -1,23 +1,25 @@
 // Script GitHub repository: https://github.com/Plextora/KillNotif
 // Currently only works on The Hive
-
 script.name = "Kill Notif";
 script.description =
     "Plays a sound whenever you kill someone on supported servers";
-script.version = "1.3.2";
+script.version = "1.4.2";
 script.author = "Plextora";
 let mod = new Module("KillNotif", "Kill Notif", script.description, 0 /* KeyCode.None */);
 client.getModuleManager().registerModule(mod);
 client.on("receive-chat", (ev) => {
     var _a, _b;
     if (ev.isChat && mod.isEnabled() && ((_a = game.getLocalPlayer()) === null || _a === void 0 ? void 0 : _a.isValid())) {
-        let playerName = (_b = game.getLocalPlayer()) === null || _b === void 0 ? void 0 : _b.getName();
-        if (ev.message.includes(`${playerName} §ckilled`)) {
+        if (ev.message.includes(`${(_b = game.getLocalPlayer()) === null || _b === void 0 ? void 0 : _b.getName()} §ckilled`)) {
             game.playSoundUI(soundToPlay, soundVolume.getValue(), soundPitch.getValue());
+            if (debugMode.getValue()) {
+                script.log(`Played ${soundToPlay} at vol ${soundVolume.getValue()} and pitch ${soundPitch.getValue()}`);
+            }
         }
     }
 });
 
+let debugMode = mod.addBoolSetting("DebugMode", "Debug mode", "Logs stuff to chat", false);
 let soundVolume = mod.addNumberSetting("SoundVolume", "Sound volume", "Loudness of kill sound (default is 1)", 0.1, 1, 0.1, 1);
 let soundPitch = mod.addNumberSetting("PitchVolume", "Pitch volume", "Pitch of kill sound (default is 1)", 0.1, 5, 0.1, 1);
 let useOrbSound = mod.addBoolSetting("OrbSound", "Orb sound", "", true);
