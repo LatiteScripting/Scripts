@@ -1,4 +1,6 @@
+// Script GitHub repository: https://github.com/Plextora/KillNotif
 // Currently only works on The Hive
+
 script.name = "Kill Notif";
 script.description =
     "Plays a sound whenever you kill someone on supported servers";
