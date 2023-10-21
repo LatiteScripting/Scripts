@@ -1,49 +1,39 @@
 {
-    "scripts": [
-        {
-            "name": "AdvancedAutoGG",
-            "author": "Plextora",
-            "description": "Only works on The Hive Skywars!",
-            "version": "1.0.0",
-            "files": [
-                "index.js"
-            ]
-        },
-        {
-            "name": "ChatLogger",
-            "author": "Plextora",
-            "description": "Logs all chat messages to a text file.",
-            "version": "0.0.0",
-            "files": [
-                "index.js"
-            ]
-        },
-        {
-            "name": "SlimeChunkIndicator",
-            "author": "@raspberryepicly",
-            "description": "Shows whethere you're in a slime chunk or not",
-            "version": "1.0.0",
-            "files": [
-                "index.js"
-            ]
-        },
-		{
-            "name": "Debug",
-            "author": "JayRSky",
-            "description": "Adds a .execute command to run JS code!",
-            "version": "0.0.1",
-            "files": [
-                "index.js"
-            ]
-        },
-		{
-			"name": "NBSRadio",
-			"author": "JayRSky",
-			"description": "Plays Note Block sound files!",
-			"version": "0.0.0",
-			"files": [
-				"index.js"
-			]
-		}
-    ]
+  "scripts": [
+    {
+      "name": "AdvancedAutoGG",
+      "author": "Plextora",
+      "description": "Only works on The Hive Skywars!",
+      "version": "1.0.0",
+      "files": ["index.js"]
+    },
+    {
+      "name": "ChatLogger",
+      "author": "Plextora",
+      "description": "Logs all chat messages to a text file.",
+      "version": "0.0.0",
+      "files": ["index.js"]
+    },
+    {
+      "name": "SlimeChunkIndicator",
+      "author": "@raspberryepicly",
+      "description": "Shows whethere you're in a slime chunk or not",
+      "version": "1.0.0",
+      "files": ["index.js"]
+    },
+    {
+      "name": "Debug",
+      "author": "JayRSky",
+      "description": "Adds a .execute command to run JS code!",
+      "version": "0.0.1",
+      "files": ["index.js"]
+    },
+    {
+      "name": "NBSRadio",
+      "author": "JayRSky",
+      "description": "Plays Note Block sound files!",
+      "version": "0.0.0",
+      "files": ["index.js"]
+    }
+  ]
 }
