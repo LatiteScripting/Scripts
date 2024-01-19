@@ -5,7 +5,6 @@ The Latite Scripting/Plugin API is an advanced client-side Minecraft Scripting A
 ### What is Latite Client?
 Latite Client is a non-cheat modification for Minecraft Windows 10/11 Edition which has features ranging from world utility to visual mods and PVP-related utilities. 
 
-Latite Client 
 ### Restrictions
 Some features in Latite Client Scripting are restricted. Features such as getting the entities, attacking entities, getting entity positions are limited to operators to prevent cheating.
 
@@ -28,9 +27,6 @@ For scripting documentation, go to https://latitescripting.github.io/
 ## Debugging
 
 You can [debug your scripts](https://github.com/LatiteScripting/Scripts/tree/master/debugging.md) in Latite Client using Visual Studio.
-
-## How to get your plugin added
-For now, you can request your plugin to be added in [#beta-chat](https://discord.com/channels/885656043521179680/1058027973065842698) in the Discord server. You must have a GitHub repository that contains your plugin. Your plugin will **NOT** auto update in this repository for security reasons. We will check your code and update it in this repostiory every once in awhile
 
 ## Using the .plugin command in game
 To install those plugin, run `.plugin install <pluginname>` ingame. For example, do `.plugin install chatlogger` to install the ChatLogger plugin.
