@@ -1,6 +1,6 @@
-# How to debug your scripts 
+# How to debug your plugins 
 
-Script Debugging currently only works when using Latite on Minecraft versions below 1.19.50. Additionally, some JavaScript features will be lost when using Latite Scripting on these versions.
+Plugin Debugging currently only works when using Latite on Minecraft versions below 1.19.50 (Latite currently only supports 1.18.10-1.18.12 for plugin debugging). Additionally, some JavaScript features will be lost when using Latite Scripting on these versions.
 
 ## Prerequisites
 - Latite Client on an older Minecraft version (below 1.19.40)
