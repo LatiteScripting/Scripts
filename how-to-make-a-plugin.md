@@ -24,13 +24,8 @@ Using JS with autocomplete (do //@ts-check at the top of the document) or TS is 
 If you want a simple template to get started with scripting, see the [scripting template](https://github.com/LatiteScripting/Template) repo
 
 ## OK, I did that, what now?
-It's time to make some scripts!
+It's time to make some plugins!
 
 You can debug your code using the Visual Studio workspace.
 
 See the [documentation](https://latitescripting.github.io/) for everything you can do with the scripting API
-
-
-
-## I'm done!
-Follow the instructions [here](https://github.com/LatiteScripting/Scripts/blob/master/README.md) to get your script added to the repo. 
