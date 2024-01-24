@@ -1,0 +1,6 @@
+{
+    "name": "DoubleClickPrevent",
+    "author": "1unar_Eclipse",
+    "version": "0.1.0",
+    "description": "Adds artificial debounce time to prevent double (and further) clicks"
+}
