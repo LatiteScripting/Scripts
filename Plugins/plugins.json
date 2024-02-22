@@ -6,6 +6,13 @@
         "main.js",
         "plugin.json"
       ]
+    },
+    {
+      "name": "REPL",
+      "files": [
+        "main.js",
+        "plugin.json"
+      ]
     }
   ]
 }
