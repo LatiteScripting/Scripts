@@ -1,5 +1,8 @@
 {
   "plugins": [
-    "DoubleClickPrevent"
+    {
+      "name": "DoubleClickPrevent",
+      "files": ["main.js", "plugin.json"]
+    }
   ]
 }
