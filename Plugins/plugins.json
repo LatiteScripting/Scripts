@@ -12,7 +12,8 @@
       "files": [
         "main.js",
         "plugin.json"
-      ]
+      ],
+      "doNotTrust": {}
     }
   ]
 }
