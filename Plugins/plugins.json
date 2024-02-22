@@ -2,7 +2,10 @@
   "plugins": [
     {
       "name": "DoubleClickPrevent",
-      "files": ["main.js", "plugin.json"]
+      "files": [
+        "main.js",
+        "plugin.json"
+      ]
     }
   ]
 }
