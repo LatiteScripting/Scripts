@@ -1,6 +1,5 @@
+"notrust";
 /// <reference path="./definitions/index.d.ts" />
-
-"notrust"; // tells latite api to not trust this script so it won't be abused
 let cmd = new Command("execute", "Execute JavaScript code.", "$ [...]", ["exec"]);
 
 client.getCommandManager().registerCommand(cmd);
