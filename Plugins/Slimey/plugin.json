@@ -1,0 +1,6 @@
+{
+    "author": "@raspberryepicly",
+    "description": "Shows slime chunks in the world, requires Chunk Borders module to be enabled.",
+    "name": "Slimey",
+    "version": "2.0.0"
+}
