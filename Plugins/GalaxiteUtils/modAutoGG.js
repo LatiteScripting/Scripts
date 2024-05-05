@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 */
 const exports_1 = require("./exports");
 // Module setup
-let autoGG = new Module("autoGG", "GXU: AutoGG", 'Automatically says "gg" when a game finishes. (Prop Hunt unsupported due to a Galaxite bug)', 0 /* KeyCode.None */);
+let autoGG = new Module("autoGG", "GXU: AutoGG", 'Automatically says "gg" when a game finishes. (Prop Hunt currently unsupported)', 0 /* KeyCode.None */);
 client.getModuleManager().registerModule(autoGG);
 let ch = autoGG.addBoolSetting("ch", "Chronos", "Chronos support", true);
 let ru = autoGG.addBoolSetting("ru", "Rush", "Rush support", true);
