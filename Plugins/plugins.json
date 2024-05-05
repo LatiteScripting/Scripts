@@ -31,7 +31,8 @@
         "modChatDebloat.js",
         "modCompactBadges.js",
         "modExtraThingsPrevent.js",
-        "modWhereAmIHUD.js"
+        "modWhereAmIHUD.js",
+        "modAutoGG.js"
       ]
     }
   ]

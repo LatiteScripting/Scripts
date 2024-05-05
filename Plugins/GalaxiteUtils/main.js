@@ -6,7 +6,7 @@ const exports_1 = require("./exports");
 // Main file for non-module settings (currently unused).
 // import { notOnGalaxite } from "./exports";
 // Import other modules
-// let modAutoGG = require("modAutoGG");
+let modAutoGG = require("modAutoGG");
 // let modAutoModule = require("modAutoModule");
 let modChatDebloat = require("modChatDebloat");
 let modCompactBadges = require("modCompactBadges");

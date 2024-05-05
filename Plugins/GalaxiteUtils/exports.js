@@ -15,5 +15,5 @@ exports.notOnGalaxite = notOnGalaxite;
 /**
  * Debug mode
  */
-exports.debug = false;
+exports.debug = true;
 // module.exports = notOnGalaxite;
