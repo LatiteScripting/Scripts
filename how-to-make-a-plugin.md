@@ -5,7 +5,7 @@
 - Some basic JS/TS experience to learn how the language works
 - The definitions for autocomplete/checking
 
-If you plan to debug using the Visual Studio workspace, click [here](https://.com/LatiteScripting/Scripts/blob/master/debugging.md) (you need to install VS first though).  
+If you plan to debug using the Visual Studio workspace, click [here](https://github.com/LatiteScripting/Scripts/blob/master/debugging.md) (you need to install VS first though).  
 ### Useful info for JS/TS
 **Learn JS/TS** - these are just some websites, there are many more
 - [Exercism](https://exercism.org/)
