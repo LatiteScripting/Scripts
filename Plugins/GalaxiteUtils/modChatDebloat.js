@@ -28,11 +28,9 @@ client.on("receive-chat", msg => {
         msg.cancel = true;
     }
     if (message.startsWith("\ue0ba") && optionHideJoins.getValue()) { // join
-        clientMessage("Join");
         msg.cancel = true;
     }
     if (message.startsWith("\uE0AD \xa7l\xa76Miner Melvin\xa7r \xa7e\xa7l\xbb\xa7r") && optionHideMelvin.getValue()) { // melvin
-        clientMessage("Melvin");
         msg.cancel = true;
     }
 });
