@@ -14,6 +14,26 @@
         "plugin.json"
       ],
       "doNotTrust": {}
+    },
+    {
+      "name": "EventLogger",
+      "files": [
+        "main.js",
+        "plugin.json"
+      ]
+    },
+    {
+      "name": "GalaxiteUtils",
+      "files": [
+        "main.js",
+        "plugin.json",
+        "exports.js",
+        "modChatDebloat.js",
+        "modCompactBadges.js",
+        "modExtraThingsPrevent.js",
+        "modWhereAmIHUD.js",
+        "modAutoGG.js"
+      ]
     }
   ]
 }
