@@ -16,12 +16,7 @@ const exports_1 = require("./exports");
 let chatDebloat = new Module("chatDebloat", "GXU: Chat Debloat", "Hides some spammy chat messages", 0 /* KeyCode.None */);
 let optionHideJoins = chatDebloat.addBoolSetting("hideJoin", "Hide Joins", "Hide player join messages", false);
 let optionHideNotices = chatDebloat.addBoolSetting("hideNotices", "Hide Notices", "Hides notice messages (ex. hub messages)", true);
-// let optionHideMelvin = chatDebloat.addBoolSetting( // Melvin is currently broken (idk the cue)
-//     "hideMelvin",
-//     "Hide Melvin Messages",
-//     "Hides chat messages relating to Melvin's Mine",
-//     false
-// );
+let optionHideMelvin = chatDebloat.addBoolSetting("hideMelvin", "Hide Melvin Messages", "Hides chat messages relating to Melvin's Mine", false);
 client.getModuleManager().registerModule(chatDebloat);
 // hook
 client.on("receive-chat", msg => {
@@ -36,8 +31,8 @@ client.on("receive-chat", msg => {
         clientMessage("Join");
         msg.cancel = true;
     }
-    // if(message.startsWith("\u00ad\u0020\u00a7\u006c\u00a7\u0036Miner") && optionHideMelvin.getValue()) { // melvin
-    //     clientMessage("Melvin");
-    //     msg.cancel = true;
-    // }
+    if (message.startsWith("\uE0AD \xa7l\xa76Miner Melvin\xa7r \xa7e\xa7l\xbb\xa7r") && optionHideMelvin.getValue()) { // melvin
+        clientMessage("Melvin");
+        msg.cancel = true;
+    }
 });

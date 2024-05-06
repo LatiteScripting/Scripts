@@ -6,19 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 */
 const exports_1 = require("./exports");
 // Module setup
-let autoGG = new Module("autoGG", "GXU: AutoGG", 'Automatically says "gg" when a game finishes. (Prop Hunt currently unsupported)', 0 /* KeyCode.None */);
+let autoGG = new Module("autoGG", "GXU: AutoGG", 'Automatically says "gg" when a game finishes.', 0 /* KeyCode.None */);
 client.getModuleManager().registerModule(autoGG);
 let ch = autoGG.addBoolSetting("ch", "Chronos", "Chronos support", true);
 let ru = autoGG.addBoolSetting("ru", "Rush", "Rush support", true);
 let hr = autoGG.addBoolSetting("hr", "Hyper Racers", "Hyper Racers support", true);
 let cw = autoGG.addBoolSetting("cw", "Core Wars", "Core Wars support", true);
 let ftg = autoGG.addBoolSetting("ftg", "Fill the Gaps", "Fill the Gaps support", true);
-// let ph = autoGG.addBoolSetting(
-//     "ph",
-//     "Prop Hunt",
-//     "Prop Hunt support (experimental)",
-//     false
-// );
+let ph = autoGG.addBoolSetting("ph", "Prop Hunt", "Prop Hunt support", true);
 /* Galaxite Game End Messages:
 hr            - "Finished!", "Out of Time!"
 ftg           - "\u00a7l<team> Team\u00a7r\u00a7a won the game!"
@@ -35,6 +30,7 @@ function sendGG() {
     clientMessage("GG should've been sent.");
     game.sendChatMessage("gg");
 }
+let sendWhereAmI = false, awaitWhereAmI = false;
 // All games have a title
 client.on("title", title => {
     if ((0, exports_1.notOnGalaxite)())
@@ -42,6 +38,7 @@ client.on("title", title => {
     if (!autoGG.isEnabled())
         return;
     let text = title.text; // cache title
+    // gg conditions
     if (hr.getValue()) {
         if (text == "Finished" || text == "Out of Time!")
             sendGG();
@@ -53,5 +50,29 @@ client.on("title", title => {
     if (ch.getValue() || ru.getValue()) {
         if (rgxChRu.test(text))
             sendGG();
+    }
+    // prop hunt
+    if (ph.getValue()) {
+        if (rgxPh.test(text)) {
+            sendWhereAmI = true;
+        }
+    }
+});
+// prop hunt requires entering the postgame first
+client.on("change-dimension", e => {
+    if (sendWhereAmI) {
+        sendWhereAmI = false;
+        game.executeCommand("/whereami");
+        awaitWhereAmI = true;
+    }
+});
+// take in a whereami to confirm 
+client.on("receive-chat", msg => {
+    if (awaitWhereAmI) {
+        if (msg.message.includes("ServerUUID: ") && msg.message.includes("\n")) { // if message actually is a whereami response
+            awaitWhereAmI = false;
+            if (msg.message.includes("PropHunt"))
+                game.sendChatMessage("gg"); // gg
+        }
     }
 });
