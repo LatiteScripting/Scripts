@@ -3,7 +3,7 @@
 // Put this everywhere:
 // import { notOnGalaxite } from "./exports";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.debug = exports.notOnGalaxite = void 0;
+exports.sendGXUMessage = exports.debug = exports.notOnGalaxite = void 0;
 /**
 * Returns `true` if the player is not on Galaxite; `false` if they are.
 */
@@ -16,4 +16,12 @@ exports.notOnGalaxite = notOnGalaxite;
  * Debug mode
  */
 exports.debug = true;
+/**
+ * Sends a formatted message to chat.
+ * @param message The message to use.
+ */
+function sendGXUMessage(message) {
+    clientMessage("\xa78[\xa7tGalaxite\xa7uUtils\xa78]\xa7r " + message);
+}
+exports.sendGXUMessage = sendGXUMessage;
 // module.exports = notOnGalaxite;

@@ -58,18 +58,26 @@ client.on("title", title => {
         }
     }
 });
+let changeDimensionBandage = true; // exact same bandage fix as whereamihud
 // prop hunt requires entering the postgame first
 client.on("change-dimension", e => {
     if (sendWhereAmI) {
-        sendWhereAmI = false;
-        game.executeCommand("/whereami");
-        awaitWhereAmI = true;
+        if (changeDimensionBandage) {
+            changeDimensionBandage = false;
+            sendWhereAmI = false;
+            game.executeCommand("/whereami");
+            awaitWhereAmI = true;
+        }
+        else {
+            changeDimensionBandage = true;
+        }
     }
 });
 // take in a whereami to confirm 
 client.on("receive-chat", msg => {
     if (awaitWhereAmI) {
         if (msg.message.includes("ServerUUID: ") && msg.message.includes("\n")) { // if message actually is a whereami response
+            msg.cancel = true;
             awaitWhereAmI = false;
             if (msg.message.includes("PropHunt"))
                 game.sendChatMessage("gg"); // gg
