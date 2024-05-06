@@ -34,6 +34,13 @@
         "modWhereAmIHUD.js",
         "modAutoGG.js"
       ]
+    },
+    {
+      "name": "NoHurtCam",
+      "files": [
+        "main.js",
+        "plugin.json"
+      ]
     }
   ]
 }
