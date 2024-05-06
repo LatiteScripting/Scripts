@@ -70,6 +70,7 @@ client.on("change-dimension", e => {
 client.on("receive-chat", msg => {
     if (awaitWhereAmI) {
         if (msg.message.includes("ServerUUID: ") && msg.message.includes("\n")) { // if message actually is a whereami response
+            msg.cancel = true;
             awaitWhereAmI = false;
             if (msg.message.includes("PropHunt"))
                 game.sendChatMessage("gg"); // gg
