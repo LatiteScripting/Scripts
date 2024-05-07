@@ -16,7 +16,7 @@ You need to have Latite Client **v2.0.0** to use the latest iteration of the Lat
 
 Join the [Latite Discord](https://discord.gg/latite) for more information.
 
-Latite's scripting API uses JavaScript. To be able to use scripts, you need to have Latite Beta. Join the discord for more information.
+Latite's scripting API uses JavaScript.
 
 ## How to make a Plugin
 
