@@ -123,9 +123,18 @@ function runWhereAmI() {
         return 1;
     }, 5000);
 }
+// the change-dimension event fires twice, this works around it
+let changeDimensionBandage = true;
 // Send /whereami every time a new server is joined
 client.on("change-dimension", e => {
-    runWhereAmI();
+    // runWhereAmI(); // Uncomment this when the bug is fixed
+    if (changeDimensionBandage) { // if the dimension changes an odd number of times, the dimension has actually been changed
+        runWhereAmI();
+        changeDimensionBandage = false;
+    }
+    else { // even, ghost fire
+        changeDimensionBandage = true;
+    }
 });
 client.on("join-game", e => {
     runWhereAmI();
@@ -175,10 +184,10 @@ client.on("receive-chat", msg => {
         // privacy = entries[6];
         [serverUUID, podName, serverName, commitID, shulkerID, region, privacy] = entries; // Store the entries to cache
         parkourUUID = (entries.length > 7) ? entries[7] : ""; // If ParkourUUID was sent, add it; otherwise store an empty string for it (is this needed?)
-        if (optionHideResponse.getValue()) { // if the user chooses to hide the response
-            if (whereAmISent) { // if the plugin has already sent /whereami
+        if (whereAmISent) {
+            whereAmISent = false;
+            if (optionHideResponse.getValue()) {
                 msg.cancel = true;
-                whereAmISent = false;
             }
         }
     }
