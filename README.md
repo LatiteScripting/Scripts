@@ -1,5 +1,7 @@
 # Latite Plugin API
 
+[GitHub page for official definitions and API code](https://github.com/latitescripting/latiteapi)
+
 The Latite Scripting/Plugin API is an advanced client-side Minecraft Scripting API for Latite Client. The API allows you to interact with many aspects of the Minecraft Windows 10/11 Edition client (while not allowing cheats).
 
 ### What is Latite Client?
