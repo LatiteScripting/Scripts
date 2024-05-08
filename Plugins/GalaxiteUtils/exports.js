@@ -15,7 +15,7 @@ exports.notOnGalaxite = notOnGalaxite;
 /**
  * Debug mode
  */
-exports.debug = true;
+exports.debug = false;
 /**
  * Sends a formatted message to chat.
  * @param message The message to use.
