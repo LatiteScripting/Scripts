@@ -26,7 +26,9 @@
       "name": "EventLogger",
       "files": [
         "main.js",
-        "plugin.json"
+        "plugin.json",
+        "modCPSLimiter.js",
+        "modDoubleClickPrevent.js"
       ]
     },
     {
@@ -40,6 +42,13 @@
         "modExtraThingsPrevent.js",
         "modWhereAmIHUD.js",
         "modAutoGG.js"
+      ]
+    },
+    {
+      "name": "ColonThreeModule",
+      "files": [
+        "main.js",
+        "plugin.json"
       ]
     }
   ]
