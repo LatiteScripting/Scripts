@@ -29,7 +29,7 @@ function stringify(val) {
 cmd.on("execute", (label, args, commandLine) => {
     if (args.length === 0) return false;
 
-    let code = commandLine.trim().substring(client.getCommandManager().getPrefix().length + label.length).trimStart();
+    let code = commandLine.trim().substring(client.getCommandManager().getPrefix().length + label.length).trim();
     clientMessage(TextColor.GRAY + "> " + code)
     try {
         let ret = eval(code);
