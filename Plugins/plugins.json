@@ -2,32 +2,20 @@
   "plugins": [
     {
       "name": "DoubleClickPrevent",
-      "files": [
-        "main.js",
-        "plugin.json"
-      ]
+      "files": ["main.js", "plugin.json"]
     },
     {
       "name": "REPL",
-      "files": [
-        "main.js",
-        "plugin.json"
-      ],
+      "files": ["main.js", "plugin.json"],
       "doNotTrust": {}
     },
     {
-      "name":"Slimey",
-      "files":[
-        "main.js",
-        "plugin.json"
-      ]
+      "name": "Slimey",
+      "files": ["main.js", "plugin.json"]
     },
     {
       "name": "EventLogger",
-      "files": [
-        "main.js",
-        "plugin.json"
-      ]
+      "files": ["main.js", "plugin.json"]
     },
     {
       "name": "GalaxiteUtils",
@@ -41,6 +29,10 @@
         "modWhereAmIHUD.js",
         "modAutoGG.js"
       ]
+    },
+    {
+      "name": "MentionChatPing",
+      "files": ["main.js", "moduleOptions.js", "plugin.json"]
     }
   ]
 }
