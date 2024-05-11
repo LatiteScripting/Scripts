@@ -13,6 +13,8 @@ client.on("click", e => {
         return;
     if (e.cancel)
         return;
+    if (game.isInUI())
+        return;
     let button = e.button - 1;
     if (clicks[button] >= optionLimit.getValue()) {
         e.cancel = true;
