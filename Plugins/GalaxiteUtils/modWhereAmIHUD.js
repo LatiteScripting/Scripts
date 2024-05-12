@@ -1,59 +1,32 @@
 "use strict";
 // WhereAmIHUD: Allows showing various details from the /whereami command, like game or region.
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const exports_1 = require("./exports");
+const w = __importStar(require("./WhereAmIHUDOptions"));
 // Initialization
-// Core
-let whereAmIHUD = new TextModule("whereAmIHUD", "GXU: WhereAmIHUD", "Automatically runs /whereami on every server join, and shows selected details as a module", 0 /* KeyCode.None */);
-let optionHideResponse = whereAmIHUD.addBoolSetting("HideResponse", "Hide Response", "Runs command in the background without a chat message (disable if normal /whereami doesn't work)", true);
-// Server Name
-let optionServerName = whereAmIHUD.addBoolSetting("ServerName", "Server Name", "Shows the ServerName (game/lobby name) field", true);
-let optionFormatServerName = whereAmIHUD.addBoolSetting("FormatServerName", "Format Server Name", "Makes the server name field use proper formatting (currently does nothing)", true);
-optionFormatServerName.setCondition("ServerName");
-let optionServerNamePrefix = whereAmIHUD.addTextSetting("ServerNamePrefix", "Prefix (Server Name)", "Text to display before the server name entry", "");
-optionServerNamePrefix.setCondition("ServerName");
-let optionServerNameSuffix = whereAmIHUD.addTextSetting("ServerNameSuffix", "Suffix (Server Name)", "Text to display after the server name entry", "");
-optionServerNameSuffix.setCondition("ServerName");
-// Region
-let optionRegion = whereAmIHUD.addBoolSetting("Region", "Region", "Shows the Region field", true);
-let optionRegionPrefix = whereAmIHUD.addTextSetting("RegionPrefix", "Prefix (Region)", "Text to display before the region entry", "Region: ");
-optionRegionPrefix.setCondition("Region");
-let optionRegionSuffix = whereAmIHUD.addTextSetting("RegionSuffix", "Suffix (Region)", "Text to display after the region entry", "");
-optionRegionSuffix.setCondition("Region");
-// Privacy
-let optionPrivacy = whereAmIHUD.addBoolSetting("Privacy", "Privacy", "Shows the Privacy (public/private game) field", true);
-let optionPrivacyPrefix = whereAmIHUD.addTextSetting("PrivacyPrefix", "Prefix (Privacy)", "Text to display before the Privacy entry", "");
-optionPrivacyPrefix.setCondition("Privacy");
-let optionPrivacySuffix = whereAmIHUD.addTextSetting("PrivacySuffix", "Suffix (Privacy)", "Text to display after the Privacy entry", " Game");
-optionPrivacySuffix.setCondition("Privacy");
-// Dev Fields
-let optionDevFields = whereAmIHUD.addBoolSetting("DevFields", "Developer Fields", "Shows details less important to normal users (ServerUUID, PodName, CommitID, and ShulkerID, plus ParkourUUID in Parkour Builders)", false);
-// Server UUID
-let optionServerUUIDPrefix = whereAmIHUD.addTextSetting("ServerUUIDPrefix", "Prefix (Server UUID)", "Text to display before the Server UUID entry", "Server UUID: ");
-optionServerUUIDPrefix.setCondition("DevFields");
-let optionServerUUIDSuffix = whereAmIHUD.addTextSetting("ServerUUIDSuffix", "Suffix (Server UUID)", "Text to display after the Suffix entry", "");
-optionServerUUIDSuffix.setCondition("DevFields");
-// Pod Name
-let optionPodNamePrefix = whereAmIHUD.addTextSetting("PodNamePrefix", "Prefix (Pod Name)", "Text to display before the Pod Name entry", "Pod Name: ");
-optionPodNamePrefix.setCondition("DevFields");
-let optionPodNameSuffix = whereAmIHUD.addTextSetting("PodNameSuffix", "Suffix (Pod Name)", "Text to display after the Pod Name entry", "");
-optionPodNameSuffix.setCondition("DevFields");
-// Commit ID
-let optionCommitIDPrefix = whereAmIHUD.addTextSetting("CommitIDPrefix", "Prefix (Commit ID)", "Text to display before the Commit ID entry", "CommitID: ");
-optionCommitIDPrefix.setCondition("DevFields");
-let optionCommitIDSuffix = whereAmIHUD.addTextSetting("CommitIDSuffix", "Suffix (Commit ID)", "Text to display after the Commit ID entry", "");
-optionCommitIDSuffix.setCondition("DevFields");
-// Shulker ID
-let optionShulkerIDPrefix = whereAmIHUD.addTextSetting("ShulkerIDPrefix", "Prefix (Shulker ID)", "Text to display before the Shulker ID entry", "ShulkerID: ");
-optionShulkerIDPrefix.setCondition("DevFields");
-let optionShulkerIDSuffix = whereAmIHUD.addTextSetting("ShulkerIDSuffix", "Suffix (Shulker ID)", "Text to display after the Shulker ID entry", "");
-optionShulkerIDSuffix.setCondition("DevFields");
-// Parkour UUID
-let optionParkourUUIDPrefix = whereAmIHUD.addTextSetting("ParkourUUIDPrefix", "Prefix (Parkour UUID)", "Text to display before the Parkour UUID entry", "ParkourUUID: ");
-optionParkourUUIDPrefix.setCondition("DevFields");
-let optionParkourUUIDSuffix = whereAmIHUD.addTextSetting("ParkourUUIDSuffix", "Suffix (Parkour UUID)", "Text to display after the Parkour UUID entry", "");
-optionParkourUUIDSuffix.setCondition("DevFields");
-client.getModuleManager().registerModule(whereAmIHUD); // Putting this after settings makes the custom settings appear first
 /* Field list:
 - ServerUUID (devFields)
 - PodName (devFields)
@@ -183,36 +156,38 @@ client.on("receive-chat", msg => {
         // region = entries[5];
         // privacy = entries[6];
         [serverUUID, podName, serverName, commitID, shulkerID, region, privacy] = entries; // Store the entries to cache
-        parkourUUID = (entries.length > 7) ? entries[7] : ""; // If ParkourUUID was sent, add it; otherwise store an empty string for it (is this needed?)
+        parkourUUID = (entries.length > 7) ? entries[7] : ""; // If ParkourUUID was sent, add it; otherwise store an empty string for it
         if (whereAmISent) {
             whereAmISent = false;
-            if (optionHideResponse.getValue()) {
-                msg.cancel = true;
-            }
+        }
+        if (w.optionHideResponse.getValue()) {
+            msg.cancel = true;
         }
     }
 });
 // Cache new line (very important) (i use it a lot here)
 const NL = "\n";
 // Actually render stuff
-whereAmIHUD.on("text", () => {
+w.whereAmIHUD.on("text", () => {
     var _a;
     if ((0, exports_1.notOnGalaxite)())
         return ("");
     // initialize render variable
     let render = "";
     // consider options and build text
-    if (optionServerName.getValue())
-        render = render.concat(optionServerNamePrefix.getValue(), optionFormatServerName.getValue() ? ((_a = formatMap.get(serverName)) !== null && _a !== void 0 ? _a : serverName) : serverName, // ?? is "choose the first defined value"
-        optionServerNameSuffix.getValue(), NL);
-    if (optionRegion.getValue())
-        render = render.concat(optionRegionPrefix.getValue(), (region.toUpperCase()), optionRegionSuffix.getValue(), NL); // Uppercase region, as the server sends it lowercase
-    if (optionPrivacy.getValue())
-        render = render.concat(optionPrivacyPrefix.getValue(), privacy, optionPrivacySuffix.getValue(), NL);
-    if (optionDevFields.getValue()) {
-        render = render.concat(optionServerUUIDPrefix.getValue(), serverUUID, optionServerUUIDSuffix.getValue(), NL, optionPodNamePrefix.getValue(), podName, optionPodNameSuffix.getValue(), NL, optionCommitIDPrefix.getValue(), commitID, optionCommitIDSuffix.getValue(), NL, optionShulkerIDPrefix.getValue(), shulkerID, optionShulkerIDSuffix.getValue(), ((parkourUUID != "")
-            ? (NL + optionParkourUUIDPrefix.getValue(), parkourUUID, optionParkourUUIDSuffix.getValue() // NL in here to reduce potential trim
-            ) : "")); // no final NL since that's always the last data point
+    if (w.optionServerName.getValue())
+        render = render.concat(w.optionServerNamePrefix.getValue(), w.optionFormatServerName.getValue() ? ((_a = formatMap.get(serverName)) !== null && _a !== void 0 ? _a : serverName) : serverName, // ?? is "choose the first defined value"
+        w.optionServerNameSuffix.getValue(), NL);
+    if (w.optionRegion.getValue())
+        render = render.concat(w.optionRegionPrefix.getValue(), (region.toUpperCase()), w.optionRegionSuffix.getValue(), NL); // Uppercase region, as the server sends it lowercase
+    if (w.optionPrivacy.getValue())
+        render = render.concat(w.optionPrivacyPrefix.getValue(), privacy, w.optionPrivacySuffix.getValue(), NL);
+    if (w.optionParkourUUID.getValue())
+        render = render.concat((w.optionParkourUUID.getValue() && parkourUUID.trim() != "")
+            ? (w.optionParkourUUIDPrefix.getValue() + parkourUUID + w.optionParkourUUIDSuffix.getValue() + NL)
+            : "");
+    if (w.optionDevFields.getValue()) {
+        render = render.concat(w.optionServerUUIDPrefix.getValue(), serverUUID, w.optionServerUUIDSuffix.getValue(), NL, w.optionPodNamePrefix.getValue(), podName, w.optionPodNameSuffix.getValue(), NL, w.optionCommitIDPrefix.getValue(), commitID, w.optionCommitIDSuffix.getValue(), NL, w.optionShulkerIDPrefix.getValue(), shulkerID, w.optionShulkerIDSuffix.getValue());
     }
     // remove possible trailing \n
     render = render.trim();
