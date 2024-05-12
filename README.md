@@ -14,7 +14,7 @@ Other things like world manipulation are only possible on local worlds.
 
 ### How to use this API
 
-You need to have Latite Client **v2.0.0** to use the latest iteration of the Latite Plugin API.
+You need to have [Latite Client](https://latite.net) to use the latest iteration of the Latite Plugin API.
 
 Join the [Latite Discord](https://discord.gg/latite) for more information.
 
