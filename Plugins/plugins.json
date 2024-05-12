@@ -45,6 +45,13 @@
         "main.js",
         "plugin.json"
       ]
+    },
+    {
+      "name": "Playtime",
+      "files": [
+        "main.js",
+        "plugin.json"
+      ]
     }
   ]
 }
