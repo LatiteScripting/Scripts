@@ -28,11 +28,13 @@
         "main.js",
         "plugin.json",
         "exports.js",
+        "modAutoGG.js",
         "modChatDebloat.js",
         "modCompactBadges.js",
         "modExtraThingsPrevent.js",
+        "modGlobalMessages.js",
         "modWhereAmIHUD.js",
-        "modAutoGG.js"
+        "WhereAmIHUDOptions.js"
       ]
     },
     {
