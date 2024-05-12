@@ -43,7 +43,8 @@ playtimeHud.on("text", () => {
 });
 // set values when enabled
 playtimeHud.on("enable", () => {
-    overallPlaytime = parseInt(util.bufferToString(fs.read("playtime/playtime.txt")));
+    if (fs.exists("playtime/playtime.txt"))
+        overallPlaytime = parseInt(util.bufferToString(fs.read("playtime/playtime.txt")));
     if (overallPlaytime === undefined)
         overallPlaytime = 0;
 });
