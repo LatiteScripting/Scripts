@@ -15,7 +15,12 @@
     },
     {
       "name": "EventLogger",
-      "files": ["main.js", "plugin.json"]
+      "files": [
+        "main.js",
+        "plugin.json",
+        "modCPSLimiter.js",
+        "modDoubleClickPrevent.js"
+      ]
     },
     {
       "name": "GalaxiteUtils",
@@ -33,6 +38,13 @@
     {
       "name": "MentionChatPing",
       "files": ["main.js", "moduleOptions.js", "plugin.json"]
+    },
+    {
+      "name": "ColonThreeModule",
+      "files": [
+        "main.js",
+        "plugin.json"
+      ]
     }
   ]
 }
