@@ -22,7 +22,7 @@ Latite's scripting API uses JavaScript.
 
 ## How to make a Plugin
 
-You can view a quick guide/quickstart [here](https://github.com/LatiteScripting/Scripts/tree/master/how-to-make-a-script.md)
+You can view a quick guide/quickstart [here](https://github.com/LatiteScripting/Scripts/tree/master/how-to-make-a-plugin.md)
 
 For scripting documentation, go to https://latitescripting.github.io/
 
