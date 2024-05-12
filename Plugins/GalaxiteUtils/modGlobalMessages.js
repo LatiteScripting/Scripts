@@ -46,12 +46,11 @@ client.on("join-game", e => {
         }
     }, 5000);
 });
-client.on("key-press", e => {
-    if (!e.isDown)
-        return;
-    if (e.keyCode == 75 /* KeyCode.K */)
-        (0, exports_1.sendGXUMessage)(getSplash());
-});
+// client.on("key-press", e => { // debug function comment this for release
+//     if(!e.isDown) return;
+//     if(e.keyCode == KeyCode.K)
+//         sendGXUMessage(getSplash());
+// });
 function getSplash() {
     return exports_1.gxuSplashes[Math.floor(Math.random() * exports_1.gxuSplashes.length)];
 }
