@@ -54,6 +54,15 @@
         "main.js",
         "plugin.json"
       ]
+    },
+    {
+      "name": "BedwarsStats",
+      "files": [
+        "main.js",
+        "stats.js",
+        "text3d.js",
+        "plugin.json"
+      ]
     }
   ]
 }
