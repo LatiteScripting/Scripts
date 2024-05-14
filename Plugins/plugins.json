@@ -1,7 +1,7 @@
 {
   "plugins": [
     {
-      "name": "DoubleClickPrevent",
+      "name": "EventLogger",
       "files": ["main.js", "plugin.json"]
     },
     {
@@ -14,7 +14,7 @@
       "files": ["main.js", "plugin.json"]
     },
     {
-      "name": "EventLogger",
+      "name": "DoubleClickPrevent",
       "files": [
         "main.js",
         "plugin.json",
