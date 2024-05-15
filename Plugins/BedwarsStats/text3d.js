@@ -17,7 +17,7 @@ function drawText3D(text, x, y, z, color, facing, scale = 0.25, cull = false) {
             graphics3D.setColor(color);
         line.split("").forEach((letter, i) => {
             if (letter === ' ')
-                return; // Skip drawing for spaces
+                return; // skip drawing for spaces
             const segments = letters[letter];
             if (!segments)
                 return;

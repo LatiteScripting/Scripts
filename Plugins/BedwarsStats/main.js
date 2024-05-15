@@ -12,7 +12,7 @@ client.on("render3d", () => {
         allStats = [];
         return;
     }
-    (0, text3d_1.drawText3D)("Top 3 Players In Your Lobby", 21.5, 23.5, -20, Color.WHITE, 2 /* Facing.South */, 0.1, true);
+    (0, text3d_1.drawText3D)("Top 3 Players In Your Lobbyyy", 21.5, 23.5, -20, Color.WHITE, 2 /* Facing.South */, 0.1, true);
     if (allStats.length > 0)
         (0, text3d_1.drawText3D)(allStats[0].toString(), 19 + (0, text3d_1.textWidth)(allStats[0].toString(), 0.05), 23, -20, Color.WHITE, 2 /* Facing.South */, 0.05, true);
     if (allStats.length > 1)
@@ -58,7 +58,9 @@ client.on("receive-chat", (params) => {
     }
 });
 function getStats(player) {
-    http.getAsync(`https://api.playhive.com/v0/game/all/wars/${player}`, {}, (resp) => {
+    // replace spaces with %20
+    const playerSearch = player.replace(/ /g, "%20");
+    http.getAsync(`https://api.playhive.com/v0/game/all/bed/${playerSearch}`, {}, (resp) => {
         let stats = null;
         try {
             stats = parseWarsStats(player, util.bufferToString(resp.body));

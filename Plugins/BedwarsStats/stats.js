@@ -13,7 +13,7 @@ class stats {
         this.winloss = winloss;
     }
     toString() {
-        return `Player: ${this.name}\nGames Played: ${this.gamesPlayed}\nGames Won: ${this.gamesWon}\nFinal Kills: ${this.finalKills}\nKills: ${this.kills}\nDeaths: ${this.deaths}\nK/D: ${this.kd.toFixed(1)}\nWin/Loss: ${this.winloss.toFixed(1)}`;
+        return `Player: ${this.name}\nGames Played: ${this.gamesPlayed}\nGames Won: ${this.gamesWon}\nFinal Kills: ${this.finalKills}\nKills: ${this.kills}\nDeaths: ${this.deaths}\nK/D: ${this.kd.toFixed(1)}\nWin rate: ${this.winloss.toFixed(1)}%%%%%%%%`;
     }
 }
 exports.stats = stats;
