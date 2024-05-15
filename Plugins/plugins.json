@@ -63,6 +63,20 @@
         "text3d.js",
         "plugin.json"
       ]
+    },
+    {
+      "name": "CustomText",
+      "files": [
+        "main.js",
+        "plugin.json"
+      ]
+    }, 
+    {
+      "name": "Timestamps",
+      "files": [
+        "main.js",
+        "plugin.json"
+      ]
     }
   ]
 }
