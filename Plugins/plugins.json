@@ -77,6 +77,13 @@
         "main.js",
         "plugin.json"
       ]
+    }, 
+    {
+      "name": "StructureScanner",
+      "files": [
+        "main.js",
+        "plugin.json"
+      ]
     }
   ]
 }
