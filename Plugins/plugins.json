@@ -84,6 +84,13 @@
         "main.js",
         "plugin.json"
       ]
+    },
+    {
+      "name": "AutoGG",
+      "files": [
+        "main.js",
+        "plugin.json"
+      ]
     }
   ]
 }
