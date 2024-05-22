@@ -33,6 +33,10 @@
     {
       "name": "MentionChatPing",
       "files": ["main.js", "moduleOptions.js", "plugin.json"]
+    },
+    {
+      "name": "ChatLogger",
+      "files": ["main.js", "plugin.json"]
     }
   ]
 }
