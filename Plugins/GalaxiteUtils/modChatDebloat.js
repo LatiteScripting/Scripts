@@ -17,6 +17,8 @@ let chatDebloat = new Module("chatDebloat", "GXU: Chat Debloat", "Hides some spa
 let optionHideJoins = chatDebloat.addBoolSetting("hideJoin", "Hide Joins", "Hide player join messages", false);
 let optionHideNotices = chatDebloat.addBoolSetting("hideNotices", "Hide Notices", "Hides notice messages (ex. hub messages)", true);
 let optionHideMelvin = chatDebloat.addBoolSetting("hideMelvin", "Hide Melvin Messages", "Hides chat messages relating to Melvin's Mine", false);
+let optionHideWelcome = chatDebloat.addBoolSetting("hideWelcome", "Hide Welcome Messages", 'Hides the "Welcome to Galaxite" message', true);
+let optionHideVisibility = chatDebloat.addBoolSetting("hideVisibility", "Hide Visibility Status", "Hides invisibility status messages", true);
 client.getModuleManager().registerModule(chatDebloat);
 // hook
 client.on("receive-chat", msg => {
@@ -31,6 +33,12 @@ client.on("receive-chat", msg => {
         msg.cancel = true;
     }
     if (message.startsWith("\uE0AD \xa7l\xa76Miner Melvin\xa7r \xa7e\xa7l\xbb\xa7r") && optionHideMelvin.getValue()) { // melvin
+        msg.cancel = true;
+    }
+    if (message.startsWith("\uE0BC You are now") && optionHideVisibility.getValue()) { // visibility
+        msg.cancel = true;
+    }
+    if (message.startsWith("\uE0BC \xa7aWelcome to Galaxite") && optionHideWelcome.getValue()) { // welcomes
         msg.cancel = true;
     }
 });

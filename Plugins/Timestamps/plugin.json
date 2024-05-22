@@ -1,0 +1,7 @@
+{
+    "author": "@raspberryepicly",
+    "description": "Adds Timetamps to messages in chat. might conflict with other plugins that modify chat messages.",
+    "lastLaunch": false,
+    "name": "Timetamps",
+    "version": "1.0.0"
+}
