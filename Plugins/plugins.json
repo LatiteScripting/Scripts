@@ -68,6 +68,10 @@
     {
       "name": "StructureScanner",
       "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "SpawnSphere",
+      "files": ["main.js", "plugin.json"]
     }
   ]
 }
