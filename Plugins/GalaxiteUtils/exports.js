@@ -241,12 +241,3 @@ exports.chronosPerkMap = new Map([
     ["Mayday", "\uE146\uE1A4"],
     ["Freezer", "\uE146\uE1C5"], // ice slider
 ]);
-client.on("key-press", k => {
-    if (notOnGalaxite() || k.keyCode != 75 /* KeyCode.K */ || !k.isDown)
-        return;
-    let str = "";
-    exports.chronosPerkMap.forEach((val, key) => {
-        str = str.concat(key, ": ", val, "\n");
-    });
-    sendGXUMessage(str);
-});
