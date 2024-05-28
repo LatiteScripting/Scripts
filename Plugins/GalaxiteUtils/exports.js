@@ -3,7 +3,8 @@
 // Put this everywhere:
 // import { notOnGalaxite } from "./exports";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.patchNotes = exports.gxuSplashes = exports.sendGXUMessage = exports.nerdRadar = exports.notOnGalaxite = void 0;
+exports.chronosPerkMap = exports.patchNotes = exports.gxuSplashes = exports.sendGXUMessage = exports.nerdRadar = exports.notOnGalaxite = void 0;
+const modGlobalMessages_1 = require("./modGlobalMessages");
 /**
 * Returns `true` if the player is not on Galaxite; `false` if they are.
 */
@@ -33,7 +34,11 @@ exports.nerdRadar = nerdRadar;
  * @param message The message to use.
  */
 function sendGXUMessage(message) {
-    clientMessage(`\xa78[\xa7tGalaxite\xa7uUtils\xa78]\xa7r ${message}`);
+    clientMessage(`\xa78[\xa7t${ // formatted opening square bracket
+    modGlobalMessages_1.optionShortGXUBadge.getValue() // if short badges:
+        ? "GXU" // just gxu
+        : "Galaxite\xa7uUtils" // otherwise, full galaxiteutils
+    }\xa78]\xa7r ${message}`); // formatted closing square bracket and message
 }
 exports.sendGXUMessage = sendGXUMessage;
 /**
@@ -57,7 +62,7 @@ exports.gxuSplashes = [
     "PixelParadiseUtils disactive.",
     ":3",
     "is ACTIVE",
-    "Made with 98.9% pure TypeScript!",
+    "Made with 99.3% pure TypeScript!",
     "These aren't funny aren't they",
     "Open-source!",
     "Now with patch notes!",
@@ -77,7 +82,6 @@ exports.gxuSplashes = [
     "What's a meta, anyway?",
     "Does not help with escaping the Entity",
     "Sonic Snowballs were such a good item Mojang added them officially",
-    "Also try MCC Island!",
     "Currently Latite's largest plugin!",
     "Exposes no internal information!",
     "d-d-a g",
@@ -108,13 +112,12 @@ exports.gxuSplashes = [
     "If you or a loved one has suffered from vitenout addiction, you may be entitled to financial compensation!",
     "ouewnbv9uwebv9uwbngv",
     "opiqwhnvoicsnvkwgw890fghuison",
-    "lksjddflkajdflkjdflkjsldfkjls",
-    "nzxkivcnjpoignungvpoinvano",
-    "q0oifnqovinovnqovnqovnqo",
     "e",
     "wwdeuubdefdqzukjkjyjadhwflr",
-    "estmegelbbuupbtewngsaiuen",
-    "wkjgqgyfwxgufmasxncriomncqoyx"
+    "Remember to update your game from time to time!",
+    "Powered by WhereAmAPI!",
+    "\uE1E4",
+    "Let's paint this gray haze into sky blue!"
 ];
 /**
  * A map between the updated-to version and the changes included in that version.
@@ -146,12 +149,95 @@ exports.patchNotes = new Map([
             "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
             "(press your chat button to view full patch notes)"
     ],
+    ["0.3.5", "GalaxiteUtils has been updated to v0.3.5!\n" +
+            "- Fixed WhereAmIHUD breaking due to Galaxite updating the command response (it shouldn't break as badly in the future, too!)\n" +
+            "- Made some very large backend changes that should make some modules more stable (ex. /whereami is no longer sent twice with WhereAmIHUD and AutoGG on in Prop Hunt)\n" +
+            "- You can make /whereami run sooner after changing servers, reducing the chance of results accidentally showing\n" +
+            "- You can now allow the plugin to update automatically\n" +
+            "  - This does still require relaunching the game\n" +
+            "- Plugin update notifications no longer assume you use . as your command prefix\n" +
+            "- Hiding automatic /whereami responses is now handled using an option in the Global Settings module, not WhereAmIHUD\n" +
+            "- Compact Badges has been expanded into a full chat editor, with multiple new options including traditional badges\n" +
+            "- You can now shorten GalaxiteUtils badges using the Global Settings module\n" +
+            "- A command that allows copying /whereami data has been internally added ('export', 'copywhereami', or 'whereami'), though is currently non-functional due to an upstream bug\n" +
+            "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
+            "(press your chat button to view full patch notes)"
+    ],
     ["0.4.0", "GalaxiteUtils has been updated to v0.4.0!\n" +
-            "- Made some very large backend changes that should make some modules more stable\n" +
-            "- You can now shorten GalaxiteUtils badges\n" +
             "- New module: Attempt Counter (for Parkour Builders)\n" +
-            "- New module: Kit UI (for Chronos, Hyper Racers, and Kit PvP; opt-in for Core Wars, Rush, and Alien Blast due to length)\n" +
+            "- New module: Auto-Modules (for Chronos, The Entity, and Alien Blast)\n" +
+            "- New module: Kit UI (for Chronos, Hyper Racers, and Kit PvP; opt-in for Rush due to length)\n" +
+            '- The plugin now automatically downloads a resource pack that removes armor. Click the "Open Latite Folder" button next time you launch and import the pack there!\n' +
             "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
             "(press your chat button to view full patch notes)"
     ]
+]);
+/**
+ * random is `\uE1EB`
+ */
+exports.chronosPerkMap = new Map([
+    // OFFENSE
+    ["Bow Start", "\uE115"],
+    ["Prepare Shot", "\uE1C0"],
+    ["Sonic Snowballs", "\uE1C4"],
+    ["Daredevil", "\uE184"],
+    ["Solid Snowballs", "\uE119"],
+    ["Glass Cannon", "\uE12B"],
+    ["Sniper", "\uE14D"],
+    ["Airstrike", "\uE12D"],
+    ["Sword Specialist", "\uE112"],
+    ["Assassin", "\uE1A2"],
+    ["Revenger", "\uE136"],
+    ["Fireballs", "\uE11A"],
+    ["Poison Arrows", "\uE114"],
+    ["Bandit Boss", "\uE103"],
+    ["Levitation Arrows", "\uE11B"],
+    ["Time Siphon", "\uE138"],
+    // DEFENSE
+    ["Tank", "\uE101"],
+    ["Health Scavenger", "\uE1A5"],
+    ["Medicine", "\uE201"],
+    ["Blinding Forcefield", "\uE1A0"],
+    ["Weakening Arrows", "\uE113"],
+    ["Vampire", "\uE10B"],
+    ["Heavy Duty", "\uE12F"],
+    ["Hunker Down", "\uE247"],
+    ["Armour Specialist", "\uE10A"],
+    ["Smoke Bomb", "\uE1A7"],
+    ["Soul Collector", "\uE14B"],
+    ["Ancient", "\uE1D2"],
+    ["Shielder", "\uE1A8"],
+    ["Shattered Glass", "\uE129"],
+    ["Scaredy Cat", "\uE1DF"],
+    ["Trapper", "\uE12A"],
+    // UTILITY
+    ["Mobility", "\uE19A"],
+    ["Backpack", "\uE1C2"],
+    ["Builder", "\uE147"],
+    ["Falcon", "\uE14F"],
+    ["Vault Raider", "\uE1C1"],
+    ["Scout", "\uE1A4"],
+    ["Sticky Arrows", "\uE1A3"],
+    ["Stealth Jet", "\uE1AC"],
+    ["Time Hoarder", "\uE139"],
+    ["Ninja", "\uE190"],
+    ["Gravity Spheres", "\uE11C"],
+    ["Dasher", "\uE12C"],
+    ["Sparrow", "\uE193"],
+    ["Soulbound", "\uE1A1"],
+    ["Ghost", "\uE1AB"],
+    ["Recon", "\uE1F7"],
+    ["Lucky", "\uE1EC"],
+    // BOUNTY - bounty char is \uE148
+    ["Feedback Loop", "\uE148\uE19C"],
+    ["Contract of Blessing", "\uE148\uE1BD"],
+    ["Contract of Protection", "\uE148\uE10C"],
+    ["Contract of Rewarding", "\uE148\uE1EC"],
+    // TEAM - general team icon is \uE146
+    ["Warper", "\uE146\uE14E"],
+    ["Frontline", "\uE146\uE111"],
+    ["Healer", "\uE146\uE10B"],
+    ["Avenger", "\uE146\uE136"],
+    ["Mayday", "\uE146\uE1A4"],
+    ["Freezer", "\uE146\uE1C5"], // ice slider
 ]);

@@ -34,7 +34,8 @@
         "modExtraThingsPrevent.js",
         "modGlobalMessages.js",
         "modWhereAmIHUD.js",
-        "WhereAmIHUDOptions.js"
+        "WhereAmIHUDOptions.js",
+        "WhereAmAPI.js"
       ]
     },
     {
