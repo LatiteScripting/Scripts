@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.optionShulkerIDSuffix = exports.optionShulkerIDPrefix = exports.optionCommitIDSuffix = exports.optionCommitIDPrefix = exports.optionPodNameSuffix = exports.optionPodNamePrefix = exports.optionServerUUIDSuffix = exports.optionServerUUIDPrefix = exports.optionDevFields = exports.optionParkourUUIDSuffix = exports.optionParkourUUIDPrefix = exports.optionParkourUUID = exports.optionPrivacySuffix = exports.optionPrivacyPrefix = exports.optionPrivacy = exports.optionRegionSuffix = exports.optionRegionPrefix = exports.optionRegion = exports.optionServerNameSuffix = exports.optionServerNamePrefix = exports.optionFormatServerName = exports.optionServerName = exports.optionHideResponse = exports.whereAmIHUD = void 0;
+exports.optionShulkerIDSuffix = exports.optionShulkerIDPrefix = exports.optionCommitIDSuffix = exports.optionCommitIDPrefix = exports.optionPodNameSuffix = exports.optionPodNamePrefix = exports.optionServerUUIDSuffix = exports.optionServerUUIDPrefix = exports.optionDevFields = exports.optionUsernameSuffix = exports.optionUsernamePrefix = exports.optionUsername = exports.optionParkourUUIDSuffix = exports.optionParkourUUIDPrefix = exports.optionParkourUUID = exports.optionPrivacySuffix = exports.optionPrivacyPrefix = exports.optionPrivacy = exports.optionRegionSuffix = exports.optionRegionPrefix = exports.optionUseNAName = exports.optionRegion = exports.optionServerNameSuffix = exports.optionServerNamePrefix = exports.optionFormatServerName = exports.optionServerName = exports.whereAmIHUD = void 0;
 // Core
 exports.whereAmIHUD = new TextModule("whereAmIHUD", "GXU: WhereAmIHUD", "Automatically runs /whereami on every server join, and shows selected details as a module", 0 /* KeyCode.None */);
-exports.optionHideResponse = exports.whereAmIHUD.addBoolSetting("HideResponse", "Hide Response", "Runs command in the background without a chat message (disable if normal /whereami doesn't work)", true);
+// Order: ServerName, Region, Privacy, ParkourUUID, Username, [ServerUUID, PodName, CommitID, ShulkerID]
 // Server Name
 exports.optionServerName = exports.whereAmIHUD.addBoolSetting("ServerName", "Server Name", "Shows the ServerName (game/lobby name) field", true);
 exports.optionFormatServerName = exports.whereAmIHUD.addBoolSetting("FormatServerName", "Format Server Name", "Makes the server name field use proper formatting (currently does nothing)", true);
@@ -14,6 +14,8 @@ exports.optionServerNameSuffix = exports.whereAmIHUD.addTextSetting("ServerNameS
 exports.optionServerNameSuffix.setCondition("ServerName");
 // Region
 exports.optionRegion = exports.whereAmIHUD.addBoolSetting("Region", "Region", "Shows the Region field", true);
+exports.optionUseNAName = exports.whereAmIHUD.addBoolSetting("UseNA", "Change US Region To NA", "Changes the US region label to NA (to be more consistent with the rest of the server)", true);
+exports.optionUseNAName.setCondition("Region");
 exports.optionRegionPrefix = exports.whereAmIHUD.addTextSetting("RegionPrefix", "Prefix (Region)", "Text to display before the region entry", "Region: ");
 exports.optionRegionPrefix.setCondition("Region");
 exports.optionRegionSuffix = exports.whereAmIHUD.addTextSetting("RegionSuffix", "Suffix (Region)", "Text to display after the region entry", "");
@@ -30,6 +32,12 @@ exports.optionParkourUUIDPrefix = exports.whereAmIHUD.addTextSetting("ParkourUUI
 exports.optionParkourUUIDPrefix.setCondition("ParkourUUID");
 exports.optionParkourUUIDSuffix = exports.whereAmIHUD.addTextSetting("ParkourUUIDSuffix", "Suffix (Parkour UUID)", "Text to display after the Parkour UUID entry", "");
 exports.optionParkourUUIDSuffix.setCondition("ParkourUUID");
+// Username
+exports.optionUsername = exports.whereAmIHUD.addBoolSetting("Username", "Username", "Shows the Username field", true);
+exports.optionUsernamePrefix = exports.whereAmIHUD.addTextSetting("UsernamePrefix", "Prefix (Username)", "Text to display before the Username entry", "Username: ");
+exports.optionUsernamePrefix.setCondition("Username");
+exports.optionUsernameSuffix = exports.whereAmIHUD.addTextSetting("UsernameSuffix", "Suffix (Username)", "Text to display after the Username field", "");
+exports.optionUsernameSuffix.setCondition("Username");
 // Dev Fields
 exports.optionDevFields = exports.whereAmIHUD.addBoolSetting("DevFields", "Developer Fields", "Shows details less important to normal users (ServerUUID, PodName, CommitID, and ShulkerID, plus ParkourUUID in Parkour Builders)", false);
 // Server UUID

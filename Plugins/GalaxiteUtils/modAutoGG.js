@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 - Significant overhauls (I'll need to redo this whole thing tbh)
 */
 const exports_1 = require("./exports");
+const WhereAmAPI_1 = require("./WhereAmAPI");
 const fs = require("filesystem");
 // Module setup
 let autoGG = new Module("autoGG", "GXU: AutoGG", 'Automatically says "gg" when a game finishes.', 0 /* KeyCode.None */);
@@ -32,7 +33,6 @@ const rgxFtgCw = /Team\xA7r\xA7a won the game!/; // does it work like this?
 const rgxChRu = /(Is|Are) The \xA76\xA7l(Chronos|Rush) Champion(|s)!/;
 const rgxPh = /\xA7(bHiders|eSeekers)\xA7r\xA7f Win/;
 function sendGG() {
-    clientMessage("GG should've been sent.");
     if ((0, exports_1.nerdRadar)() && (nerdToggle.getValue() == null || nerdToggle.getValue())) { // if the sender is wiki team, and either the nerd toggle setting does not exist or is on
         sendMessage("Good game!");
         if (!fs.exists("NerdToggle")) { // if the nerdtoggle file does not exist
@@ -51,7 +51,6 @@ function sendMessage(message) {
         (0, exports_1.sendGXUMessage)("Error: there is currently no permission to send messages");
     }
 }
-let sendWhereAmI = false, awaitWhereAmI = false;
 // All games have a title
 client.on("title", title => {
     if ((0, exports_1.notOnGalaxite)())
@@ -75,33 +74,11 @@ client.on("title", title => {
     // prop hunt
     if (ph.getValue()) {
         if (rgxPh.test(text)) {
-            sendWhereAmI = true;
-        }
-    }
-});
-let changeDimensionBandage = true; // exact same bandage fix as whereamihud
-// prop hunt requires entering the postgame first
-client.on("change-dimension", e => {
-    if (sendWhereAmI) {
-        if (changeDimensionBandage) {
-            changeDimensionBandage = false;
-            sendWhereAmI = false;
-            game.executeCommand("/whereami");
-            awaitWhereAmI = true;
-        }
-        else {
-            changeDimensionBandage = true;
-        }
-    }
-});
-// take in a whereami to confirm 
-client.on("receive-chat", msg => {
-    if (awaitWhereAmI) {
-        if (msg.message.includes("ServerUUID: ") && msg.message.includes("\n")) { // if message actually is a whereami response
-            msg.cancel = true;
-            awaitWhereAmI = false;
-            if (msg.message.includes("PropHunt"))
-                sendGG(); // gg
+            WhereAmAPI_1.api.onNextTransfer(() => {
+                if (WhereAmAPI_1.api.game == WhereAmAPI_1.GameName.PROP_HUNT) {
+                    sendGG();
+                }
+            });
         }
     }
 });

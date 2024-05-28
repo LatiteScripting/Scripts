@@ -1,13 +1,20 @@
 "use strict";
-// Global Messages: Assorted global messages for informational purposes
+// Globals: Assorted global messages and settings.
+// GlobalMessages file name is used for legacy compatibility.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.optionAutoUpdate = exports.optionShortGXUBadge = exports.optionHideResponses = exports.optionWhereAmIDelay = void 0;
 const exports_1 = require("./exports");
 const http = require("http");
 const fs = require("filesystem");
 // initialization
-let modGlobalMessages = new Module("globalmessages", "GXU: Global Messages", "Configures what GalaxiteUtils-related messages should be sent. (The toggle state of this module is useless)", 0 /* KeyCode.None */);
-let optionSplashText = modGlobalMessages.addBoolSetting("gxuactive", "GalaxiteUtils Splashes", "Sends a fun message upon joining Galaxite", true);
-client.getModuleManager().registerModule(modGlobalMessages);
+let modGlobals = new Module("globalmessages", // old name, kept for legacy support
+"GXU: Global Settings", "Configures assorted GalaxiteUtils behaviors. (The toggle state of this module is useless)", 0 /* KeyCode.None */);
+let optionSplashText = modGlobals.addBoolSetting("gxuactive", "GalaxiteUtils Splashes", "Sends a fun message upon joining Galaxite", true);
+exports.optionWhereAmIDelay = modGlobals.addNumberSetting("whereamidelay", "/whereami Delay", "The delay between joining a server and running /whereami for some module updates, in seconds.\n\nValues set too low may cause the message to fail, while values set too high may be sent after fast server transfers.", 0, 10.0, 0.1, 2.5);
+exports.optionHideResponses = modGlobals.addBoolSetting("hideresponse", "Hide automatic /whereami responses", "Hides responses of automatically-sent /whereami commands.", true);
+exports.optionShortGXUBadge = modGlobals.addBoolSetting("shortgxu", "Shorten GalaxiteUtils Badge", "Use a shorter version of the GalaxiteUtils icon", false);
+exports.optionAutoUpdate = modGlobals.addBoolSetting("autoupdate", "Auto Update", "Whether to automatically download plugin updates", false);
+client.getModuleManager().registerModule(modGlobals);
 // get and compare version from last launch
 let version = plugin.version;
 let updated;
@@ -33,7 +40,7 @@ client.on("join-game", e => {
         }
         // patch notes
         if (updated) {
-            (0, exports_1.sendGXUMessage)((_a = exports_1.patchNotes.get(plugin.version)) !== null && _a !== void 0 ? _a : `Something went wrong when getting the patch notes! (version: ${util.bufferToString(fs.read(versionPath))})`);
+            (0, exports_1.sendGXUMessage)((_a = exports_1.patchNotes.get(plugin.version)) !== null && _a !== void 0 ? _a : `Something went wrong when getting the patch notes! (version: v${util.bufferToString(fs.read(versionPath))})`);
         }
         // updater notifications (i do not want this to be an option)
         let githubRaw = http.get("https://raw.githubusercontent.com/LatiteScripting/Scripts/master/Plugins/GalaxiteUtils/plugin.json", {});
@@ -41,16 +48,24 @@ client.on("join-game", e => {
             let githubInterpretation = util.bufferToString(githubRaw.body);
             let onlineJson = JSON.parse(githubInterpretation);
             if (onlineJson.version != plugin.version) {
-                (0, exports_1.sendGXUMessage)(`A GalaxiteUtils update (v${onlineJson.version}) is available! Run \xa7l.plugin install GalaxiteUtils\xa7r and relaunch the client to update.`);
+                if (exports.optionAutoUpdate.getValue()) {
+                    let success = client.runCommand("plugin install GalaxiteUtils"); // this also runs the command
+                    if (success) {
+                        (0, exports_1.sendGXUMessage)(`GalaxiteUtils v${onlineJson.version} has been downloaded! Relaunch the game to finish updating.`);
+                    }
+                    else {
+                        (0, exports_1.sendGXUMessage)(`\xA74Auto-update failed; falling back to manual updating`);
+                        (0, exports_1.sendGXUMessage)(`A GalaxiteUtils update (v${onlineJson.version}) is available! Run \xa7l${client.getCommandManager().getPrefix()}plugin install GalaxiteUtils\xa7r and relaunch the client to update.`);
+                    }
+                }
+                else {
+                    (0, exports_1.sendGXUMessage)(`A GalaxiteUtils update (v${onlineJson.version}) is available! Run \xa7l${client.getCommandManager().getPrefix() // don't hardcode plugin prefix
+                    }plugin install GalaxiteUtils\xa7r and relaunch the client to update.`);
+                }
             }
         }
     }, 5000);
 });
-// client.on("key-press", e => { // debug function comment this for release
-//     if(!e.isDown) return;
-//     if(e.keyCode == KeyCode.K)
-//         sendGXUMessage(getSplash());
-// });
 function getSplash() {
     return exports_1.gxuSplashes[Math.floor(Math.random() * exports_1.gxuSplashes.length)];
 }
