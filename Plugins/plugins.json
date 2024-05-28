@@ -47,6 +47,10 @@
       "files": ["main.js", "plugin.json"]
     },
     {
+      "name": "KillNotif",
+      "files": ["main.js", "killSounds.js", "modOptions.js", "plugin.json"]
+    },
+    {
       "name": "ColonThreeModule",
       "files": ["main.js", "plugin.json"]
     },

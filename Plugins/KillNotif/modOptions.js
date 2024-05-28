@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.usePillagerDeathSound = exports.useScreenshotSound = exports.useExplosionSound = exports.useOrbSound = exports.soundPitch = exports.soundVolume = exports.debugMode = void 0;
+const main_1 = require("./main");
+exports.debugMode = main_1.mod.addBoolSetting("DebugMode", "Debug mode", "Logs stuff to chat", false);
+exports.soundVolume = main_1.mod.addNumberSetting("SoundVolume", "Sound volume", "Loudness of kill sound (default is 1)", 0.1, 1, 0.1, 1);
+exports.soundPitch = main_1.mod.addNumberSetting("PitchVolume", "Pitch volume", "Pitch of kill sound (default is 1)", 0.1, 5, 0.1, 1);
+exports.useOrbSound = main_1.mod.addBoolSetting("OrbSound", "Orb sound", "", true);
+exports.useExplosionSound = main_1.mod.addBoolSetting("ExplosionSound", "Explosion sound", "", false);
+exports.useScreenshotSound = main_1.mod.addBoolSetting("ScreenshotSound", "Screenshot sound", "", false);
+exports.usePillagerDeathSound = main_1.mod.addBoolSetting("PillagerDeathSound", "Pillager death sound", "", false);
