@@ -1,0 +1,7 @@
+{
+    "author": "@raspberryepicly",
+    "description": "Scans and lists blocks/items used inside a pre-determined box. Useful for getting the list for a farm/structure",
+    "lastLaunch": false,
+    "name": "StructureScanner",
+    "version": "1.0.0"
+}

@@ -58,7 +58,9 @@ client.on("receive-chat", (params) => {
     }
 });
 function getStats(player) {
-    http.getAsync(`https://api.playhive.com/v0/game/all/wars/${player}`, {}, (resp) => {
+    // replace spaces with %20
+    const playerSearch = player.replace(/ /g, "%20");
+    http.getAsync(`https://api.playhive.com/v0/game/all/bed/${playerSearch}`, {}, (resp) => {
         let stats = null;
         try {
             stats = parseWarsStats(player, util.bufferToString(resp.body));

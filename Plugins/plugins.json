@@ -43,27 +43,36 @@
       "files": ["main.js", "moduleOptions.js", "plugin.json"]
     },
     {
+      "name": "ChatLogger",
+      "files": ["main.js", "plugin.json"]
+    },
+    {
       "name": "ColonThreeModule",
-      "files": [
-        "main.js",
-        "plugin.json"
-      ]
+      "files": ["main.js", "plugin.json"]
     },
     {
       "name": "Playtime",
-      "files": [
-        "main.js",
-        "plugin.json"
-      ]
+      "files": ["main.js", "plugin.json"]
     },
     {
       "name": "BedwarsStats",
-      "files": [
-        "main.js",
-        "stats.js",
-        "text3d.js",
-        "plugin.json"
-      ]
+      "files": ["main.js", "stats.js", "text3d.js", "plugin.json"]
+    },
+    {
+      "name": "CustomText",
+      "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "Timestamps",
+      "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "StructureScanner",
+      "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "SpawnSphere",
+      "files": ["main.js", "plugin.json"]
     }
   ]
 }
