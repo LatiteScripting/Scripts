@@ -8,7 +8,7 @@ const exports_1 = require("./exports");
 const WhereAmAPI_1 = require("./WhereAmAPI");
 const fs = require("filesystem");
 // Module setup
-let autoGG = new Module("autoGG", "GXU: AutoGG", 'Automatically says "gg" when a game finishes.', 0 /* KeyCode.None */);
+let autoGG = new Module("autoGG", "GXU: AutoGG", 'Automatically says "gg" when a game finishes', 0 /* KeyCode.None */);
 client.getModuleManager().registerModule(autoGG);
 let ch = autoGG.addBoolSetting("ch", "Chronos", "Chronos support", true);
 let ru = autoGG.addBoolSetting("ru", "Rush", "Rush support", true);
@@ -40,7 +40,7 @@ function sendGG() {
         }
     }
     else {
-        game.sendChatMessage("gg");
+        sendMessage("gg");
     }
 }
 function sendMessage(message) {

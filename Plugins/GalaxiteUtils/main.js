@@ -5,12 +5,11 @@
 let modAutoGG = require("modAutoGG");
 // let modAutoModule = require("modAutoModule");
 let modChatDebloat = require("modChatDebloat");
-let modChatEditor = require("modCompactBadges");
+let modChatEditor = require("modChatEditor");
 // let modEntitySpeedrunTimer = require("modEntitySpeedrunTimer");
-let modExtraThingsPrevent = require("modExtraThingsPrevent");
-let modGlobals = require("modGlobalMessages");
-// let modKitUI = require("modKitUI");
+let modConfirmClick = require("modExtraThingsPrevent");
+// let modKitUI = require("modKitUI"); // come back to this later
 // let modPKBAttempts = require("modPKBAttempts");
 // let modTeamUI = require("modTeamUI");
 let modWhereAmIHUD = require("modWhereAmIHUD");
-let api = require("WhereAmAPI");
+let modGlobals = require("exports");
