@@ -30,6 +30,7 @@
         "exports.js",
         "modAutoGG.js",
         "modChatDebloat.js",
+        "modChatEditor.js",
         "modCompactBadges.js",
         "modExtraThingsPrevent.js",
         "modGlobalMessages.js",

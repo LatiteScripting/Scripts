@@ -3,8 +3,9 @@
 // Put this everywhere:
 // import { notOnGalaxite } from "./exports";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.chronosPerkMap = exports.patchNotes = exports.gxuSplashes = exports.sendGXUMessage = exports.nerdRadar = exports.notOnGalaxite = void 0;
-const modGlobalMessages_1 = require("./modGlobalMessages");
+exports.patchNotes = exports.gxuSplashes = exports.optionAutoUpdate = exports.optionShortGXUBadge = exports.optionHideResponses = exports.optionWhereAmIDelay = exports.sendGXUMessage = exports.nerdRadar = exports.notOnGalaxite = void 0;
+const http = require("http");
+const fs = require("filesystem");
 /**
 * Returns `true` if the player is not on Galaxite; `false` if they are.
 */
@@ -34,17 +35,88 @@ exports.nerdRadar = nerdRadar;
  * @param message The message to use.
  */
 function sendGXUMessage(message) {
-    clientMessage(`\xa78[\xa7t${ // formatted opening square bracket
-    modGlobalMessages_1.optionShortGXUBadge.getValue() // if short badges:
+    clientMessage(`\xA78[\xA7t${ // formatted opening square bracket
+    exports.optionShortGXUBadge.getValue() // if short badges:
         ? "GXU" // just gxu
-        : "Galaxite\xa7uUtils" // otherwise, full galaxiteutils
-    }\xa78]\xa7r ${message}`); // formatted closing square bracket and message
+        : "Galaxite\xA7uUtils" // otherwise, full galaxiteutils
+    }\xA78]\xA7r ${message}`); // formatted closing square bracket and message
 }
 exports.sendGXUMessage = sendGXUMessage;
+let globals = new Module("globalmessages", // old name, kept for legacy support
+"GXU: Global Settings", "Configures assorted GalaxiteUtils behaviors. (The toggle state of this module is useless)", 0 /* KeyCode.None */);
+let optionSplashText = globals.addBoolSetting("gxuactive", "GalaxiteUtils Splashes", "Sends a fun message upon joining Galaxite", true);
+exports.optionWhereAmIDelay = globals.addNumberSetting("whereamidelay", "/whereami Delay", "The delay between joining a server and running /whereami for some module updates, in seconds.\n\nValues set too low may cause the message to fail, while values set too high may be sent after fast server transfers.", 0, 10.0, 0.1, 2.5);
+exports.optionHideResponses = globals.addBoolSetting("hideresponse", "Hide automatic /whereami responses", "Hides responses of automatically-sent /whereami commands.", true);
+exports.optionShortGXUBadge = globals.addBoolSetting("shortgxu", "Shorten GalaxiteUtils Badge", "Use a shorter version of the GalaxiteUtils icon", false);
+exports.optionAutoUpdate = globals.addBoolSetting("autoupdate", "Auto Update", "Whether to automatically download plugin updates", false);
+client.getModuleManager().registerModule(globals);
+// get and compare version from last launch
+let version = plugin.version;
+let updated;
+let versionPath = "GalaxiteUtilsVersion";
+// make the file if needed
+if (fs.exists(versionPath)) { // if there is a version stored
+    let storedVersion = util.bufferToString(fs.read(versionPath)); // read the file
+    updated = (version != storedVersion); // set whether the plugin has updated to the opposite of whether the versions match
+}
+else {
+    updated = true;
+}
+fs.write(versionPath, util.stringToBuffer(version)); // regardless of stored version, update (or create) the version file
+// send messages
+client.on("join-game", e => {
+    if (notOnGalaxite())
+        return;
+    setTimeout(() => {
+        var _a;
+        // splash texts
+        if (optionSplashText.getValue()) {
+            sendGXUMessage(getSplash());
+        }
+        // patch notes
+        if (updated) {
+            sendGXUMessage((_a = exports.patchNotes.get(plugin.version)) !== null && _a !== void 0 ? _a : `Something went wrong when getting the patch notes! (version: v${util.bufferToString(fs.read(versionPath))})`);
+        }
+        // updater notifications (i do not want this to be an option)
+        let githubRaw = http.get("https://raw.githubusercontent.com/LatiteScripting/Scripts/master/Plugins/GalaxiteUtils/plugin.json", {});
+        if (githubRaw.statusCode == 200) { // if github sent a response
+            let githubInterpretation = util.bufferToString(githubRaw.body);
+            let onlineJson = JSON.parse(githubInterpretation);
+            if (onlineJson.version != plugin.version) {
+                if (exports.optionAutoUpdate.getValue()) {
+                    let success = client.runCommand("plugin install GalaxiteUtils"); // this also runs the command
+                    if (success) {
+                        sendGXUMessage(`GalaxiteUtils v${onlineJson.version} has been downloaded! Relaunch the game to finish updating.`);
+                    }
+                    else {
+                        sendGXUMessage(`\xA74Auto-update failed; falling back to manual updating`);
+                        sendGXUMessage(`A GalaxiteUtils update (v${onlineJson.version}) is available! Run \xA7l${client.getCommandManager().getPrefix()}plugin install GalaxiteUtils\xA7r and relaunch the client to update.`);
+                    }
+                }
+                else {
+                    sendGXUMessage(`A GalaxiteUtils update (v${onlineJson.version}) is available! Run \xA7l${client.getCommandManager().getPrefix() // don't hardcode plugin prefix
+                    }plugin install GalaxiteUtils\xA7r and relaunch the client to update.`);
+                }
+            }
+        }
+    }, 5000);
+});
+function getSplash() {
+    return exports.gxuSplashes[Math.floor(Math.random() * exports.gxuSplashes.length)];
+}
+
 /**
  * A collection of splash texts.
  */
 exports.gxuSplashes = [
+    "\xA7cHap\xA76py \xA7ePri\xA7ade \xA79Mon\xA75th!",
+    "\xA76w\xA7po\xA7em\xA7fe\xA7un\xA7d,\xA75,",
+    "\xA73gay\xA7s ga\xA7by h\xA7fomo\xA79sex\xA71ual \xA75gay",
+    "\xA7cWhy \xA75not \xA79both?",
+    "\xA7bTrans \xA7drights \xA7fare \xA7dhuman \xA7brights!",
+    "\xA78N\xA77o\xA7fp\xA75e",
+    "\xA7eWhat \xA7feven \xA75is \xA78gender?",
+    "GalaxiteUtils is queer-coded because I'm queer and I coded (it)",
     "Now with more utils!",
     "pve game",
     "Report issues at https://github.com/1unar-Eclipse/GalaxiteUtils, they're a huge help",
@@ -62,7 +134,7 @@ exports.gxuSplashes = [
     "PixelParadiseUtils disactive.",
     ":3",
     "is ACTIVE",
-    "Made with 99.3% pure TypeScript!",
+    "Made with 99.4% pure TypeScript!",
     "These aren't funny aren't they",
     "Open-source!",
     "Now with patch notes!",
@@ -87,15 +159,14 @@ exports.gxuSplashes = [
     "d-d-a g",
     "Woomy!",
     "amogus",
-    'client.on("join-game", e => { clientMessage("This is valid Latite plugin code"); });',
+    'client.on("join-game", e => clientMessage("This is valid Latite plugin code") );',
     "5D Parkour Builders with Multiverse Time Travel",
     "There is 1 tester and it is myself",
-    "Trans rights!",
     'In JS, "([]+{})[!![]+!![]]" is the same thing as "b". Don\'t ask.',
     "727!!!!!!! 727!! When you see it!!!!!!!",
     "O-oooooooooo AAAAE-A-A-I-A-U- JO-oooooooooooo AAE-O-A-A-U-U-A- E-eee-ee-eee AAAAE-A-E-I-E-A- JO-ooo-oo-oo-oo EEEEO-A-AAA-AAAA",
     "!bsr 25f",
-    `When \xa76server\xa7r is selected, destroy previously sent splash text and permanently add \xa76double\xa7r its character length to your \xa7bGems\xa7r next login \xa78(Currently \xa7b+${Math.round(Math.random() * 31)}\xa78 Gems)\xa7r`,
+    `When \xA76server\xA7r is selected, destroy previously sent splash text and permanently add \xA76double\xA7r its character length to your \xA7bGems\xA7r next login \xA78(Currently \xA7b+${Math.round(Math.random() * 31)}\xA78 Gems)\xA7r`,
     "Allays are just Orbi's kids stop hiding the truth Mojang",
     "Problem: white flour (and whole wheat flour) have virtually no nutrition in comparison to actual wheat.",
     // `${(() => { // this is a dynamic keysmash. yes i'm putting too much effort into being gay while this is being used by minecraft bedrock players. yes this is the depths of javascript. no i do not care
@@ -117,14 +188,14 @@ exports.gxuSplashes = [
     "Remember to update your game from time to time!",
     "Powered by WhereAmAPI!",
     "\uE1E4",
-    "Let's paint this gray haze into sky blue!"
+    "Let's paint this gray haze into sky blue!",
 ];
 /**
  * A map between the updated-to version and the changes included in that version.
  */
 exports.patchNotes = new Map([
     ["0.2.3", "How?"],
-    ["0.2.4", "GalaxiteUtils v0.2.4 was never released. \xa7lWake up.\xa7r"],
+    ["0.2.4", "GalaxiteUtils v0.2.4 was never released. \xA7lWake up.\xA7r"],
     ["0.3.0", "GalaxiteUtils has been updated to v0.3.0!\n" +
             "- Added splash texts to confirm that the plugin is active (can be toggled using the new Global Messages module)\n" +
             "- Added notifications when an update is available\n" +
@@ -132,7 +203,7 @@ exports.patchNotes = new Map([
             '- Chat Debloat: Added options to remove the "Welcome to Galaxite" and "You are now (in)visible messages\n' +
             "- WhereAmIHUD: ParkourUUID now has its own settings and is positioned above developer fields\n" +
             "- WhereAmIHUD: If Hide Response is enabled, all /whereami responses will now be hidden (this fixes some issues with rapid server transfers)\n" +
-            "  - 0.4.0 will add a new way of handling sending /whereami commands that \xa7oshould\xa7r make this not happen as often\n" +
+            "  - 0.4.0 will add a new way of handling sending /whereami commands that \xA7oshould\xA7r make this not happen as often\n" +
             "- Fixed a bug (hopefully) where prestige icons occasionally caused the Compact Badges module to not work as expected\n" +
             "- Fixed WhereAmIHUD not properly handling ParkourUUID\n" +
             "- Various backend changes\n\n" +
@@ -163,6 +234,15 @@ exports.patchNotes = new Map([
             "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
             "(press your chat button to view full patch notes)"
     ],
+    ["0.3.6", "GalaxiteUtils has been updated to v0.3.6!\n" +
+            "- Confirm Extra Things has been renamed to Confirm Item Use and has a new option to work on shops (experimental). Thanks @xjayrex for the idea!\n" +
+            "- The setting controlling Confirm Item Use is now stored and displayed in seconds\n" +
+            "  - The setting should reset to 0.5 seconds, if it doesn't any manual change should update it\n" +
+            "- Fixed a bug in Chat Editor where Prestige icons could not be hidden or made classic\n" +
+            "- Added a lot of Pride splashes!\n" +
+            "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
+            "(press your chat button to view full patch notes)"
+    ],
     ["0.4.0", "GalaxiteUtils has been updated to v0.4.0!\n" +
             "- New module: Attempt Counter (for Parkour Builders)\n" +
             "- New module: Auto-Modules (for Chronos, The Entity, and Alien Blast)\n" +
@@ -171,73 +251,4 @@ exports.patchNotes = new Map([
             "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
             "(press your chat button to view full patch notes)"
     ]
-]);
-/**
- * random is `\uE1EB`
- */
-exports.chronosPerkMap = new Map([
-    // OFFENSE
-    ["Bow Start", "\uE115"],
-    ["Prepare Shot", "\uE1C0"],
-    ["Sonic Snowballs", "\uE1C4"],
-    ["Daredevil", "\uE184"],
-    ["Solid Snowballs", "\uE119"],
-    ["Glass Cannon", "\uE12B"],
-    ["Sniper", "\uE14D"],
-    ["Airstrike", "\uE12D"],
-    ["Sword Specialist", "\uE112"],
-    ["Assassin", "\uE1A2"],
-    ["Revenger", "\uE136"],
-    ["Fireballs", "\uE11A"],
-    ["Poison Arrows", "\uE114"],
-    ["Bandit Boss", "\uE103"],
-    ["Levitation Arrows", "\uE11B"],
-    ["Time Siphon", "\uE138"],
-    // DEFENSE
-    ["Tank", "\uE101"],
-    ["Health Scavenger", "\uE1A5"],
-    ["Medicine", "\uE201"],
-    ["Blinding Forcefield", "\uE1A0"],
-    ["Weakening Arrows", "\uE113"],
-    ["Vampire", "\uE10B"],
-    ["Heavy Duty", "\uE12F"],
-    ["Hunker Down", "\uE247"],
-    ["Armour Specialist", "\uE10A"],
-    ["Smoke Bomb", "\uE1A7"],
-    ["Soul Collector", "\uE14B"],
-    ["Ancient", "\uE1D2"],
-    ["Shielder", "\uE1A8"],
-    ["Shattered Glass", "\uE129"],
-    ["Scaredy Cat", "\uE1DF"],
-    ["Trapper", "\uE12A"],
-    // UTILITY
-    ["Mobility", "\uE19A"],
-    ["Backpack", "\uE1C2"],
-    ["Builder", "\uE147"],
-    ["Falcon", "\uE14F"],
-    ["Vault Raider", "\uE1C1"],
-    ["Scout", "\uE1A4"],
-    ["Sticky Arrows", "\uE1A3"],
-    ["Stealth Jet", "\uE1AC"],
-    ["Time Hoarder", "\uE139"],
-    ["Ninja", "\uE190"],
-    ["Gravity Spheres", "\uE11C"],
-    ["Dasher", "\uE12C"],
-    ["Sparrow", "\uE193"],
-    ["Soulbound", "\uE1A1"],
-    ["Ghost", "\uE1AB"],
-    ["Recon", "\uE1F7"],
-    ["Lucky", "\uE1EC"],
-    // BOUNTY - bounty char is \uE148
-    ["Feedback Loop", "\uE148\uE19C"],
-    ["Contract of Blessing", "\uE148\uE1BD"],
-    ["Contract of Protection", "\uE148\uE10C"],
-    ["Contract of Rewarding", "\uE148\uE1EC"],
-    // TEAM - general team icon is \uE146
-    ["Warper", "\uE146\uE14E"],
-    ["Frontline", "\uE146\uE111"],
-    ["Healer", "\uE146\uE10B"],
-    ["Avenger", "\uE146\uE136"],
-    ["Mayday", "\uE146\uE1A4"],
-    ["Freezer", "\uE146\uE1C5"], // ice slider
 ]);

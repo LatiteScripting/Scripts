@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.api = exports.GameName = void 0;
 const exports_1 = require("./exports");
-const modGlobalMessages_1 = require("./modGlobalMessages");
 const clipboard = require("clipboard");
 var GameName;
 (function (GameName) {
@@ -51,7 +50,7 @@ class WhereAmAPI {
             game.executeCommand("/whereami");
             this.whereAmISent = true;
             this.whereAmIReceived = false;
-        }, modGlobalMessages_1.optionWhereAmIDelay.getValue() * 1000);
+        }, exports_1.optionWhereAmIDelay.getValue() * 1000);
     }
     assign(field) {
         var _a;
@@ -172,7 +171,7 @@ class WhereAmAPI {
                 this.privacy = this.assign("Privacy");
                 this.parkourUUID = this.assign("ParkourUUID"); // The assign function already considers the possibility of no entry
                 this.game = (_a = nameToGame.get(this.serverName)) !== null && _a !== void 0 ? _a : GameName.UNKNOWN; // Assign the shorter game name field
-                if (modGlobalMessages_1.optionHideResponses.getValue())
+                if (exports_1.optionHideResponses.getValue())
                     msg.cancel = true; // hide the api-provided whereami
                 this.whereAmIReceived = true; // whereami has been received
                 this.whereAmISent = false;
