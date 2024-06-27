@@ -4,8 +4,10 @@
 // import { notOnGalaxite } from "./exports";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.patchNotes = exports.gxuSplashes = exports.optionAutoUpdate = exports.optionShortGXUBadge = exports.optionHideResponses = exports.optionWhereAmIDelay = exports.sendGXUMessage = exports.nerdRadar = exports.notOnGalaxite = void 0;
+const WhereAmAPI_1 = require("./WhereAmAPI");
 const http = require("http");
 const fs = require("filesystem");
+const clipboard = require("clipboard");
 /**
 * Returns `true` if the player is not on Galaxite; `false` if they are.
 */
@@ -32,23 +34,28 @@ function nerdRadar() {
 exports.nerdRadar = nerdRadar;
 /**
  * Sends a formatted message to chat.
- * @param message The message to use.
+ * @param messages The messages to send.
  */
-function sendGXUMessage(message) {
-    clientMessage(`\xA78[\xA7t${ // formatted opening square bracket
-    exports.optionShortGXUBadge.getValue() // if short badges:
-        ? "GXU" // just gxu
-        : "Galaxite\xA7uUtils" // otherwise, full galaxiteutils
-    }\xA78]\xA7r ${message}`); // formatted closing square bracket and message
+function sendGXUMessage(...messages) {
+    messages.forEach((message) => {
+        clientMessage(`\xA78[\xA7t${ // formatted opening square bracket
+        exports.optionShortGXUBadge.getValue() // if short badges:
+            ? "GXU" // just gxu
+            : "Galaxite\xA7uUtils" // otherwise, full galaxiteutils
+        }\xA78]\xA7r ${message}`); // formatted closing square bracket and message
+    });
 }
 exports.sendGXUMessage = sendGXUMessage;
 let globals = new Module("globalmessages", // old name, kept for legacy support
 "GXU: Global Settings", "Configures assorted GalaxiteUtils behaviors. (The toggle state of this module is useless)", 0 /* KeyCode.None */);
-let optionSplashText = globals.addBoolSetting("gxuactive", "GalaxiteUtils Splashes", "Sends a fun message upon joining Galaxite", true);
-exports.optionWhereAmIDelay = globals.addNumberSetting("whereamidelay", "/whereami Delay", "The delay between joining a server and running /whereami for some module updates, in seconds.\n\nValues set too low may cause the message to fail, while values set too high may be sent after fast server transfers.", 0, 10.0, 0.1, 2.5);
+let optionSplashText = globals.addBoolSetting("gxuactive", "GalaxiteUtils Splashes", "Sends a fun message upon joining Galaxite!", true);
+exports.optionWhereAmIDelay = globals.addNumberSetting("whereamidelay", "/whereami Delay", "The delay between joining a server and running /whereami for some module updates, in seconds.\nValues set too low may cause the message to fail, while values set too high may be sent after fast server transfers.", 0, 10.0, 0.1, 2.5);
 exports.optionHideResponses = globals.addBoolSetting("hideresponse", "Hide automatic /whereami responses", "Hides responses of automatically-sent /whereami commands.", true);
-exports.optionShortGXUBadge = globals.addBoolSetting("shortgxu", "Shorten GalaxiteUtils Badge", "Use a shorter version of the GalaxiteUtils icon", false);
-exports.optionAutoUpdate = globals.addBoolSetting("autoupdate", "Auto Update", "Whether to automatically download plugin updates", false);
+let optionUseCopyWhereAmI = globals.addBoolSetting("usecopywhereami", "Enable /whereami Copying", "Allows copying the last /whereami response.", false);
+let optionCopyWhereAmI = globals.addKeySetting("copywhereami", "/whereami Copy Key", "Key used to copy the last response of /whereami.", 80 /* KeyCode.P */);
+exports.optionShortGXUBadge = globals.addBoolSetting("shortgxu", "Shorten GalaxiteUtils Badge", "Use a shorter version of the GalaxiteUtils icon.", false);
+exports.optionAutoUpdate = globals.addBoolSetting("autoupdate", "Auto Update", "Whether to automatically download plugin updates.\nRelaunching the game is still required if this is enabled.", false);
+optionCopyWhereAmI.setCondition("usecopywhereami");
 client.getModuleManager().registerModule(globals);
 // get and compare version from last launch
 let version = plugin.version;
@@ -101,14 +108,40 @@ client.on("join-game", e => {
         }
     }, 5000);
 });
+client.on("key-press", k => {
+    if (notOnGalaxite())
+        return;
+    if (!k.isDown)
+        return;
+    if (game.isInUI())
+        return;
+    if (!optionUseCopyWhereAmI.getValue())
+        return;
+    if (k.keyCode != optionCopyWhereAmI.getValue())
+        return;
+    let whereami = (`\`\`\`Username: ${WhereAmAPI_1.api.username}` +
+        `\nServerUUID: ${WhereAmAPI_1.api.serverUUID}` +
+        `\nPodName: ${WhereAmAPI_1.api.podName}` +
+        `\nServerName: ${WhereAmAPI_1.api.serverName}` +
+        `\nCommitID: ${WhereAmAPI_1.api.commitID}` +
+        `\nShulkerID: ${WhereAmAPI_1.api.shulkerID}` +
+        `\nRegion: ${WhereAmAPI_1.api.region}` +
+        `\nPrivacy: ${WhereAmAPI_1.api.privacy}` +
+        ((WhereAmAPI_1.api.parkourUUID)
+            ? `\nParkourUUID: ${WhereAmAPI_1.api.parkourUUID}`
+            : "") +
+        "```");
+    clipboard.set(whereami);
+    sendGXUMessage("Copied the current server information to clipboard!");
+});
 function getSplash() {
     return exports.gxuSplashes[Math.floor(Math.random() * exports.gxuSplashes.length)];
 }
-
 /**
  * A collection of splash texts.
  */
 exports.gxuSplashes = [
+    // Gay splashes
     "\xA7cHap\xA76py \xA7ePri\xA7ade \xA79Mon\xA75th!",
     "\xA76w\xA7po\xA7em\xA7fe\xA7un\xA7d,\xA75,",
     "\xA73gay\xA7s ga\xA7by h\xA7fomo\xA79sex\xA71ual \xA75gay",
@@ -117,58 +150,14 @@ exports.gxuSplashes = [
     "\xA78N\xA77o\xA7fp\xA75e",
     "\xA7eWhat \xA7feven \xA75is \xA78gender?",
     "GalaxiteUtils is queer-coded because I'm queer and I coded (it)",
-    "Now with more utils!",
-    "pve game",
-    "Report issues at https://github.com/1unar-Eclipse/GalaxiteUtils, they're a huge help",
-    "Made with love! (and a lot of nerd questions to galaxite and latite)",
-    "Hello, would the owners of the Galaxite Minecraft server possibly consider selling the server, I would possibly be interested in purchasing the server if it is for sale. I am an influence in the League of Legends community and would like to expand into Minecraft, and I think the Galaxite server would be a good fit.",
-    ":blessseb:",
-    ":blessthedevs:",
-    ":blessali:",
-    ":blameseb:",
-    ":blamecallun:",
-    ":blamealex:",
-    "GalaxiteUtils active!",
-    "HiveUtils active..?",
-    "CubeCraftUtils active..?",
-    "PixelParadiseUtils disactive.",
+    "Let's paint this gray haze into sky blue!",
+    // Entirely Eclipse saying stuff
     ":3",
-    "is ACTIVE",
-    "Made with 99.4% pure TypeScript!",
-    "These aren't funny aren't they",
-    "Open-source!",
-    "Now with patch notes!",
-    "Fact: Birds are hard to catch",
-    "3... 2... 1...",
-    "Prevents deaths to bad hotkeying!",
-    "Keeps hub messages down!",
-    "Trims badges!",
-    "AutoGG currently has a permission issue",
-    "Sends /whereami!",
-    "if notOnGalaxite() return;",
-    "Hundreds of lines of code just to store a command on screen smh just code better",
-    "PC-exclusive!",
+    "scp-6113 my beloved",
+    "scp-113 my beloved",
     "Controller isn't a bad input method y'all just don't know how to use steam input",
-    "It's ironic that a plugin with 2 modules dedicated to trimming chat added splash texts",
-    "252+ SpA Choice Specs Beads of Ruin Chi-Yu Overheat vs. 0 HP / 0 SpD Sniper Main in Sun: 18120-21316 (12496.5 - 14700.6%) -- guaranteed OHKO",
-    "What's a meta, anyway?",
-    "Does not help with escaping the Entity",
-    "Sonic Snowballs were such a good item Mojang added them officially",
-    "Currently Latite's largest plugin!",
-    "Exposes no internal information!",
-    "d-d-a g",
-    "Woomy!",
-    "amogus",
     'client.on("join-game", e => clientMessage("This is valid Latite plugin code") );',
-    "5D Parkour Builders with Multiverse Time Travel",
-    "There is 1 tester and it is myself",
     'In JS, "([]+{})[!![]+!![]]" is the same thing as "b". Don\'t ask.',
-    "727!!!!!!! 727!! When you see it!!!!!!!",
-    "O-oooooooooo AAAAE-A-A-I-A-U- JO-oooooooooooo AAE-O-A-A-U-U-A- E-eee-ee-eee AAAAE-A-E-I-E-A- JO-ooo-oo-oo-oo EEEEO-A-AAA-AAAA",
-    "!bsr 25f",
-    `When \xA76server\xA7r is selected, destroy previously sent splash text and permanently add \xA76double\xA7r its character length to your \xA7bGems\xA7r next login \xA78(Currently \xA7b+${Math.round(Math.random() * 31)}\xA78 Gems)\xA7r`,
-    "Allays are just Orbi's kids stop hiding the truth Mojang",
-    "Problem: white flour (and whole wheat flour) have virtually no nutrition in comparison to actual wheat.",
     // `${(() => { // this is a dynamic keysmash. yes i'm putting too much effort into being gay while this is being used by minecraft bedrock players. yes this is the depths of javascript. no i do not care
     //     /* This code could probably generate some bad words by accident. Don't want to take the risk even if this is technically more pure
     //     let str = ""; // initialize empty string
@@ -178,17 +167,69 @@ exports.gxuSplashes = [
     //     return str;
     //     */
     // })()}`, // last parentheses make this run (ty melody)
-    "scp-6113 my beloved",
-    "scp-113 my beloved",
-    "If you or a loved one has suffered from vitenout addiction, you may be entitled to financial compensation!",
     "ouewnbv9uwebv9uwbngv",
     "opiqwhnvoicsnvkwgw890fghuison",
     "e",
     "wwdeuubdefdqzukjkjyjadhwflr",
     "Remember to update your game from time to time!",
+    // Self references
+    "Now with more utils!",
+    "Report issues at https://github.com/1unar-Eclipse/GalaxiteUtils, they're a huge help",
+    "Made with love! (and a lot of nerd questions to galaxite and latite)",
+    "GalaxiteUtils active!",
+    "HiveUtils active..?",
+    "CubeCraftUtils active..?",
+    "PixelParadiseUtils disactive.",
+    "Made with 99.5% pure TypeScript!",
+    "These aren't funny aren't they",
+    "Open-source!",
+    "Now with patch notes!",
+    "if(notOnGalaxite())return;",
+    "PC-exclusive!",
+    "It's ironic that a plugin with 2 modules dedicated to trimming chat added splash texts",
+    "Currently Latite's largest plugin!",
+    "Exposes no internal information!",
+    "There is 1 tester and it is myself",
     "Powered by WhereAmAPI!",
+    // Module references
+    "Toggle Sprint is kinda overrated if an eldritch horror or a crowd of aliens are chasing you ngl",
+    "AutoGG currently has a permission issue",
+    "Keeps hub messages down!",
+    "Trims badges!",
+    "Prevents deaths to bad hotkeying!",
+    "Sends /whereami!",
+    'don\'t look at "Open Latite Folder"\\Plugins\\GalaxiteUtils\\ParkourAttempts.json, worst mistake of my life',
+    "Hundreds of lines of code just to store a command on screen smh just code better",
+    // Galaxite jokes
+    "pve game",
+    "Hello, would the owners of the Galaxite Minecraft server possibly consider selling the server, I would possibly be interested in purchasing the server if it is for sale. I am an influence in the League of Legends community and would like to expand into Minecraft, and I think the Galaxite server would be a good fit.",
+    ":blessseb:",
+    ":blessthedevs:",
+    ":blessali:",
+    ":blameseb:",
+    ":blamecallun:",
+    ":blamealex:",
+    "252+ SpA Choice Specs Beads of Ruin Chi-Yu Overheat vs. 0 HP / 0- SpD Sniper-Playground in Sun: 40584-47744 (27988.9 - 32926.8%) -- guaranteed OHKO",
+    "What's a meta, anyway?",
+    "Does not help with escaping the Entity",
+    "Sonic Snowballs were such a good item Mojang added them officially",
     "\uE1E4",
-    "Let's paint this gray haze into sky blue!",
+    "5D Parkour Builders with Multiverse Time Travel",
+    "Allays are just Orbi's kids stop hiding the truth Mojang",
+    "Problem: white flour (and whole wheat flour) have virtually no nutrition in comparison to actual wheat.",
+    "If you or a loved one has suffered from vitenout addiction, you may be entitled to financial compensation!",
+    // Other game/media references
+    "is ACTIVE",
+    "Fact: Birds are hard to catch",
+    "3... 2... 1...",
+    "d-d-a g",
+    "Woomy!",
+    "amogus",
+    "727!!!!!!! 727!! When you see it!!!!!!!",
+    "!bsr 25f",
+    `When \xA76server\xA7r is selected, destroy previously sent splash text and permanently add \xA76double\xA7r its character length to your \xA7bGems\xA7r next login \xA78(Currently \xA7b+${Math.round(Math.random() * 31)}\xA78 Gems)\xA7r`,
+    "O-oooooooooo AAAAE-A-A-I-A-U- JO-oooooooooooo AAE-O-A-A-U-U-A- E-eee-ee-eee AAAAE-A-E-I-E-A- JO-ooo-oo-oo-oo EEEEO-A-AAA-AAAA", // Brain Power
+    // Unsorted splashes that Eclipse just thought of
 ];
 /**
  * A map between the updated-to version and the changes included in that version.
@@ -206,8 +247,8 @@ exports.patchNotes = new Map([
             "  - 0.4.0 will add a new way of handling sending /whereami commands that \xA7oshould\xA7r make this not happen as often\n" +
             "- Fixed a bug (hopefully) where prestige icons occasionally caused the Compact Badges module to not work as expected\n" +
             "- Fixed WhereAmIHUD not properly handling ParkourUUID\n" +
-            "- Various backend changes\n\n" +
-            "Remember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
+            "- Various backend changes\n" +
+            "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
             "(press your chat button to view full patch notes)" // lol
     ],
     ["0.3.1", "GalaxiteUtils has been updated to v0.3.1!\n" +
@@ -245,9 +286,12 @@ exports.patchNotes = new Map([
     ],
     ["0.4.0", "GalaxiteUtils has been updated to v0.4.0!\n" +
             "- New module: Attempt Counter (for Parkour Builders)\n" +
+            "  - This includes displays for the current session's attempts and all-time attempts!\n" +
             "- New module: Auto-Modules (for Chronos, The Entity, and Alien Blast)\n" +
-            "- New module: Kit UI (for Chronos, Hyper Racers, and Kit PvP; opt-in for Rush due to length)\n" +
-            '- The plugin now automatically downloads a resource pack that removes armor. Click the "Open Latite Folder" button next time you launch and import the pack there!\n' +
+            "- You can now bind a button to copy the information of the current server you're in within the Global Settings module\n" +
+            "- Chat Editor is no longer always active\n" +
+            "- Changed a lot of module and setting descriptions\n" +
+            "- Fixed a bug where AutoGG would try to say GG after running out of time in Parkour Builders\n" +
             "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
             "(press your chat button to view full patch notes)"
     ]

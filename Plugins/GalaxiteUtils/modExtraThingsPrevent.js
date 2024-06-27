@@ -5,11 +5,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const exports_1 = require("./exports");
 const WhereAmAPI_1 = require("./WhereAmAPI");
 // initialization
-let confirmClick = new Module("etprevent", "GXU: Confirm Item Use", "Adds options to confirm using Extra Things and interact with shops", 0 /* KeyCode.None */);
-let optionInterval = confirmClick.addNumberSetting("interval", "Max Interval", "Maximum amount of time between a click and the confirmation click", 0, 1, 0.01, 0.5);
-let optionExtraThings = confirmClick.addBoolSetting("etconfirm", "Confirm Extra Things", "Require a confirmation click to use Extra Things or leave Kit PVP", true);
-let optionShop = confirmClick.addBoolSetting("shopconfirm", "Confirm Shop Interaction (experimental)", "Require a confirmation click to interact with shops while holding fighting items in Chronos and Core Wars", false);
-let optionNotif = confirmClick.addBoolSetting("notif", "Show Notification", "Shows a notification whenever confirmation is needed", true);
+let confirmClick = new Module("etprevent", "GXU: Confirm Item Use", "Adds options to confirm using Extra Things and interact with shops.", 0 /* KeyCode.None */);
+let optionInterval = confirmClick.addNumberSetting("interval", "Max Interval", "Maximum amount of time between a click and the confirmation click.", 0, 1, 0.01, 0.5);
+let optionExtraThings = confirmClick.addBoolSetting("etconfirm", "Confirm Extra Things", "Require a confirmation click to use Extra Things or leave Kit PVP.", true);
+let optionShop = confirmClick.addBoolSetting("shopconfirm", "Confirm Shop Interaction (experimental)", "Require a confirmation click to interact with shops while holding fighting items in Chronos and Core Wars.", false);
+let optionNotif = confirmClick.addBoolSetting("notif", "Send Chat Message", "Sends a chat message whenever confirmation is needed.", true);
 client.getModuleManager().registerModule(confirmClick);
 // the actual function
 let etTimePrev = 0; // the first click will always be cancelled, might as well make it all use the same code

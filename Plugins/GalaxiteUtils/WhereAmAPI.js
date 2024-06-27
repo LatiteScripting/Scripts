@@ -2,8 +2,8 @@
 // WhereAmAPI: Backend system that automatically sends and interprets /whereami responses, so it doesn't need to be handled module-by-module.
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.api = exports.GameName = void 0;
+const EventEmitter_1 = require("./EventEmitter");
 const exports_1 = require("./exports");
-const clipboard = require("clipboard");
 var GameName;
 (function (GameName) {
     GameName[GameName["UNKNOWN"] = -1] = "UNKNOWN";
@@ -22,27 +22,7 @@ var GameName;
     GameName[GameName["MY_FARM_LIFE"] = 12] = "MY_FARM_LIFE";
     GameName[GameName["ALIEN_BLAST"] = 13] = "ALIEN_BLAST";
 })(GameName || (exports.GameName = GameName = {}));
-class WhereAmAPI {
-    /**
-     * Executes a given block of code when the API has been updated this lobby. This function is asynchronous.
-     * @param code The code to run when the response is given.
-     */
-    onConfirmedResponse(code) {
-        if (!this.whereAmIReceived) { // if there hasn't been a response yet this lobby:
-            this.runWhereAmI(); // send the command
-            this.delayedCode.push(code); // add the code to a block to run later
-        }
-        else { // if there has been a response, just run the code now
-            code(); // run the code requested
-        }
-    }
-    /**
-     * Executes a given block of code the next time the API updates. This function is asynchronous.
-     * @param code The code to run on the next response.
-     */
-    onNextTransfer(code) {
-        this.delayedCode.push(code); // code runs next successful transfer anyway
-    }
+class WhereAmAPI extends EventEmitter_1.EventEmitter {
     runWhereAmI() {
         if ((0, exports_1.notOnGalaxite)())
             return;
@@ -52,16 +32,71 @@ class WhereAmAPI {
             this.whereAmIReceived = false;
         }, exports_1.optionWhereAmIDelay.getValue() * 1000);
     }
+    /**
+     * Reads a given field of the last /whereami response and returns the result.
+     * @param field The field to read.
+     * @returns Usually a string with the correct interpretation. Will only return `null` in case there is no ParkourUUID.
+     */
     assign(field) {
         var _a;
         let def; // default is reserved
         if (field == "ParkourUUID")
-            def = "";
+            def = null;
         else
             def = "Unknown";
         return ((_a = this.response[field]) !== null && _a !== void 0 ? _a : def);
     }
+    parseWhereAmI(message) {
+        var _a, _b;
+        let cancel = false;
+        if (message.includes("ServerUUID:") && message.includes("\n")) { // Check for message (users can't send \n)
+            let formattedMessage = message.replace("\uE0BC \xA7c", ""); // Cache message
+            let entries = (_a = formattedMessage.split("\n\xA7c")) !== null && _a !== void 0 ? _a : ""; // Split up the response at this substring, in the process splitting by line and removing color
+            let whereAmIPairs = [];
+            for (let i = 0; i < entries.length; i++) { // For each entry:
+                whereAmIPairs[i] = entries[i].split(": \xA7a"); // Save the key and its corresponding value, in the process removing color
+            }
+            /* The general structure of whereAmIPairs is:
+            [
+                ["Username" : username],
+                ["ServerUUID" : serverUUID],
+                ...
+                ["FieldName" : fieldResult]
+            ]
+            */
+            this.response = whereAmIPairs.reduce((prevVal, [key, value]) => {
+                prevVal[key] = value;
+                return prevVal;
+            }, {});
+            /* Response should now look like:
+            {
+                "Username" : username,
+                "ServerUUID" : serverUUID,
+                ...
+                "FieldName" : fieldResult
+            }
+            */
+            // Store entries
+            this.username = game.getLocalPlayer().getName(); // this is being ran on a receive-chat event. there will be a player
+            this.serverUUID = this.assign("ServerUUID");
+            this.podName = this.assign("PodName");
+            this.serverName = this.assign("ServerName");
+            this.commitID = this.assign("CommitID");
+            this.shulkerID = this.assign("ShulkerID");
+            this.region = this.assign("Region");
+            this.privacy = this.assign("Privacy");
+            this.parkourUUID = this.assign("ParkourUUID"); // The assign function already considers the possibility of no entry
+            this.game = (_b = nameToGame.get(this.serverName)) !== null && _b !== void 0 ? _b : GameName.UNKNOWN; // Assign the shorter game name field
+            if (this.whereAmISent && exports_1.optionHideResponses.getValue())
+                cancel = true;
+            this.whereAmISent = false;
+            this.whereAmIReceived = true; // whereami has been received
+            this.emit("whereami-update");
+        }
+        return cancel;
+    }
     constructor() {
+        super();
         /**
          * For accuracy in sending bug reports, this doesn't actually store the results of the Username field.
          */
@@ -99,10 +134,9 @@ class WhereAmAPI {
          */
         this.shulkerID = "Unknown";
         /**
-         * Stores the results of the ParkourUUID field. (Will often be empty.)
+         * Stores the results of the ParkourUUID field. (Will often be null.)
          */
-        this.parkourUUID = "";
-        this.cmdExportWhereAmI = new Command("export", "Copies the results of the last whereami to the clipboard", "$", ["copywhereami", "whereami"]);
+        this.parkourUUID = null;
         /**
          * Whether /whereami has been sent this lobby.
          */
@@ -112,74 +146,13 @@ class WhereAmAPI {
          */
         this.whereAmIReceived = false;
         /**
-         * Array of code to run on the next `/whereami` response.
-         */
-        this.delayedCode = [];
-        /**
          * The `change-dimension` event fires twice. This works around it.
          */
         this.changeDimensionBandage = false;
         client.on("receive-chat", msg => {
-            var _a;
             if ((0, exports_1.notOnGalaxite)())
                 return;
-            if (!this.whereAmISent)
-                return; // if a whereami is being waited on:
-            if (msg.message.includes("ServerUUID:") && msg.message.includes("\n")) { // Check for message (users can't send \n)
-                let formattedMessage = msg.message.replace("\uE0BC \xA7c", ""); // Cache message
-                let entries = formattedMessage.split("\n\xA7c"); // Split up the response at this substring, in the process splitting by line and removing color
-                let whereAmIPairs = [];
-                for (let i = 0; i < entries.length; i++) { // For each entry:
-                    whereAmIPairs[i] = entries[i].split(": \xA7a"); // Save the key and its corresponding value, in the process removing color
-                }
-                /* The general structure of whereAmIPairs is:
-                [
-                    ["Username" : username],
-                    ["ServerUUID" : serverUUID],
-                    ...
-                    ["FieldName" : fieldResult]
-                ]
-                */
-                this.response = whereAmIPairs.reduce((prevVal, [key, value]) => {
-                    prevVal[key] = value;
-                    return prevVal;
-                }, {});
-                /* Response should look like:
-                {
-                    "Username" : username,
-                    "ServerUUID" : serverUUID,
-                    ...
-                    "FieldName" : fieldResult
-                }
-                */
-                // username =   entries[0];
-                // serverUUID = entries[1];
-                // podName =    entries[2];
-                // serverName = entries[3];
-                // commitID =   entries[4];
-                // shulkerID =  entries[5];
-                // region =     entries[6];
-                // privacy =    entries[7];
-                // Store entries
-                this.username = game.getLocalPlayer().getName(); // this is being ran on a receive-chat event. there will be a player
-                this.serverUUID = this.assign("ServerUUID");
-                this.podName = this.assign("PodName");
-                this.serverName = this.assign("ServerName");
-                this.commitID = this.assign("CommitID");
-                this.shulkerID = this.assign("ShulkerID");
-                this.region = this.assign("Region");
-                this.privacy = this.assign("Privacy");
-                this.parkourUUID = this.assign("ParkourUUID"); // The assign function already considers the possibility of no entry
-                this.game = (_a = nameToGame.get(this.serverName)) !== null && _a !== void 0 ? _a : GameName.UNKNOWN; // Assign the shorter game name field
-                if (exports_1.optionHideResponses.getValue())
-                    msg.cancel = true; // hide the api-provided whereami
-                this.whereAmIReceived = true; // whereami has been received
-                this.whereAmISent = false;
-                this.delayedCode.forEach(code => {
-                    code(); // run the code
-                    this.delayedCode.shift(); // delete the code reference
-                });
-            }
+            msg.cancel = this.parseWhereAmI(msg.message);
         });
         // Send /whereami every time a new server is joined
         client.on("change-dimension", e => {
@@ -193,23 +166,6 @@ class WhereAmAPI {
         });
         client.on("join-game", e => {
             this.runWhereAmI();
-        });
-        client.getCommandManager().registerCommand(this.cmdExportWhereAmI);
-        this.cmdExportWhereAmI.on("execute", () => {
-            clipboard.set(`\`\`\`Username: ${this.username}` +
-                `\nServerUUID: ${this.serverUUID}` +
-                `\nPodName: ${this.podName}` +
-                `\nServerName: ${this.serverName}` +
-                `\nCommitID: ${this.commitID}` +
-                `\nShulkerID: ${this.shulkerID}` +
-                `\nRegion: ${this.region}` +
-                `\nPrivacy: ${this.privacy}` +
-                (this.parkourUUID != "")
-                ? `\nParkourUUID: ${this.parkourUUID}`
-                : "" +
-                    "```");
-            (0, exports_1.sendGXUMessage)("Copied the last /whereami to clipboard!");
-            return true;
         });
     }
 }

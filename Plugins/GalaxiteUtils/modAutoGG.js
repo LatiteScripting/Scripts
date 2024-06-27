@@ -8,14 +8,14 @@ const exports_1 = require("./exports");
 const WhereAmAPI_1 = require("./WhereAmAPI");
 const fs = require("filesystem");
 // Module setup
-let autoGG = new Module("autoGG", "GXU: AutoGG", 'Automatically says "gg" when a game finishes', 0 /* KeyCode.None */);
+let autoGG = new Module("autoGG", "GXU: AutoGG", 'Automatically say "gg" when a game finishes.', 0 /* KeyCode.None */);
 client.getModuleManager().registerModule(autoGG);
-let ch = autoGG.addBoolSetting("ch", "Chronos", "Chronos support", true);
-let ru = autoGG.addBoolSetting("ru", "Rush", "Rush support", true);
-let hr = autoGG.addBoolSetting("hr", "Hyper Racers", "Hyper Racers support", true);
-let cw = autoGG.addBoolSetting("cw", "Core Wars", "Core Wars support", true);
-let ftg = autoGG.addBoolSetting("ftg", "Fill the Gaps", "Fill the Gaps support", true);
-let ph = autoGG.addBoolSetting("ph", "Prop Hunt", "Prop Hunt support", true);
+let ch = autoGG.addBoolSetting("ch", "Chronos", 'Whether to say "gg" in games of Chronos.', true);
+let ru = autoGG.addBoolSetting("ru", "Rush", 'Whether to say "gg" in games of Rush.', true);
+let hr = autoGG.addBoolSetting("hr", "Hyper Racers", 'Whether to say "gg" in games of Hyper Racers.', true);
+let cw = autoGG.addBoolSetting("cw", "Core Wars", 'Whether to say "gg" in games of Core Wars.', true);
+let ftg = autoGG.addBoolSetting("ftg", "Fill the Gaps", 'Whether to say "gg" in games of Fill the Gaps.', true);
+let ph = autoGG.addBoolSetting("ph", "Prop Hunt", 'Whether to say "gg" in games of Prop Hunt.', true);
 let nerdToggle;
 if (fs.exists("NerdToggle")) {
     nerdToggle = autoGG.addBoolSetting("nerdtoggle", "Nerd Toggle", 'Says the full "Good game!" when saying GG', true);
@@ -48,7 +48,7 @@ function sendMessage(message) {
         game.sendChatMessage(message);
     }
     catch (error) {
-        (0, exports_1.sendGXUMessage)("Error: there is currently no permission to send messages");
+        (0, exports_1.sendGXUMessage)("Error in AutoGG: there is currently no permission to send messages");
     }
 }
 // All games have a title
@@ -59,25 +59,26 @@ client.on("title", title => {
         return;
     let text = title.text; // cache title
     // gg conditions
-    if (hr.getValue()) {
+    if (hr.getValue() && WhereAmAPI_1.api.game == WhereAmAPI_1.GameName.HYPER_RACERS) {
         if (text == "Finished" || text == "Out of Time!")
             sendGG();
     }
-    if (ftg.getValue() || cw.getValue()) {
+    if ((ftg.getValue() && WhereAmAPI_1.api.game == WhereAmAPI_1.GameName.FILL_THE_GAPS) ||
+        (cw.getValue() && WhereAmAPI_1.api.game == WhereAmAPI_1.GameName.CORE_WARS)) {
         if (rgxFtgCw.test(text))
             sendGG();
     }
-    if (ch.getValue() || ru.getValue()) {
+    if ((ch.getValue() && WhereAmAPI_1.api.game == WhereAmAPI_1.GameName.CHRONOS) ||
+        (ru.getValue() && WhereAmAPI_1.api.game == WhereAmAPI_1.GameName.RUSH)) {
         if (rgxChRu.test(text))
             sendGG();
     }
     // prop hunt
     if (ph.getValue()) {
         if (rgxPh.test(text)) {
-            WhereAmAPI_1.api.onNextTransfer(() => {
-                if (WhereAmAPI_1.api.game == WhereAmAPI_1.GameName.PROP_HUNT) {
+            WhereAmAPI_1.api.once("whereami-update", () => {
+                if (WhereAmAPI_1.api.game == WhereAmAPI_1.GameName.PROP_HUNT)
                     sendGG();
-                }
             });
         }
     }
