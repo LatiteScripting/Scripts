@@ -30,6 +30,18 @@ cmd.on("execute", (label, args, commandLine) => {
     if (args.length === 0) return false;
 
     let code = commandLine.trim().substring(client.getCommandManager().getPrefix().length + label.length).trim();
+    runJS(code);
+});
+
+client.on("send-chat", m => {
+    if(!m.message.startsWith("> ")) return; // avoid just the "> " case
+
+    m.cancel = true;
+    let code = m.message.trim().substring(2).trim();
+    runJS(code);
+});
+
+function runJS(code) {
     clientMessage(TextColor.GRAY + "> " + code)
     try {
         let ret = eval(code);
@@ -38,4 +50,4 @@ cmd.on("execute", (label, args, commandLine) => {
         clientMessage(`${TextColor.RED}` + e);
     }
     return true;
-})
+}
