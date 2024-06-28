@@ -25,18 +25,21 @@
     {
       "name": "GalaxiteUtils",
       "files": [
-        "main.js",
-        "plugin.json",
+        "EventEmitter.js",
         "exports.js",
+        "main.js",
         "modAutoGG.js",
+        "modAutoModule.js",
         "modChatDebloat.js",
         "modChatEditor.js",
         "modCompactBadges.js",
         "modExtraThingsPrevent.js",
         "modGlobalMessages.js",
+        "modPKBAttempts.js",
         "modWhereAmIHUD.js",
         "WhereAmIHUDOptions.js",
-        "WhereAmAPI.js"
+        "WhereAmAPI.js",
+        "plugin.json"
       ]
     },
     {

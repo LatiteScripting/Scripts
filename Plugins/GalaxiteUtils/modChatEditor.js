@@ -3,22 +3,22 @@
 // CompactBadges file name kept for legacy compatibility.
 Object.defineProperty(exports, "__esModule", { value: true });
 const exports_1 = require("./exports");
-let chatEditor = new Module("compactBadges", "GXU: Chat Editor", "Adds options to modify various parts of the Galaxite chat.\n\nThis module is incompatible with anything else that edits chat (such as the Timestamps plugin).", 0 /* KeyCode.None */);
+let chatEditor = new Module("compactBadges", "GXU: Chat Editor", "Adds options to modify various parts of the Galaxite chat.\nThis module is incompatible with anything else that edits chat (such as the Timestamps plugin).", 0 /* KeyCode.None */);
 let optionCompactBadges = chatEditor.addBoolSetting(// Shortens badges.
 "compactbadges", "Compact Badges", "Shortens all badges.", false);
 let optionComboToggle = chatEditor.addBoolSetting(// Controls combination badge behavior.
 "combotoggle", "Combination Badge Acts as ELITE", "If this setting is enabled, players with the combination ELITE & ULTRA badge appear as ELITE. If disabled, ULTRA.", true);
 optionComboToggle.setCondition("compactbadges", true); // this toggle makes sense only if you're shortening badges
-let optionClassicBadges = chatEditor.addBoolSetting("classicbadges", "Classic Badges", "Uses normal Minecraft text for player badges instead of custom graphics", false);
+let optionClassicBadges = chatEditor.addBoolSetting("classicbadges", "Classic Badges", "Uses Minecraft text for player badges instead of custom graphics.", false);
 optionClassicBadges.setCondition("compactbadges", false);
 optionCompactBadges.setCondition("classicbadges", false);
-let optionClassicServerBadges = chatEditor.addBoolSetting("classicserverbadges", "Classic Server Badges", "Uses normal Minecraft text for server badges (Warn, Info, etc.) instead of custom graphics", false);
+let optionClassicServerBadges = chatEditor.addBoolSetting("classicserverbadges", "Classic Server Badges", "Uses Minecraft text for server badges (Warn, Info, etc.) instead of custom graphics.", false);
 let optionRemoveBadges = chatEditor.addBoolSetting(// Removes badges. Not mutually exclusive with Compact or Classic Badges because they would still work on staff badges
 "removebadges", "Remove Player Badges", "Completely hides all non-staff player badges (Player, ELITE, etc.).", 
 // Hides Player, ULTRA, ELITE, ELITE + ULTRA, VIP, and Influencer
 false);
 let optionHidePrestigeIcons = chatEditor.addBoolSetting("hideprestige", "Hide Prestige Badges", "Hides all battlepass prestige badges.", false);
-let optionClassicPrestigeIcons = chatEditor.addBoolSetting("classicprestige", "Classic Prestige Icons", "Uses normal Minecraft text for Prestige icons instead of custom graphics", false);
+let optionClassicPrestigeIcons = chatEditor.addBoolSetting("classicprestige", "Classic Prestige Icons", "Uses Minecraft text for Prestige icons instead of custom graphics.", false);
 optionClassicPrestigeIcons.setCondition("hideprestige", false);
 optionHidePrestigeIcons.setCondition("classicprestige", false);
 client.getModuleManager().registerModule(chatEditor);
@@ -47,13 +47,13 @@ A: 6    B: 6    C: 6    D: 6    E: 6    F: 6    G: 6    H: 6   *I: 4*   J: 6    
 N: 6    O: 6    P: 6    Q: 6    R: 6    S: 6    T: 6    U: 6    V: 6    W: 6    X: 6    Y: 6    Z: 6
 a: 6    b: 6    c: 6    d: 6    e: 6   *f: 5*   g: 6    h: 6   *i: 2*   j: 6   *k: 5*  *l: 3*   m: 6
 n: 6    o: 6    p: 6    q: 6    r: 6    s: 6   *t: 4*   u: 6    v: 6    w: 6    x: 6    y: 6    z: 6
- *(space): 4*
+ *(space): 4*  *!: 2*  **: 5*   -: 6   *.: 2*  *<: 5*  *>: 5*   ?: 6    +: 6    ,: 2    :: 2    ;: 2
 
 evidently i didn't care about symmetry
 */
 const classicBadgeMap = new Map([
     ["\uE096 ", "\xa78[\xa7eE\xa76L\xa7cI\xa7dT\xa75E\xa78]\xa7r "],
-    ["\uE099 ", "\xa78[\xa7eELITE\xa78]\xa7r"],
+    ["\uE099 ", "\xa78[\xa7eELITE\xa78]\xa7r "],
     ["\uE09A ", "\xa78[\xa77PLAYER\xa78]\xa7r "],
     ["\uE09B ", "\xa78[\xa79STAFF\xa78]\xa7r "],
     ["\uE09C ", "\xa78[\xa72HELPER\xa78]\xa7r "],
@@ -78,7 +78,11 @@ const classicServerMap = new Map([
     ["\uE0BF ", "\xa78[\xa75PARTY\xa78]\xa7r "], // party
 ]);
 client.on("receive-chat", c => {
-    if ((0, exports_1.notOnGalaxite)() || c.cancel)
+    if ((0, exports_1.notOnGalaxite)())
+        return;
+    if (c.cancel)
+        return;
+    if (!chatEditor.isEnabled())
         return;
     let editedMessage = c.message; // cache a message to edit and resend later
     // PRESTIGES

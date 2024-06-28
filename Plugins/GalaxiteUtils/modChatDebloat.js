@@ -13,12 +13,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 */
 const exports_1 = require("./exports");
 // initialize
-let chatDebloat = new Module("chatDebloat", "GXU: Chat Debloat", "Hides some spammy chat messages", 0 /* KeyCode.None */);
-let optionHideJoins = chatDebloat.addBoolSetting("hideJoin", "Hide Joins", "Hide player join messages", false);
-let optionHideNotices = chatDebloat.addBoolSetting("hideNotices", "Hide Notices", "Hides notice messages (ex. hub messages)", true);
-let optionHideMelvin = chatDebloat.addBoolSetting("hideMelvin", "Hide Melvin Messages", "Hides chat messages relating to Melvin's Mine", false);
-let optionHideWelcome = chatDebloat.addBoolSetting("hideWelcome", "Hide Welcome Messages", 'Hides the "Welcome to Galaxite" message', true);
-let optionHideVisibility = chatDebloat.addBoolSetting("hideVisibility", "Hide Visibility Status", "Hides invisibility status messages", true);
+let chatDebloat = new Module("chatDebloat", "GXU: Chat Debloat", "Hides some spammy chat messages.", 0 /* KeyCode.None */);
+let optionHideJoins = chatDebloat.addBoolSetting("hideJoin", "Hide Joins", "Hides player join messages in queued games.", false);
+let optionHideNotices = chatDebloat.addBoolSetting("hideNotices", "Hide Notices", "Hides notice messages (ex. hub messages).", true);
+let optionHideMelvin = chatDebloat.addBoolSetting("hideMelvin", "Hide Melvin Messages", "Hides chat messages relating to Melvin's Mine.", false);
+let optionHideWelcome = chatDebloat.addBoolSetting("hideWelcome", "Hide Welcome Messages", 'Hides the "Welcome to Galaxite" message.', true);
+let optionHideVisibility = chatDebloat.addBoolSetting("hideVisibility", "Hide Visibility Status", "Hides invisibility status messages.", true);
 client.getModuleManager().registerModule(chatDebloat);
 // hook
 client.on("receive-chat", msg => {
