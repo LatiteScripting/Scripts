@@ -2,50 +2,13 @@
 // A few common functions for use across files.
 // Put this everywhere:
 // import { notOnGalaxite } from "./exports";
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.patchNotes = exports.gxuSplashes = exports.optionAutoUpdate = exports.optionShortGXUBadge = exports.optionHideResponses = exports.optionWhereAmIDelay = exports.sendGXUMessage = exports.nerdRadar = exports.notOnGalaxite = void 0;
+exports.patchNotes = exports.gxuSplashes = exports.defaultWeights = exports.getNickname = exports.sendGXUMessage = exports.nerdRadar = exports.notOnGalaxite = exports.optionAutoUpdate = exports.optionShortGXUBadge = exports.optionHideResponses = exports.optionWhereAmIDelay = void 0;
 const WhereAmAPI_1 = require("./WhereAmAPI");
 const http = require("http");
 const fs = require("filesystem");
 const clipboard = require("clipboard");
-/**
-* Returns `true` if the player is not on Galaxite; `false` if they are.
-*/
-function notOnGalaxite() {
-    // return true if you are on anything BUT Galaxite. this way I can just do `if(notOnGalaxite()) return;` on every client.on()
-    return (game.getFeaturedServer() != "Galaxite");
-}
-exports.notOnGalaxite = notOnGalaxite;
-/**
-* Returns `true` if the player is a Galaxite nerd; `false` if they aren't.
-*/
-const galaxiteNerds = [
-    "ThatJadon 26",
-    "Eclipse2421",
-    "AJckk",
-    "GalaxiteAJ",
-    "A2K Delta133",
-    "SpinaRosam"
-];
-function nerdRadar() {
-    // If the person is a Galaxite nerd (a wiki team member), return as true
-    return galaxiteNerds.includes(game.getLocalPlayer().getName());
-}
-exports.nerdRadar = nerdRadar;
-/**
- * Sends a formatted message to chat.
- * @param messages The messages to send.
- */
-function sendGXUMessage(...messages) {
-    messages.forEach((message) => {
-        clientMessage(`\xA78[\xA7t${ // formatted opening square bracket
-        exports.optionShortGXUBadge.getValue() // if short badges:
-            ? "GXU" // just gxu
-            : "Galaxite\xA7uUtils" // otherwise, full galaxiteutils
-        }\xA78]\xA7r ${message}`); // formatted closing square bracket and message
-    });
-}
-exports.sendGXUMessage = sendGXUMessage;
 let globals = new Module("globalmessages", // old name, kept for legacy support
 "GXU: Global Settings", "Configures assorted GalaxiteUtils behaviors. (The toggle state of this module is useless)", 0 /* KeyCode.None */);
 let optionSplashText = globals.addBoolSetting("gxuactive", "GalaxiteUtils Splashes", "Sends a fun message upon joining Galaxite!", true);
@@ -134,15 +97,105 @@ client.on("key-press", k => {
     clipboard.set(whereami);
     sendGXUMessage("Copied the current server information to clipboard!");
 });
+/**
+* Returns `true` if the player is not on Galaxite; `false` if they are.
+*/
+function notOnGalaxite() {
+    // return true if you are on anything BUT Galaxite. this way I can just do `if(notOnGalaxite()) return;` on every client.on()
+    return (game.getFeaturedServer() != "Galaxite");
+}
+exports.notOnGalaxite = notOnGalaxite;
+const galaxiteNerds = [
+    "ThatJadon 26",
+    "Eclipse2421",
+    "AJckk",
+    "GalaxiteAJ",
+    "A2K Delta133",
+    "SpinaRosam"
+];
+/**
+* Returns `true` if the player is a Wiki Team member; `false` if they aren't.
+*/
+function nerdRadar() {
+    // If the person is a Galaxite nerd (a wiki team member), return as true
+    return galaxiteNerds.includes(game.getLocalPlayer().getName());
+}
+exports.nerdRadar = nerdRadar;
+/**
+ * Sends a formatted message to chat.
+ * @param messages The messages to send.
+ */
+function sendGXUMessage(...messages) {
+    messages.forEach((message) => {
+        clientMessage(`\xA78[\xA7t${ // formatted opening square bracket
+        exports.optionShortGXUBadge.getValue() // if short badges:
+            ? "GXU" // just gxu
+            : "Galaxite\xA7uUtils" // otherwise, full galaxiteutils
+        }\xA78]\xA7r ${message}`); // formatted closing square bracket and message
+    });
+}
+exports.sendGXUMessage = sendGXUMessage;
+/**
+ * Gets the current player nickname.
+ */
 function getSplash() {
     return exports.gxuSplashes[Math.floor(Math.random() * exports.gxuSplashes.length)];
 }
+const nicknameReference = (_a = client
+    .getModuleManager()
+    .getModuleByName("Nickname")) === null || _a === void 0 ? void 0 : _a.getSettings()[2]; // This is the actual nickname
+/**
+ * Gets the player's current nickname.
+ */
+function getNickname() {
+    return (nicknameReference.getValue());
+}
+exports.getNickname = getNickname;
+;
+/**
+ * The default parameters used for Chronos scoring.
+ */
+exports.defaultWeights = {
+    comments: [
+        "- Don't add any further properties or delete any existing ones. This will cause the plugin to reset the weights file. Set any properties you don't want to 0.",
+        "  - You can edit these comments! Feel free to use them to explain your weighting.",
+        "- All weights are ADDED to player score. For something to take away points, make that a negative number!",
+        "- Weight for bounty completions can decay by extending the array.",
+        "  - The final defined value is used for all subsequent bounty completions.",
+        "  - This is primarily to still reward completing bounties, but prevent farming the reward by using Feedback Loop or buying a lot of bounties at the start of a game.",
+        "  - These values are not cumulative! If it's set to [ 60, 40, 20, 0 ], the first bounty will give 60 points, second 40, and so on.",
+        "  - While you can make the array empty, it isn't recommended for the sake of clarity.",
+        "- The `placement` array goes from #1 down, and it's applied to all remaining players when that threshold is reached.",
+        "  - Placement points that exceed the amount of players are not applied at all.",
+        "  - Values after what you define are always considered 0.",
+        "  - So, for a 5-point bonus for being in the top 3, you would set it to [0, 0, 5].",
+        "  - If you want only fifth to receive 10 points, you can set it to [0, 0, 0, -10, 10] - the player in fifth place cannot receive the placement points for fourth.",
+        "  - For no placement bonus, you can simply have an empty array!",
+        "- There is no weight for a player being eliminated because, for the same effect, you can give a bonus to only the winner.",
+    ],
+    basePoints: 0,
+    kill: 0,
+    death: 0,
+    eliminationBonus: 0,
+    bountyCompletionKill: [
+        0
+    ],
+    bountyCompletionDeath: 0,
+    bountyShutdownKill: 0,
+    bountyShutdownDeath: 0,
+    otherEliminatedPlayer: 1,
+    placement: [
+        0,
+        0,
+        0
+    ]
+};
 /**
  * A collection of splash texts.
  */
 exports.gxuSplashes = [
     // Gay splashes
-    "\xA7cHap\xA76py \xA7ePri\xA7ade \xA79Mon\xA75th!",
+    // "\xA7cHap\xA76py \xA7ePri\xA7ade \xA79Mon\xA75th!", // hate that i'll need to remove this after june :(
     "\xA76w\xA7po\xA7em\xA7fe\xA7un\xA7d,\xA75,",
     "\xA73gay\xA7s ga\xA7by h\xA7fomo\xA79sex\xA71ual \xA75gay",
     "\xA7cWhy \xA75not \xA79both?",
@@ -180,11 +233,11 @@ exports.gxuSplashes = [
     "HiveUtils active..?",
     "CubeCraftUtils active..?",
     "PixelParadiseUtils disactive.",
-    "Made with 99.5% pure TypeScript!",
+    "Made with 99.6% pure TypeScript!",
     "These aren't funny aren't they",
     "Open-source!",
     "Now with patch notes!",
-    "if(notOnGalaxite())return;",
+    "if(notOnGalaxite()) return;",
     "PC-exclusive!",
     "It's ironic that a plugin with 2 modules dedicated to trimming chat added splash texts",
     "Currently Latite's largest plugin!",
@@ -200,6 +253,7 @@ exports.gxuSplashes = [
     "Sends /whereami!",
     'don\'t look at "Open Latite Folder"\\Plugins\\GalaxiteUtils\\ParkourAttempts.json, worst mistake of my life',
     "Hundreds of lines of code just to store a command on screen smh just code better",
+    "Helpful for keeping track of your tournaments!",
     // Galaxite jokes
     "pve game",
     "Hello, would the owners of the Galaxite Minecraft server possibly consider selling the server, I would possibly be interested in purchasing the server if it is for sale. I am an influence in the League of Legends community and would like to expand into Minecraft, and I think the Galaxite server would be a good fit.",
@@ -294,5 +348,12 @@ exports.patchNotes = new Map([
             "- Fixed a bug where AutoGG would try to say GG after running out of time in Parkour Builders\n" +
             "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
             "(press your chat button to view full patch notes)"
-    ]
+    ],
+    ["0.4.5", "GalaxiteUtils has been updated to v0.4.5!\n" +
+            "- New module: Event Scorer" +
+            "  - Currently only supports Chronos Solos" +
+            "- Removed one now-outdated splash" +
+            "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
+            "(press your chat button to view full patch notes)"
+    ],
 ]);
