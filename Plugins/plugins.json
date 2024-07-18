@@ -33,6 +33,7 @@
         "modChatDebloat.js",
         "modChatEditor.js",
         "modCompactBadges.js",
+        "modEventScorer.js",
         "modExtraThingsPrevent.js",
         "modGlobalMessages.js",
         "modPKBAttempts.js",

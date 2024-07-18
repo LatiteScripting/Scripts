@@ -9,6 +9,7 @@ let modAutoModule = require("modAutoModule");
 let modChatDebloat = require("modChatDebloat");
 let modChatEditor = require("modChatEditor");
 // let modEntitySpeedrunTimer = require("modEntitySpeedrunTimer");
+let modChronosScorer = require("modEventScorer");
 let modConfirmClick = require("modExtraThingsPrevent");
 let modPKBAttempts = require("modPKBAttempts");
 // let modTeamUI = require("modTeamUI");

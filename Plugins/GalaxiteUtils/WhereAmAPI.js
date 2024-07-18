@@ -18,7 +18,7 @@ var GameName;
     GameName[GameName["PARKOUR_HUB"] = 8] = "PARKOUR_HUB";
     GameName[GameName["PARKOUR_BUILD"] = 9] = "PARKOUR_BUILD";
     GameName[GameName["PARKOUR_PLAY"] = 10] = "PARKOUR_PLAY";
-    GameName[GameName["THE_ENITTY"] = 11] = "THE_ENITTY";
+    GameName[GameName["THE_ENTITY"] = 11] = "THE_ENTITY";
     GameName[GameName["MY_FARM_LIFE"] = 12] = "MY_FARM_LIFE";
     GameName[GameName["ALIEN_BLAST"] = 13] = "ALIEN_BLAST";
 })(GameName || (exports.GameName = GameName = {}));
@@ -188,7 +188,7 @@ const nameToGame = new Map([
     ["HyperRacersSingle", GameName.HYPER_RACERS],
     ["Playground", GameName.PLAYGROUND],
     ["AlienBlast", GameName.ALIEN_BLAST],
-    ["Spooky", GameName.THE_ENITTY],
+    ["Spooky", GameName.THE_ENTITY],
     ["Farming", GameName.MY_FARM_LIFE],
     ["ParkourLobby", GameName.PARKOUR_HUB],
     ["ParkourBuild", GameName.PARKOUR_BUILD],

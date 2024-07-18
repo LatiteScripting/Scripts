@@ -32,7 +32,7 @@ function tryDisableModules() {
     // let coords = client.getModuleManager().getModuleByName("Coordinates")!;
     let environmentChanger = mmg.getModuleByName("EnvironmentChanger");
     if (en_toggle.getValue()) {
-        if (WhereAmAPI_1.api.game == WhereAmAPI_1.GameName.THE_ENITTY)
+        if (WhereAmAPI_1.api.game == WhereAmAPI_1.GameName.THE_ENTITY)
             toggles.setEnabled(false);
         else
             toggles.setEnabled(true);
