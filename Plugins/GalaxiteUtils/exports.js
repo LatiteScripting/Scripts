@@ -82,7 +82,7 @@ client.on("key-press", k => {
         return;
     if (k.keyCode != optionCopyWhereAmI.getValue())
         return;
-    let whereami = (`\`\`\`Username: ${WhereAmAPI_1.api.username}` +
+    let whereami = `\`\`\`Username: ${WhereAmAPI_1.api.username}` +
         `\nServerUUID: ${WhereAmAPI_1.api.serverUUID}` +
         `\nPodName: ${WhereAmAPI_1.api.podName}` +
         `\nServerName: ${WhereAmAPI_1.api.serverName}` +
@@ -93,7 +93,7 @@ client.on("key-press", k => {
         ((WhereAmAPI_1.api.parkourUUID)
             ? `\nParkourUUID: ${WhereAmAPI_1.api.parkourUUID}`
             : "") +
-        "```");
+        "```";
     clipboard.set(whereami);
     sendGXUMessage("Copied the current server information to clipboard!");
 });
@@ -350,10 +350,17 @@ exports.patchNotes = new Map([
             "(press your chat button to view full patch notes)"
     ],
     ["0.4.5", "GalaxiteUtils has been updated to v0.4.5!\n" +
-            "- New module: Event Scorer" +
-            "  - Currently only supports Chronos Solos" +
-            "- Removed one now-outdated splash" +
+            "- New module: Event Scorer\n" +
+            "  - Currently only supports Chronos Solos\n" +
+            "- Removed one now-outdated splash\n" +
             "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
             "(press your chat button to view full patch notes)"
     ],
+    ["0.4.5h1", "GalaxiteUtils has been updated to v0.4.5h1!\n" +
+            "I forgot to build once for 0.4.5 so it was slightly outdated, this may fix a couple issues\nv0.4.5 patch notes:\n\n" +
+            "- New module: Event Scorer\n" +
+            "  - Currently only supports Chronos Solos\n" +
+            "- Removed one now-outdated splash\n" +
+            "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
+            "(press your chat button to view full patch notes)"]
 ]);
