@@ -10,7 +10,7 @@ let eventScorer = new TextModule("eventscorer", "GXU: Event Scoring Helper", "Ke
 let optionUseInPubs = eventScorer.addBoolSetting("pubs", "Use in Public Games", "Whether to keep track of scores in public games.", false);
 let optionReloadKey = eventScorer.addKeySetting("reloadkey", "Reload Key", "Pressing this key will reload the current score weights.\n(This will NOT retroactively alter points in the middle of a game!)", 85 /* KeyCode.U */);
 client.getModuleManager().registerModule(eventScorer);
-const weightsLocation = "weights.json";
+const weightsLocation = "chronosWeights.json";
 /*
 Key points:
 - This can only work in Chronos Solos private games, unless "Use in Public Games" is enabled. Check for that on game start.
