@@ -21,7 +21,7 @@ let currentAttempts;
 let attemptDatabase;
 let attemptDirectory = "ParkourAttempts.json";
 if (!fs.exists(attemptDirectory)) {
-    fs.write(attemptDirectory, util.stringToBuffer(JSON.stringify({}, () => { }, 4)));
+    fs.write(attemptDirectory, util.stringToBuffer(JSON.stringify({}, null, 4)));
 }
 attemptDatabase = JSON.parse(util.bufferToString(fs.read(attemptDirectory)));
 /* Notes on what to do:
