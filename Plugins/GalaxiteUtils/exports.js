@@ -362,5 +362,6 @@ exports.patchNotes = new Map([
             "  - Currently only supports Chronos Solos\n" +
             "- Removed one now-outdated splash\n" +
             "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
-            "(press your chat button to view full patch notes)"]
+            "(press your chat button to view full patch notes)"],
+    ["0.4.5h2", "Emergency fix to Parkour Builders Attempts (done on my phone)"]
 ]);
