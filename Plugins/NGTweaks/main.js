@@ -143,3 +143,4 @@ client.on("receive-chat", (event) => {
 });
 
 client.getModuleManager().registerModule(exports.module);
+
