@@ -16,7 +16,7 @@ const NGAPITOKEN = "IjExNDYwNjExMzcwNjY4NTY0NTAi.Zs8aGw.XyuEYLZc5Jm7UKwIfDS8Nmq1
 var playerCache = {};
 
 function fixFormat(_str) {
-    return _str.split('§').join("\u00A7")
+    return _str.split('§').join("\u00A7").split('Â').join('')
 }
 
 function getQueryParams(token) {
