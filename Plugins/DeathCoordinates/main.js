@@ -26,19 +26,22 @@ if (!fs.exists(relativeDir)) {
 
 
 client.on("world-tick", () => {
-    const player = game.getLocalPlayer();
-    const health = player.getHealth();
 
-    if (health > 0) {
-        check = true;
-    }
+    if (mod.isEnabled()) {
+        const player = game.getLocalPlayer();
+        const health = player.getHealth();
 
-    if (health == 0 && check) {
-        const playerPos = player.getPosition();
-        const playerCoords = `[x:${playerPos.x.toFixed(2)} , y:${playerPos.y.toFixed(2)} , z:${playerPos.z.toFixed(2)}]`;
-        clientMessage(`\n${pluginText} You died at ${playerCoords}\n `);
-        fs.append(relativeDir, util.stringToBuffer(`[${new Date()}] -> ${playerCoords} -> ${world.getName()}\n`));
-        check = false;
+        if (health > 0) {
+            check = true;
+        }
+
+        if (health == 0 && check) {
+            const playerPos = player.getPosition();
+            const playerCoords = `[x:${playerPos.x.toFixed(2)} , y:${playerPos.y.toFixed(2)} , z:${playerPos.z.toFixed(2)}]`;
+            clientMessage(`\n${pluginText} You died at ${playerCoords}\n `);
+            fs.append(relativeDir, util.stringToBuffer(`[${new Date()}] -> ${playerCoords} -> ${world.getName()}\n`));
+            check = false;
+        }
     }
 
 });
