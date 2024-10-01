@@ -25,7 +25,7 @@ if (!fs.exists(relativeDir)) {
 }
 
 
-client.on("render2d", () => {
+client.on("world-tick", () => {
     const player = game.getLocalPlayer();
     const health = player.getHealth();
 
