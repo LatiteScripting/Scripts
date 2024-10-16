@@ -82,6 +82,10 @@
     {
       "name": "SpawnSphere",
       "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "NGTweaks",
+      "files": ["main.js", "plugin.json"]
     }
   ]
 }
