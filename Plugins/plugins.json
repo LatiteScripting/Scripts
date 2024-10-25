@@ -86,6 +86,10 @@
     {
       "name": "NGTweaks",
       "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "CommandUtils",
+      "files": ["main.js", "plugin.json"]
     }
   ]
 }
