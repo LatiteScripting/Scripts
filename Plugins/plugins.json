@@ -90,6 +90,10 @@
     {
       "name": "CommandUtils",
       "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "HiveNagRemove",
+      "files": ["main.js", "plugin.json"]
     }
   ]
 }
