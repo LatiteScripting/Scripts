@@ -61,3 +61,8 @@ client.on("key-press", evt => {
     // Execute the defined command then unset the cmd variable.
     game.executeCommand(cmd);
 })
+
+client.on("unload-script", evt => {
+    if (evt.scriptName != script.name) return
+    client.getModuleManager().deregisterModule(module);
+});
