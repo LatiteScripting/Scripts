@@ -4,6 +4,8 @@ let module = new Module("HiveNagRemove", "Hive Nag Remove", "Removes the naggy m
 client.getModuleManager().registerModule(module);
 
 client.on('receive-chat', evt => {
+    if(!module.isEnabled()) return
+    
     if(evt.message.startsWith('\xa76[\xa7e!\xa76]')) evt.cancel = true
 })
 
