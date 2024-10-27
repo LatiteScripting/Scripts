@@ -1,8 +1,9 @@
 "use strict";
 
-const module = new HudModule("BedwarsMap", "Bedwars Map", "Shows a minimalistic rotating map of The Hive Bedwars Solo and Duos maps!", 118, true);
+const module = new HudModule("BedwarsMap", "Bedwars Map", "Shows a minimalistic rotating map of The Hive BedWars Solo and Duo maps", 118, true);
 let borderRadius = module.addNumberSetting('borderradius', 'Border Radius', 'Border Radius', 2, 10, 1, 7);
 let squareSize = module.addNumberSetting('squaresize', 'Square Size', 'Square Size', 5, 25, 1, 20);
+let alphaElim = module.addBoolSetting('alphaelim', 'Elimination Alpha', 'Make teams darker/transparent when eliminated (Does not work on teams that did not spawn in!)', false);
 
 client.getModuleManager().registerModule(module);
 
@@ -10,14 +11,14 @@ const moduleSize = 150;
 const distance = 50;
 
 const bases = [
-    { angle: 157.5, color: { r: 1.0, g: 0.00, b: 0.0, a: 1 } }, // Island 1 (Red)
-    { angle: 202.5, color: { r: 1.0, g: 1.00, b: 0.0, a: 1 } }, // Island 2 (Yellow)
-    { angle: 247.5, color: { r: 0.5, g: 0.50, b: 0.5, a: 1 } }, // Island 3 (Gray)
-    { angle: 292.5, color: { r: 0.0, g: 0.00, b: 1.0, a: 1 } }, // Island 4 (Blue)
-    { angle: 337.5, color: { r: 1.0, g: 0.65, b: 0.0, a: 1 } }, // Island 5 (Orange)
-    { angle: 22.50, color: { r: 0.0, g: 1.00, b: 1.0, a: 1 } }, // Island 6 (Cyan)
-    { angle: 67.50, color: { r: 0.0, g: 1.00, b: 0.0, a: 1 } }, // Island 7 (Green)
-    { angle: 112.5, color: { r: 0.6, g: 0.00, b: 1.0, a: 1 } }  // Island 8 (Purple)
+    { angle: 157.5, color: new Color(1.0, 0.00, 0.0, 1), eliminated: false, team: 'red'     },
+    { angle: 202.5, color: new Color(1.0, 1.00, 0.0, 1), eliminated: false, team: 'yellow'  },
+    { angle: 247.5, color: new Color(0.5, 0.50, 0.5, 1), eliminated: false, team: 'gray'    },
+    { angle: 292.5, color: new Color(0.0, 0.00, 1.0, 1), eliminated: false, team: 'blue'    },
+    { angle: 337.5, color: new Color(1.0, 0.65, 0.0, 1), eliminated: false, team: 'orange'  },
+    { angle: 22.50, color: new Color(0.0, 1.00, 1.0, 1), eliminated: false, team: 'aqua'    },
+    { angle: 67.50, color: new Color(0.0, 1.00, 0.0, 1), eliminated: false, team: 'green'   },
+    { angle: 112.5, color: new Color(0.6, 0.00, 1.0, 1), eliminated: false, team: 'magenta' }
 ];
 
 let offset = 0;
@@ -26,14 +27,28 @@ let override = 0;
 client.on('receive-chat', evt => {
     if (!module.isEnabled()) return;
 
-    if (!evt.message.includes('won with')) return;
-
-    override = 0;
-
-    if (evt.message.includes('Sway Bells')) override = -90;
-    if (evt.message.includes('Oceanic')) override = 90;
-    if (evt.message.includes('Atlantis')) override = 90;
+    if(evt.message.includes('has been eliminated!')) return parseTeamElim(evt.message);
+    if(evt.message.includes('won with')) return parseMap(evt.message);
 });
+
+client.on('change-dimension', () => {
+    if(dimension.getName() != 'Overworld') return
+    for(let base of bases) base.eliminated = false;
+})
+
+function parseTeamElim(message) {
+    if(!alphaElim.getValue()) return;
+    const team = message.replace(/\xa7.|\xbb |has been eliminated!| team./gi, '').toLowerCase();
+    bases.find(base => base.team == team).eliminated = true;
+}
+
+function parseMap(message) {
+    if (message.includes('Sway Bells')) return override = -90;
+    if (message.includes('Oceanic'))    return override =  90;
+    if (message.includes('Atlantis'))   return override =  90;
+    
+    override = 0;
+}
 
 module.on("render", () => {
     const modulePos = module.getPos();
@@ -60,8 +75,8 @@ module.on("render", () => {
 
         const size = squareSize.getValue() / 2;
 
-        graphics.fillRect(new Rect(x - size - 1, y - size - 1, x + size + 1, y + size + 1), Color.BLACK, borderRadius.getValue());
-        graphics.fillRect(new Rect(x - size, y - size, x + size, y + size), base.color, borderRadius.getValue() - 1);
+        graphics.fillRect(new Rect(x - size - 1, y - size - 1, x + size + 1, y + size + 1), Color.BLACK.asAlpha(base.eliminated ? 0.25 : 1), borderRadius.getValue());
+        graphics.fillRect(new Rect(x - size, y - size, x + size, y + size), base.color.asAlpha(base.eliminated ? 0.25 : 1), borderRadius.getValue() - 1);
     });
 
     module.setRect(new Rect(modulePos.x, modulePos.y, modulePos.x + moduleSize, modulePos.y + moduleSize));
