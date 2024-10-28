@@ -94,6 +94,14 @@
     {
       "name": "HiveNagRemove",
       "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "BedwarsMap",
+      "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "DirectionHud",
+      "files": ["main.js", "plugin.json"]
     }
   ]
 }
