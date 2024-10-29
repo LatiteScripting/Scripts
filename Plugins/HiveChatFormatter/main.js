@@ -21,9 +21,9 @@ client.on('receive-chat', evt => {
     }
 
     // Regular User
-    if (/^\xa77\w* /.test(evt.message)) {
+    if (/\xa77(?=\D\w+ \xa77\xa7l\xbb)/.test(evt.message)) {
         evt.cancel = true;
-        clientMessage(evt.message.replace('\xa77', '\xa7' + colorReg));
+        clientMessage(evt.message.replace(/\xa77(?=\D\w+ \xa77\xa7l\xbb)/, '\xa7' + colorReg));
     }
 });
 
