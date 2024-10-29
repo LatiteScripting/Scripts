@@ -10,20 +10,20 @@ client.getModuleManager().registerModule(module);
 
 client.on('receive-chat', evt => {
     if (!module.isEnabled()) return;
-
+    
     let colorPlus = plus.getValue().toString(16);
     let colorReg  = reg.getValue().toString(16);
 
     // Hive+ User
-    if(/\[\xa7a\+\xa78\]/.test(evt.message)) {
+    if(/\xa7a(?=\D\w+)/.test(evt.message)) {
         evt.cancel = true;
-        clientMessage(evt.message.replace(/\xa7a/g, '\xa7' + colorPlus));
+        return clientMessage(evt.message.replace(/\xa7a/g, '\xa7' + colorPlus));
     }
     
     // Regular User
-    if (/^\xa77\w* /.test(evt.message)) {
+    if (/\xa77(?=\D\w+)/.test(evt.message)) {
         evt.cancel = true;
-        clientMessage(evt.message.replace('\xa77', '\xa7' + colorReg));
+        return clientMessage(evt.message.replace(/\xa77(?=\D\w+)/, '\xa7' + colorReg));
     }
 });
 
