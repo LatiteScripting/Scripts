@@ -96,6 +96,14 @@
       "files": ["main.js", "plugin.json"]
     },
     {
+      "name": "BedwarsMap",
+      "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "DirectionHud",
+      "files": ["main.js", "plugin.json"]
+    },
+    {
       "name": "HiveChatFormatter",
       "files": ["main.js", "plugin.json"]
     }
