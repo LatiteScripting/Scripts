@@ -94,6 +94,10 @@
     {
       "name": "HiveNagRemove",
       "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "HiveChatFormatter",
+      "files": ["main.js", "plugin.json"]
     }
   ]
 }
