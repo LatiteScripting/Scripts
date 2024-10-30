@@ -1,5 +1,3 @@
-/// <reference types="..\\node_modules\\@latitescripting\\latiteapi\\definitions"/>
-// @ts-check
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
@@ -70,11 +68,9 @@ function getPrintStr(name, team, playerCount, extra) {
 
 client.on("receive-chat", (event) => {
 
-    // if (mod.isEnabled()) {
-    if (true) {
+    if (mod.isEnabled()) {
 
-        // if (world.getName().toLowerCase().includes("nethergames")) {
-        if (world.getName().toLowerCase().includes("nethergames") || !game.getServer()) {
+        if (world.getName().toLowerCase().includes("nethergames")) {
 
             const mesg = Globals.fixFormat(event.message);
             const startIndex = mesg.indexOf(" \u00A7ehas joined ");
@@ -92,7 +88,6 @@ client.on("receive-chat", (event) => {
                 var send_new_api_req = true;
 
                 if (playerName in playerCache) {
-                    // @ts-ignore
                     if (playerName != game.getLocalPlayer().getName() || cacheOwnStats.getValue()) {
                         if (playerCache[playerName]["cacheTime"] > Date.now() - maxCacheTime.getValue() * 60000) {
                             send_new_api_req = false;
@@ -103,7 +98,6 @@ client.on("receive-chat", (event) => {
 
                 if (send_new_api_req) {
 
-                    // @ts-ignore
                     http.getAsync(`https://api.ngmc.co/v1/players/${playerName.split(' ').join("%20")}${Globals.getQueryParams()}`, {}, (resp) => {
 
                         const exec_time = Date.now() - start_time;
@@ -162,6 +156,3 @@ client.on("receive-chat", (event) => {
 
 
 client.getModuleManager().registerModule(mod);
-
-
-// §bPrathpro17 §ehas joined (§b5§e/§b12§e)!
