@@ -1,5 +1,3 @@
-/// <reference types="..\\node_modules\\@latitescripting\\latiteapi\\definitions"/>
-// @ts-check
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
