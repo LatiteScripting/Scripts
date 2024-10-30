@@ -108,7 +108,7 @@
       "files": ["main.js", "plugin.json"]
     },
     {
-      "name": "Translate",
+      "name": "HiveTranslate",
       "files": ["main.js", "plugin.json"]
     }
   ]

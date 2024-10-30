@@ -1,4 +1,4 @@
-let module = new Module("Translate", "Translate", "Translates non English messages to English.", 0);
+let module = new Module("HiveTranslate", "Hive Translate", "Translates non English messages to English on the Hive.", 0);
 client.getModuleManager().registerModule(module);
 
 const http = require("http");
