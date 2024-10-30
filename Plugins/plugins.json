@@ -85,7 +85,7 @@
     },
     {
       "name": "NGTweaks",
-      "files": ["main.js", "plugin.json"]
+      "files": ["main.js", "globals.js", "plugin.json"]
     },
     {
       "name": "CommandUtils",
