@@ -17,13 +17,13 @@ client.on('receive-chat', evt => {
     // Hive+ User
     if(/\[\xa7a\+\xa78\]/.test(evt.message)) {
         evt.cancel = true;
-        clientMessage(evt.message.replace(/\xa7a/g, '\xa7' + colorPlus));
+        clientMessage(evt.message.replace(/\xa7a(?=\D)/g, '\xa7' + colorPlus));
     }
 
     // Regular User
-    if (/\xa77(?=\D\w+ \xa77\xa7l\xbb)/.test(evt.message)) {
+    if (/\xa77(?=\D.+ \xa77\xa7l\xbb)/.test(evt.message)) {
         evt.cancel = true;
-        clientMessage(evt.message.replace(/\xa77(?=\D\w+ \xa77\xa7l\xbb)/, '\xa7' + colorReg));
+        clientMessage(evt.message.replace(/\xa77(?=\D.+ \xa77\xa7l\xbb)/, '\xa7' + colorReg));
     }
 });
 
