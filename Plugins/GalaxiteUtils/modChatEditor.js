@@ -21,11 +21,14 @@ let optionHidePrestigeIcons = chatEditor.addBoolSetting("hideprestige", "Hide Pr
 let optionClassicPrestigeIcons = chatEditor.addBoolSetting("classicprestige", "Classic Prestige Icons", "Uses Minecraft text for Prestige icons instead of custom graphics.", false);
 optionClassicPrestigeIcons.setCondition("hideprestige", false);
 optionHidePrestigeIcons.setCondition("classicprestige", false);
+let optionOverrideNameColor = chatEditor.addColorSetting("overridenamecolor", "Name Color Override", "Changes your name color on your screen. The closest Minecraft color to the input color will be used in chat.\n" +
+    "This setting is assumed to be disabled at less than 80% opacity.\n" +
+    "Check https://minecraft.wiki/w/Formatting_codes#Color_codes for a list of colors!", new Color(0, 0, 0, 0));
 client.getModuleManager().registerModule(chatEditor);
 // respectively: elite & ultra, elite, player, vip, ultra, influencer
 const rgxPlayerBadges = /(\uE096|\uE099|\uE09A|\uE09D|\uE09E|\uE09F) /;
-// elite, player, staff, helper, vip, ultra, influencer. combo badge excluded for its own test
-const rgxBadges = /(\uE099|\uE09A|\uE09B|\uE09C|\uE09D|\uE09E|\uE09F) /;
+// combo, elite, player, staff, helper, vip, ultra, influencer
+const rgxBadges = /(\uE096|\uE099|\uE09A|\uE09B|\uE09C|\uE09D|\uE09E|\uE09F) /;
 // all badges (for classic badges)
 const rgxAllBadges = /(\uE096|\uE099|\uE09A|\uE09B|\uE09C|\uE09D|\uE09E|\uE09F) /;
 // p1-p5 respectively
@@ -77,6 +80,39 @@ const classicServerMap = new Map([
     ["\uE0BE ", "\xa78[\xa73TEAM\xa78]\xa7r "],
     ["\uE0BF ", "\xa78[\xa75PARTY\xa78]\xa7r "], // party
 ]);
+const minecraftColors = [
+    col("000000"),
+    col("0000AA"),
+    col("00AA00"),
+    col("00AAAA"),
+    col("AA0000"),
+    col("AA00AA"),
+    col("FFAA00"),
+    col("C6C6C6"),
+    col("555555"),
+    col("5555FF"),
+    col("55FF55"),
+    col("55FFFF"),
+    col("FF5555"),
+    col("FF55FF"),
+    col("FFFF55"),
+    col("FFFFFF"),
+    col("DDD605"),
+    col("E3D4D1"),
+    col("CECACA"),
+    col("443A3B"),
+    null,
+    null,
+    col("971607"),
+    col("B4684D"),
+    null,
+    col("DEB12D"),
+    col("47A036"),
+    null,
+    col("2CBAA8"),
+    col("21497B"),
+    col("9A5CC6"), // u: amethyst
+];
 client.on("receive-chat", c => {
     if ((0, exports_1.notOnGalaxite)())
         return;
@@ -85,6 +121,30 @@ client.on("receive-chat", c => {
     if (!chatEditor.isEnabled())
         return;
     let editedMessage = c.message; // cache a message to edit and resend later
+    // NAME COLOR
+    nameColor: if (optionOverrideNameColor.getValue().a > 0.8) { // if there is no transparency in the color (treated as an enabled setting)
+        if (!rgxBadges.test(editedMessage))
+            break nameColor; // name color should only be changed on player-sent messages
+        if (!editedMessage.includes(game.getLocalPlayer().getName()))
+            break nameColor;
+        c.cancel = true;
+        // Find the best color
+        let bestIndex = 7; // gray by default just in case
+        let bestDistance = 4; // Max sum of squares is 3. This guarantees that it will be set on the first iteration.
+        let playerColor = optionOverrideNameColor.getValue();
+        minecraftColors.forEach((color, index) => {
+            if (color) {
+                let distance = sumOfSquares((color.r - playerColor.r), (color.g - playerColor.g), (color.b - playerColor.b));
+                if (distance < bestDistance) {
+                    bestDistance = distance;
+                    bestIndex = index;
+                }
+            }
+        });
+        // Apply the color
+        const playerName = game.getLocalPlayer().getName();
+        editedMessage = editedMessage.replace(playerName, `\xA7${bestIndex.toString(36) + playerName}`);
+    }
     // PRESTIGES
     if (optionClassicPrestigeIcons.getValue()) { // classic
         if (rgxPrestiges.test(editedMessage)) {
@@ -114,7 +174,7 @@ client.on("receive-chat", c => {
             editedMessage = editedMessage.replace("\uE096", optionComboToggle.getValue() ? "\uE089" : "\uE08E" // replace combo badge with short elite if option is on, short ultra if off
             );
         }
-        if (rgxBadges.test(editedMessage)) { // check for any badge except elite & ultra
+        else if (rgxBadges.test(editedMessage)) { // check for any badge except elite & ultra
             c.cancel = true;
             editedMessage = editedMessage.replace(rgxBadges, (substring) => {
                 var _a;
@@ -142,9 +202,28 @@ client.on("receive-chat", c => {
         }
         if (editedMessage.includes(" \xA7e\xA7l\xBB\xA7r ")) { // \xBB is », used for galaxite player messages
             c.cancel = true;
-            editedMessage = editedMessage.replace(" \xA7e\xA7l\xBB\xA7r ", ": \xA7r");
+            editedMessage = editedMessage.replace(" \xA7e\xA7l\xBB\xA7r ", "\xA7r: ");
         }
     }
     if (c.cancel)
         clientMessage(editedMessage.trim()); // if the message was changed, cancel the source message and resend the edited one
 });
+/**
+ * Returns the color represented by the hex code.
+ */
+function col(hex) {
+    return {
+        r: parseInt(hex.slice(0, 2), 16) / 255,
+        g: parseInt(hex.slice(2, 4), 16) / 255,
+        b: parseInt(hex.slice(4, 6), 16) / 255,
+        a: 1,
+        asAlpha: Color.prototype.asAlpha // this is stupid
+    };
+}
+function sumOfSquares(...nums) {
+    let sum = 0;
+    nums.forEach((value) => {
+        sum += Math.pow(value, 2);
+    });
+    return sum;
+}
