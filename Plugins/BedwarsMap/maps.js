@@ -57,6 +57,19 @@ exports.maps = {
             { "angle": 202.5, "color": [0.6, 0.00, 1.0], "team": "magenta" }
         ]
     },
+    "Ablaze": {
+        "distance": 50,
+        "islands": [
+            { "angle": 157.5, "color": [1.0, 0.00, 0.0], "team": "red"     },
+            { "angle": 247.5, "color": [1.0, 1.00, 0.0], "team": "yellow"  },
+            { "angle": 202.5, "color": [0.5, 0.50, 0.5], "team": "gray"    },
+            { "angle": 292.5, "color": [0.0, 0.00, 1.0], "team": "blue"    },
+            { "angle": 337.5, "color": [1.0, 0.65, 0.0], "team": "orange"  },
+            { "angle": 22.50, "color": [0.0, 1.00, 1.0], "team": "aqua"    },
+            { "angle": 112.5, "color": [0.0, 1.00, 0.0], "team": "green"   },
+            { "angle": 67.50, "color": [0.6, 0.00, 1.0], "team": "magenta" }
+        ]
+    },
 
     // Squads Maps
     "Autumn": {
