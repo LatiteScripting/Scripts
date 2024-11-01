@@ -97,7 +97,7 @@
     },
     {
       "name": "BedwarsMap",
-      "files": ["main.js", "plugin.json"]
+      "files": ["main.js", "maps.js", "plugin.json"]
     },
     {
       "name": "DirectionHud",
