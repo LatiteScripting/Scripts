@@ -106,6 +106,10 @@
     {
       "name": "HiveChatFormatter",
       "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "HiveTranslate",
+      "files": ["main.js", "plugin.json"]
     }
   ]
 }
