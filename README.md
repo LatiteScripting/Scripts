@@ -41,3 +41,5 @@ Use this command to clone the repository and all plugins inside it:
 git clone https://github.com/LatiteScripting/Scripts.git
 ```
 You can also [download the plugins here](https://github.com/LatiteScripting/Scripts/archive/refs/heads/master.zip)
+
+</>
