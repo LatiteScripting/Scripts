@@ -2,28 +2,27 @@
 const module = new HudModule("BedwarsMap", "Bedwars Map", "Adds a minimalistic rotating map for The Hive's Bedwars gamemode!", 118, true);
 client.getModuleManager().registerModule(module);
 
-let borderRadius = module.addNumberSetting('borderradius', 'Border Radius', 'Border Radius', 2, 10, 1, 7);
-let squareSize = module.addNumberSetting('squaresize', 'Square Size', 'Square Size', 5, 25, 1, 20);
-let elimAlpha = module.addBoolSetting('elimalpha', 'Elimination Alpha', 'Make teams darker/transparent when eliminated (Does not work on teams that did not spawn in!)', false);
-
 const { maps } = require('./maps.js');
 
 let currentMap = maps.default;
 
 const elimRegex = /(?:\xbb \xa7r\xa7\w)(\w+)(?= Team \xa77has been eliminated!)/;
 const mapRegex = /(?:\xbb \xa7r\xa7e)(.+)(?= \xa77won with \xa7f\d+ \xa77votes!)/;
+const bedRegex = /\xa7\w(\w+)(?= Team Bed Destroyed)/;
 
 client.on('receive-chat', event => {
     if(!module.isEnabled()) return;
 
     let msg = event.message;
 
-    if(elimRegex.test(msg) && elimAlpha.getValue())
-        return elimTeam(msg.match(elimRegex)[1]);
-
-    if(mapRegex.test(msg))
-        return lookupMap(msg.match(mapRegex)[1]);
+    if(elimRegex.test(msg)) return elimTeam(msg.match(elimRegex)[1]);
+    if(bedRegex.test(msg)) return breakTeam(msg.match(bedRegex)[1]);
+    if(mapRegex.test(msg)) return lookupMap(msg.match(mapRegex)[1]);
 });
+
+function breakTeam(team) {
+    currentMap.islands.find(island => island.team == team.toLowerCase()).broken = true;
+}
 
 function elimTeam(team) {
     currentMap.islands.find(island => island.team == team.toLowerCase()).eliminated = true;
@@ -35,7 +34,10 @@ function lookupMap(map) {
 
 client.on('change-dimension', () => {
     if(dimension.getName() != 'Overworld') return;
-    for(let island of currentMap.islands) island.eliminated = false;
+    for(let island of currentMap.islands) {
+        island.eliminated = false;
+        island.broken = false;
+    }
 })
 
 let offset = 0;
@@ -59,16 +61,13 @@ module.on("render", () => {
         const x = 75 + currentMap.distance * Math.cos(radians);
         const y = 75 + currentMap.distance * Math.sin(radians);
 
-        const size = squareSize.getValue() / 2;
+        let size = 10;
 
-        graphics.fillRect(new Rect(x - size - 1, y - size - 1, x + size + 1, y + size + 1), Color.BLACK.asAlpha(island.eliminated ? 0.25 : 1), borderRadius.getValue());
-        graphics.fillRect(new Rect(x - size, y - size, x + size, y + size), new Color(...island.color, island.eliminated ? 0.25 : 1), borderRadius.getValue() - 1);
+        graphics.fillRect(new Rect(x - size - 1, y - size - 1, x + size + 1, y + size + 1), Color.BLACK.asAlpha(island.eliminated ? 0.25 : 1), 7);
+
+        if(island.broken && !island.eliminated) size -= 2;
+        graphics.fillRect(new Rect(x - size, y - size, x + size, y + size), new Color(...island.color, island.eliminated ? 0.25 : 1), 6);
     });
 
     module.setRect(new Rect(modulePos.x, modulePos.y, modulePos.x + 150, modulePos.y + 150));
-});
-
-client.on("unload-script", event => {
-    if(event.scriptName != script.name) return;
-    client.getModuleManager().deregisterModule(module);
 });
