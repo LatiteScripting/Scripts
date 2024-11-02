@@ -32,23 +32,42 @@ No other modes have gg rewards */
 const rgxFtgCw = /Team\xA7r\xA7a won the game!/; // does it work like this?
 const rgxChRu = /(Is|Are) The \xA76\xA7l(Chronos|Rush) Champion(|s)!/;
 const rgxPh = /\xA7(bHiders|eSeekers)\xA7r\xA7f Win/;
+/**
+ * Sends "gg" if:
+ * * The player is not on Wiki Team OR
+ * * The player is on Wiki Team, but has the secret "Nerd Toggle" option disabled
+ * Sends "Good game!" if:
+ * * The player is on Wiki Team AND EITHER
+ *   * The player has the secret "Nerd Toggle" option disabled OR
+ *   * The player cannot see the secret "Nerd Toggle" option
+ */
 function sendGG() {
-    if ((0, exports_1.nerdRadar)() && (nerdToggle.getValue() == null || nerdToggle.getValue())) { // if the sender is wiki team, and either the nerd toggle setting does not exist or is on
-        sendMessage("Good game!");
-        if (!fs.exists("NerdToggle")) { // if the nerdtoggle file does not exist
-            fs.write("NerdToggle", util.stringToBuffer(exports_1.gxuSplashes[Math.floor(Math.random() * exports_1.gxuSplashes.length)])); // force it to exist and write anything on it really
+    sendMessage(hasNerdToggleEnabled() ? "Good game!" : "gg");
+}
+function hasNerdToggleEnabled() {
+    if ((0, exports_1.nerdRadar)()) { // If on wiki team in the first place
+        if (!fs.exists("NerdToggle") || !nerdToggle) { // Secret option not discovered -> always acts as true
+            fs.write("NerdToggle", util.stringToBuffer(String.fromCharCode(0x1F913))); // Make the file for future use
+            return true;
+        }
+        else { // Secret option discovered and visible -> always acts as setting value
+            return nerdToggle.getValue();
         }
     }
-    else {
-        sendMessage("gg");
+    else { // Not on wiki team -> always false
+        return false;
     }
 }
+let firstError = true;
 function sendMessage(message) {
     try {
         game.sendChatMessage(message);
     }
     catch (error) {
-        (0, exports_1.sendGXUMessage)("Error in AutoGG: there is currently no permission to send messages");
+        if (firstError) {
+            (0, exports_1.sendGXUMessage)("Error in AutoGG: there is currently no permission to send messages");
+            firstError = false;
+        }
     }
 }
 // All games have a title

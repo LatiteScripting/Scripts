@@ -82,7 +82,8 @@ client.on("key-press", k => {
         return;
     if (k.keyCode != optionCopyWhereAmI.getValue())
         return;
-    let whereami = `\`\`\`Username: ${WhereAmAPI_1.api.username}` +
+    let whereami = `\`\`\`yaml` +
+        `\nUsername: ${WhereAmAPI_1.api.username}` +
         `\nServerUUID: ${WhereAmAPI_1.api.serverUUID}` +
         `\nPodName: ${WhereAmAPI_1.api.podName}` +
         `\nServerName: ${WhereAmAPI_1.api.serverName}` +
@@ -110,8 +111,9 @@ const galaxiteNerds = [
     "Eclipse2421",
     "AJckk",
     "GalaxiteAJ",
-    "A2K Delta133",
-    "SpinaRosam"
+    // "A2K Delta133",
+    "SpinaRosam",
+    "Minokotick",
 ];
 /**
 * Returns `true` if the player is a Wiki Team member; `false` if they aren't.
@@ -152,6 +154,7 @@ function getNickname() {
 }
 exports.getNickname = getNickname;
 ;
+;
 /**
  * The default parameters used for Chronos scoring.
  */
@@ -172,6 +175,7 @@ exports.defaultWeights = {
         "  - If you want only fifth to receive 10 points, you can set it to [0, 0, 0, -10, 10] - the player in fifth place cannot receive the placement points for fourth.",
         "  - For no placement bonus, you can simply have an empty array!",
         "- There is no weight for a player being eliminated because, for the same effect, you can give a bonus to only the winner.",
+        "- All keys that do not exist have a property of 0."
     ],
     basePoints: 0,
     kill: 0,
@@ -188,7 +192,13 @@ exports.defaultWeights = {
         0,
         0,
         0
-    ]
+    ],
+    timeLeaderPerSecond: 0,
+    timeLeaderAtTimeFreeze: 0,
+    killWhileTimeLeader: 0,
+    deathWhileTimeLeader: 0,
+    killAgainstTimeLeader: 0,
+    deathAgainstTimeLeader: 0
 };
 /**
  * A collection of splash texts.
@@ -362,6 +372,22 @@ exports.patchNotes = new Map([
             "  - Currently only supports Chronos Solos\n" +
             "- Removed one now-outdated splash\n" +
             "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
-            "(press your chat button to view full patch notes)"],
-    ["0.4.5h2", "Emergency fix to Parkour Builders Attempts (done on my phone)"]
+            "(press your chat button to view full patch notes)"
+    ],
+    ["0.4.5h2", "Emergency fix to Parkour Builders Attempts (done on my phone)"],
+    // ["0.4.6", "GalaxiteUtils has been updated to v0.4.6!\n" +
+    //     "- Chat Editor can now let you choose your own name color\n" +
+    //     "- AutoGG now stores whether it can be used for the session\n" +
+    //     "- Chronos in EventScorer can now keep track of Time Leader-based events\n" +
+    //     "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
+    //     "(press your chat button to view full patch notes)"
+    // ],
+    ["0.4.6", "GalaxiteUtils has been updated to v0.4.6!\n" +
+            "- You can now override your name color using Chat Editor (even to be RGB, if you \xA7oreally\xA7r want to be fancy)\n" +
+            "- AutoGG now stores whether it can be used for the session\n" +
+            "- Copying WhereAmI information now copies the information as a yaml for better formatting\n" +
+            "- Fixed an uncaught error in AutoGG\n" +
+            "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
+            "(press your chat button to view full patch notes)"
+    ],
 ]);
