@@ -2,12 +2,14 @@
 // Chronos Scorer: Helper for scoring Chronos Solos events.
 // TODO: Reload key, sort players by elimination index
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getProp = void 0;
 const exports_1 = require("./exports");
 const WhereAmAPI_1 = require("./WhereAmAPI");
 const fs = require("filesystem");
 const clipboard = require("clipboard");
 let eventScorer = new TextModule("eventscorer", "GXU: Event Scoring Helper", "Keeps track of points in games. (All parameters are stored in weights.json)", 0 /* KeyCode.None */);
 let optionUseInPubs = eventScorer.addBoolSetting("pubs", "Use in Public Games", "Whether to keep track of scores in public games.", false);
+let optionAssumeSpectator = eventScorer.addBoolSetting("assumespectator", "Assume Spectator", "Makes the logic always assume you are a spectator in games played. This allows for certain additional parameters to be utilized.", false);
 let optionReloadKey = eventScorer.addKeySetting("reloadkey", "Reload Key", "Pressing this key will reload the current score weights.\n(This will NOT retroactively alter points in the middle of a game!)", 85 /* KeyCode.U */);
 client.getModuleManager().registerModule(eventScorer);
 const weightsLocation = "chronosWeights.json";
@@ -30,6 +32,7 @@ if (!fs.exists(weightsLocation)) {
 loadWeightFile();
 // Main hooks
 let active = false;
+let spectator = true;
 client.on("title", e => {
     if ((0, exports_1.notOnGalaxite)())
         return;
@@ -70,11 +73,12 @@ function gameStart() {
     let rgxCreationString = ""; // More is added later on
     playersAtGameStart.forEach((playerName, index) => {
         playerDatabase[playerName] = {
-            score: weights.basePoints,
+            score: getProp("basePoints"),
             eliminatedIndex: 0,
             lastAppearanceIndex: 0,
             bountyCompletions: 0,
-            probableSpectator: false
+            probableSpectator: false,
+            secondsAsTimeLeader: 0
         };
         /*
         playerDatabase looks like:
@@ -91,8 +95,22 @@ function gameStart() {
 }
 // E0AD is a special arrow symbol used before every death message
 const deathMessageCheck = /\uE0AD/;
+const timeLeaderTitleExtractor = /(?!Time Leader: \xA74)[a-z][\w -]+/; // This functions, but I have to get [1] and not [0]
+const timeFreezeCheck = /\uE0BD Time slows down and begins to freeze! Kills no longer give time!/;
 // const gameEndCheck = /(?!\uE0BD )[a-zA-Z][a-zA-Z0-9 _-]+(?= Is The Chronos Champion!)/;
-const formatReplacer = /\xA7.|\[\+\d+\]/g; // Replaces both Minecraft formatting and the Chronos time on kill indicator
+const formatReplacer = /\xA7[.!4]|\[\+\d+\]/g; // Replaces both Minecraft formatting and the Chronos time on kill indicator
+const timeLeaderChatExtractor = /(?:\xA74)[.+]/;
+// Time Leader interpreter
+let lastTimeLeader = "";
+let lastTitleTimestamp = 0;
+client.on("title", e => {
+    // Store time leader title to avoid using 2 title events. This will make sense later.
+    if (active &&
+        e.type == "actionbar"
+        && e.text.includes("Time Leader: \xA74")) {
+        lastTimeLeader = e.text;
+    }
+});
 // Interpret game messages
 client.on("receive-chat", m => {
     if ((0, exports_1.notOnGalaxite)())
@@ -103,14 +121,24 @@ client.on("receive-chat", m => {
     const message = fixNickname(m.message).replace(formatReplacer, "").trim();
     // 1. Verify that a message is a system message
     const deathMessage = deathMessageCheck.test(message);
+    const timeFreeze = timeFreezeCheck.test(message);
     // const gameEnd = gameEndCheck.test(message);
-    if (!(deathMessage /* || gameEnd */))
+    if (!(deathMessage || timeFreeze /* || gameEnd */))
         return;
     // Since this message is being considered, add to the message index
     messageIndex += 1;
     // 2. Interpret the contents of the message
     // note: look for the bounty kill (\uE148), bounty shutdown (\uE14A), and elimination (\uE136) symbols
     // note: Consider the matches of playerRegex
+    // Time freeze case
+    if (timeFreeze) {
+        const timeFreezeMatch = fixNickname(lastTimeLeader).match(playerRegex); // Get the player from the time leader title
+        if (!timeFreezeMatch)
+            return; // If there somehow is no match, stop processing
+        const timeLeader = timeFreezeMatch[0];
+        (0, exports_1.sendGXUMessage)(`Detected time freeze: Time Leader is ${timeLeader}`);
+        playerDatabase[timeLeader].score += getProp("timeLeaderAtTimeFreeze"); // The player who is in the title
+    }
     // Death message case
     if (deathMessage) {
         const matches = message.match(playerRegex); // Get the players who appear in the message
@@ -121,7 +149,7 @@ client.on("receive-chat", m => {
         if (matches.length == 1) { // One player - always a death or elimination message
             const deadPlayer = matches[0];
             playerDatabase[deadPlayer].lastAppearanceIndex = messageIndex + 0.5;
-            playerDatabase[deadPlayer].score += weights.death;
+            playerDatabase[deadPlayer].score += getProp("death");
             if (elimination) {
                 playerDatabase[deadPlayer].eliminatedIndex = messageIndex;
             }
@@ -131,12 +159,12 @@ client.on("receive-chat", m => {
             const deadPlayer = matches[1];
             playerDatabase[killer].lastAppearanceIndex = messageIndex + 0.5;
             playerDatabase[deadPlayer].lastAppearanceIndex = messageIndex;
-            playerDatabase[killer].score += weights.kill;
-            playerDatabase[deadPlayer].score += weights.death;
+            playerDatabase[killer].score += getProp("kill");
+            playerDatabase[deadPlayer].score += getProp("death");
             if (bountyKill) {
                 // Add bounty points. Bounty completions is set to 0 by default, so this is done first to work with 0-indexing.
                 // This may cause an error if the config is changed mid-event. However, people really shouldn't do that.
-                playerDatabase[killer].score += weights.bountyCompletionKill[playerDatabase[killer].bountyCompletions];
+                playerDatabase[killer].score += getProp("bountyCompletionKill")[playerDatabase[killer].bountyCompletions]; // ?????
                 // Increment the player's bounty completions, as long as the current config allows for it.
                 if (weights.bountyCompletionKill.length - 1 > playerDatabase[killer].bountyCompletions) { // -1 because zero indexed
                     playerDatabase[killer].bountyCompletions += 1;
@@ -167,7 +195,7 @@ client.on("receive-chat", m => {
 function endGame() {
     // Re-assign eliminations
     const databaseKVPsForElims = getEntries(playerDatabase); // 2d array. Given [n][m]: [n] is an index; [m = 0] is the player name, [m = 1] is their information
-    let playerDatabaseNoSpectators = {}; // I don't know how to delete an entry so I'm rebuilding it from the start
+    let playerDatabaseFinal = {}; // I don't know how to delete an entry so I'm rebuilding it from the start
     // Verify elimination timing
     databaseKVPsForElims.forEach(([playerName, playerData]) => {
         if (playerData.eliminatedIndex == 0 && playerData.lastAppearanceIndex == 0) { // Both not set - probably spectator
@@ -175,28 +203,30 @@ function endGame() {
         }
         else if (playerData.eliminatedIndex == 0 && playerData.lastAppearanceIndex != 0) { // Only last appearance set - presumably disconnected after last appearance
             playerDatabase[playerName].eliminatedIndex = playerData.lastAppearanceIndex;
-            playerDatabaseNoSpectators[playerName] = playerDatabase[playerName];
+            playerDatabaseFinal[playerName] = playerDatabase[playerName];
         }
         else {
-            playerDatabaseNoSpectators[playerName] = playerDatabase[playerName];
+            playerDatabaseFinal[playerName] = playerDatabase[playerName];
         }
     });
     // Handle placement
-    let databaseKVPsForPlacement = getEntries(playerDatabaseNoSpectators);
+    let databaseKVPsForPlacement = getEntries(playerDatabaseFinal);
     databaseKVPsForPlacement = sortScores(databaseKVPsForPlacement, false);
     // Note: databaseKVPsForPlacement.length is the total amount of valid players
     // -> .length - i is the amount of other players
-    databaseKVPsForPlacement.forEach(([playerName, playerData], i, kvp) => {
-        kvp.forEach(([playerNameJ, playerDataJ], j) => {
+    databaseKVPsForPlacement.forEach(([playerName, playerData], playerComparedAgainstIndex, kvp) => {
+        kvp.forEach(([playerNameScored, playerDataScored], playerIndexScored) => {
             var _a;
             assignPlacementScores: {
-                if (j <= i) {
+                if (playerIndexScored <= playerComparedAgainstIndex) { // if comparing to self or a lower-placed player, stop
                     break assignPlacementScores;
                 }
                 // Survival points
-                playerDatabaseNoSpectators[playerNameJ].score += weights.otherEliminatedPlayer;
+                playerDatabaseFinal[playerNameScored].score += weights.otherEliminatedPlayer;
                 // Placement points
-                playerDatabaseNoSpectators[playerNameJ].score += (_a = weights.placement[databaseKVPsForPlacement.length - i]) !== null && _a !== void 0 ? _a : 0;
+                playerDatabaseFinal[playerNameScored].score += (_a = weights.placement[
+                // placement[0] is winner, [1] is 2nd, [2] is 3rd...
+                databaseKVPsForPlacement.length - playerComparedAgainstIndex]) !== null && _a !== void 0 ? _a : 0;
             }
         });
     });
@@ -219,6 +249,8 @@ eventScorer.on("text", (p, e) => {
     if (!eventScorer.isEnabled())
         return "";
     if (!(WhereAmAPI_1.api.serverName == "ChronosSolo"))
+        return "";
+    if (!active)
         return "";
     return scoresText;
 });
@@ -270,3 +302,11 @@ function loadWeightFile() {
 function resetWeightFile() {
     fs.write(weightsLocation, util.stringToBuffer(JSON.stringify(exports_1.defaultWeights, null, 2)));
 }
+/**
+ * Returns the supplied `weight`'s value for the key `property`, or `0` if this does not exist.
+ */
+function getProp(property) {
+    var _a;
+    return (_a = weights[property]) !== null && _a !== void 0 ? _a : 0;
+}
+exports.getProp = getProp;
