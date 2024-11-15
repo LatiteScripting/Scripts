@@ -50,7 +50,7 @@ class WhereAmAPI extends EventEmitter_1.EventEmitter {
         var _a, _b;
         let cancel = false;
         if (message.includes("ServerUUID:") && message.includes("\n")) { // Check for message (users can't send \n)
-            let formattedMessage = message.replace("\uE0BC \xA7c", ""); // Cache message
+            let formattedMessage = message.replace("\uE6BC \xA7c", ""); // Cache message
             let entries = (_a = formattedMessage.split("\n\xA7c")) !== null && _a !== void 0 ? _a : ""; // Split up the response at this substring, in the process splitting by line and removing color
             let whereAmIPairs = [];
             for (let i = 0; i < entries.length; i++) { // For each entry:

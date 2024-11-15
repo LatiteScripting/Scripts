@@ -26,24 +26,24 @@ let optionOverrideNameColor = chatEditor.addColorSetting("overridenamecolor", "N
     "Check https://minecraft.wiki/w/Formatting_codes#Color_codes for a list of colors!", new Color(0, 0, 0, 0));
 client.getModuleManager().registerModule(chatEditor);
 // respectively: elite & ultra, elite, player, vip, ultra, influencer
-const rgxPlayerBadges = /(\uE096|\uE099|\uE09A|\uE09D|\uE09E|\uE09F) /;
+const rgxPlayerBadges = /(\uE396|\uE399|\uE39A|\uE39D|\uE39E|\uE39F) /;
 // combo, elite, player, staff, helper, vip, ultra, influencer
-const rgxBadges = /(\uE096|\uE099|\uE09A|\uE09B|\uE09C|\uE09D|\uE09E|\uE09F) /;
+const rgxBadges = /(\uE396|\uE399|\uE39A|\uE39B|\uE39C|\uE39D|\uE39E|\uE39F) /;
 // all badges (for classic badges)
-const rgxAllBadges = /(\uE096|\uE099|\uE09A|\uE09B|\uE09C|\uE09D|\uE09E|\uE09F) /;
+const rgxAllBadges = /(\uE396|\uE399|\uE39A|\uE39B|\uE39C|\uE39D|\uE39E|\uE39F) /;
 // p1-p5 respectively
-const rgxPrestiges = /(\uE1D9|\uE1DA|\uE1DB|\uE1DC|\uE1DD)/;
+const rgxPrestiges = /(\uE4D9|\uE4DA|\uE4DB|\uE4DC|\uE4DD)/;
 // notice, join, warn, info, game, team, party
-const rgxServerBadges = /(\uE0B9|\uE0BA|\uE0BB|\uE0BC|\uE0BD|\uE0BE|\uE0BF) /;
+const rgxServerBadges = /(\uE3B9|\uE3BA|\uE3BB|\uE3BC|\uE3BD|\uE3BE|\uE3BF) /;
 // map that converts long badges to short badges
 const shortbadgeMap = new Map([
-    ["\uE099 ", "\uE089 "],
-    ["\uE09A ", "\uE08A "],
-    ["\uE09B ", "\uE08B "],
-    ["\uE09C ", "\uE08C "],
-    ["\uE09D ", "\uE08D "],
-    ["\uE09E ", "\uE08E "],
-    ["\uE09F ", "\uE08F "], // influencer
+    ["\uE399 ", "\uE389 "],
+    ["\uE39A ", "\uE38A "],
+    ["\uE39B ", "\uE38B "],
+    ["\uE39C ", "\uE38C "],
+    ["\uE39D ", "\uE38D "],
+    ["\uE39E ", "\uE38E "],
+    ["\uE39F ", "\uE38F "], // influencer
 ]);
 /* stole this character width key from a bukkit forum (https://bukkit.org/threads/formatting-plugin-output-text-into-columns.8481/):
 A: 6    B: 6    C: 6    D: 6    E: 6    F: 6    G: 6    H: 6   *I: 4*   J: 6    K: 6    L: 6    M: 6
@@ -55,30 +55,30 @@ n: 6    o: 6    p: 6    q: 6    r: 6    s: 6   *t: 4*   u: 6    v: 6    w: 6    
 evidently i didn't care about symmetry
 */
 const classicBadgeMap = new Map([
-    ["\uE096 ", "\xa78[\xa7eE\xa76L\xa7cI\xa7dT\xa75E\xa78]\xa7r "],
-    ["\uE099 ", "\xa78[\xa7eELITE\xa78]\xa7r "],
-    ["\uE09A ", "\xa78[\xa77PLAYER\xa78]\xa7r "],
-    ["\uE09B ", "\xa78[\xa79STAFF\xa78]\xa7r "],
-    ["\uE09C ", "\xa78[\xa72HELPER\xa78]\xa7r "],
-    ["\uE09D ", "\xa78[\xa7dVIP\xa78]\xa7r "],
-    ["\uE09E ", "\xa78[\xa75ULTRA\xa78]\xa7r "],
-    ["\uE09F ", "\xa78[\xa7cINFLUENCER\xa78]\xa7r "], // influencer (red)
+    ["\uE396 ", "\xa78[\xa7eE\xa76L\xa7cI\xa7dT\xa75E\xa78]\xa7r "],
+    ["\uE399 ", "\xa78[\xa7eELITE\xa78]\xa7r "],
+    ["\uE39A ", "\xa78[\xa77PLAYER\xa78]\xa7r "],
+    ["\uE39B ", "\xa78[\xa79STAFF\xa78]\xa7r "],
+    ["\uE39C ", "\xa78[\xa72HELPER\xa78]\xa7r "],
+    ["\uE39D ", "\xa78[\xa7dVIP\xa78]\xa7r "],
+    ["\uE39E ", "\xa78[\xa75ULTRA\xa78]\xa7r "],
+    ["\uE39F ", "\xa78[\xa7cINFLUENCER\xa78]\xa7r "], // influencer (red)
 ]);
 const classicPrestigeMap = new Map([
-    ["\uE1D9", "\xa78(\xa7nP1\xa78)\xa7r "],
-    ["\uE1DA", "\xa78(\xa7iP2\xa78)\xa7r "],
-    ["\uE1DB", "\xa78(\xa7gP3\xa78)\xa7r "],
-    ["\uE1DC", "\xa78(\xa7uP4\xa78)\xa7r "],
-    ["\uE1DD", "\xa78(\xa7sP5\xa78)\xa7r "], // p5 (diamond)
+    ["\uE4D9", "\xa78(\xa7nP1\xa78)\xa7r "],
+    ["\uE4DA", "\xa78(\xa7iP2\xa78)\xa7r "],
+    ["\uE4DB", "\xa78(\xa7gP3\xa78)\xa7r "],
+    ["\uE4DC", "\xa78(\xa7uP4\xa78)\xa7r "],
+    ["\uE4DD", "\xa78(\xa7sP5\xa78)\xa7r "], // p5 (diamond)
 ]);
 const classicServerMap = new Map([
-    ["\uE0B9 ", "\xa78[\xa7dNOTICE\xa78]\xa7r "],
-    ["\uE0BA ", "\xa78[\xa72JOIN\xa78]\xa7r "],
-    ["\uE0BB ", "\xa78[\xa74WARN\xa78]\xa7r "],
-    ["\uE0BC ", "\xa78[\xa7eINFO\xa78]\xa7r "],
-    ["\uE0BD ", "\xa78[\xa7aGAME\xa78]\xa7r "],
-    ["\uE0BE ", "\xa78[\xa73TEAM\xa78]\xa7r "],
-    ["\uE0BF ", "\xa78[\xa75PARTY\xa78]\xa7r "], // party
+    ["\uE3B9 ", "\xa78[\xa7dNOTICE\xa78]\xa7r "],
+    ["\uE3BA ", "\xa78[\xa72JOIN\xa78]\xa7r "],
+    ["\uE3BB ", "\xa78[\xa74WARN\xa78]\xa7r "],
+    ["\uE3BC ", "\xa78[\xa7eINFO\xa78]\xa7r "],
+    ["\uE3BD ", "\xa78[\xa7aGAME\xa78]\xa7r "],
+    ["\uE3BE ", "\xa78[\xa73TEAM\xa78]\xa7r "],
+    ["\uE3BF ", "\xa78[\xa75PARTY\xa78]\xa7r "], // party
 ]);
 const minecraftColors = [
     col("000000"),
@@ -169,9 +169,9 @@ client.on("receive-chat", c => {
         }
     }
     if (optionCompactBadges.getValue()) { // shorten
-        if (editedMessage.includes("\uE096")) { // check for elite & ultra
+        if (editedMessage.includes("\uE396")) { // check for elite & ultra
             c.cancel = true;
-            editedMessage = editedMessage.replace("\uE096", optionComboToggle.getValue() ? "\uE089" : "\uE08E" // replace combo badge with short elite if option is on, short ultra if off
+            editedMessage = editedMessage.replace("\uE396", optionComboToggle.getValue() ? "\uE389" : "\uE38E" // replace combo badge with short elite if option is on, short ultra if off
             );
         }
         else if (rgxBadges.test(editedMessage)) { // check for any badge except elite & ultra

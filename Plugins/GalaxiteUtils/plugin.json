@@ -1,6 +1,7 @@
 {
-    "name": "GalaxiteUtils",
     "author": "1unar_Eclipse",
-    "version": "0.4.6",
-    "description": "Various modules intended for use on Galaxite"
+    "description": "Various modules intended for use on Galaxite",
+    "lastLaunch": false,
+    "name": "GalaxiteUtils",
+    "version": "0.4.6h1"
 }

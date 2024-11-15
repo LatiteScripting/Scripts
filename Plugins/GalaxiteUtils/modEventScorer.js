@@ -21,7 +21,7 @@ Key points:
 - In messages with 2 player names, the FIRST player was the killer, and the SECOND player was the one killed.
   - The Corruption is the exception.
 - Elimination is indicated by either:
-  - The character \uE136 appearing in the message
+  - The character \uE436 appearing in the message
   - The player not appearing in any future messages (assume elimination via disconnect immediately after)
 */
 // Initialize the scores file if it doesn't exist
@@ -94,10 +94,10 @@ function gameStart() {
     scoresText = getCurrentScores();
 }
 // E0AD is a special arrow symbol used before every death message
-const deathMessageCheck = /\uE0AD/;
+const deathMessageCheck = /\uE3AD/;
 const timeLeaderTitleExtractor = /(?!Time Leader: \xA74)[a-z][\w -]+/; // This functions, but I have to get [1] and not [0]
-const timeFreezeCheck = /\uE0BD Time slows down and begins to freeze! Kills no longer give time!/;
-// const gameEndCheck = /(?!\uE0BD )[a-zA-Z][a-zA-Z0-9 _-]+(?= Is The Chronos Champion!)/;
+const timeFreezeCheck = /\uE3BD Time slows down and begins to freeze! Kills no longer give time!/;
+// const gameEndCheck = /(?!\uE3BD )[a-zA-Z][a-zA-Z0-9 _-]+(?= Is The Chronos Champion!)/;
 const formatReplacer = /\xA7[.!4]|\[\+\d+\]/g; // Replaces both Minecraft formatting and the Chronos time on kill indicator
 const timeLeaderChatExtractor = /(?:\xA74)[.+]/;
 // Time Leader interpreter
@@ -128,7 +128,7 @@ client.on("receive-chat", m => {
     // Since this message is being considered, add to the message index
     messageIndex += 1;
     // 2. Interpret the contents of the message
-    // note: look for the bounty kill (\uE148), bounty shutdown (\uE14A), and elimination (\uE136) symbols
+    // note: look for the bounty kill (\uE448), bounty shutdown (\uE44A), and elimination (\uE436) symbols
     // note: Consider the matches of playerRegex
     // Time freeze case
     if (timeFreeze) {
@@ -145,7 +145,7 @@ client.on("receive-chat", m => {
         if (!matches)
             return;
         // Various properties
-        const elimination = message.includes("\uE136"), bountyKill = message.includes("\uE148"), bountyShutdown = message.includes("\uE14A");
+        const elimination = message.includes("\uE436"), bountyKill = message.includes("\uE448"), bountyShutdown = message.includes("\uE44A");
         if (matches.length == 1) { // One player - always a death or elimination message
             const deadPlayer = matches[0];
             playerDatabase[deadPlayer].lastAppearanceIndex = messageIndex + 0.5;
