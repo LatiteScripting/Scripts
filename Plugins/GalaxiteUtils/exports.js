@@ -277,7 +277,7 @@ exports.gxuSplashes = [
     "What's a meta, anyway?",
     "Does not help with escaping the Entity",
     "Sonic Snowballs were such a good item Mojang added them officially",
-    "\uE1E4",
+    "\uE4E4",
     "5D Parkour Builders with Multiverse Time Travel",
     "Allays are just Orbi's kids stop hiding the truth Mojang",
     "Problem: white flour (and whole wheat flour) have virtually no nutrition in comparison to actual wheat.",
@@ -387,6 +387,11 @@ exports.patchNotes = new Map([
             "- AutoGG now stores whether it can be used for the session\n" +
             "- Copying WhereAmI information now copies the information as a yaml for better formatting\n" +
             "- Fixed an uncaught error in AutoGG\n" +
+            "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
+            "(press your chat button to view full patch notes)"
+    ],
+    ["0.4.6h1", "GalaxiteUtils has been updated to v0.4.6h1!\n" +
+            "- Fixed most chat parsing failing due to a recent Galaxite update\n" +
             "\nRemember to report any bugs you find! Ping @1unar_Eclipse on the Galaxite or Latite Discord or open an issue at https://github.com/1unar-Eclipse/GalaxiteUtils.\n" +
             "(press your chat button to view full patch notes)"
     ],

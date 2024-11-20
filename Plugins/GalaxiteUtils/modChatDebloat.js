@@ -4,11 +4,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/OnixClient-Scripts/OnixClient_Scripts/blob/bee9a02abc5469c3bb5aea4402ab4b0813c40fa7/Modules/gxt.lua
 /* NOTES:
-- Join: \ue0ba
-- Info (ex. invisible): \ue0bc
+- Join: \uE3ba
+- Info (ex. invisible): \uE3bc
   Note: only apply this to invisible messages, Info has some useful stuff + invisible is the module anyway
-- Notice (ex. hub messages): \ue0b9
-- Warn: \ue0bb (intentionally omitted)
+- Notice (ex. hub messages): \uE3b9
+- Warn: \uE3bb (intentionally omitted)
 - Melvin: \u00ad\u0020\u00a7\u006c\u00a7\u0036Miner
 */
 const exports_1 = require("./exports");
@@ -26,19 +26,19 @@ client.on("receive-chat", msg => {
         return;
     // cache message for ease of reference
     let message = msg.message;
-    if (message.startsWith("\uE0B9") && optionHideNotices.getValue()) { // notices
+    if (message.startsWith("\uE3B9") && optionHideNotices.getValue()) { // notices
         msg.cancel = true;
     }
-    if (message.startsWith("\uE0BA") && optionHideJoins.getValue()) { // join
+    if (message.startsWith("\uE3BA") && optionHideJoins.getValue()) { // join
         msg.cancel = true;
     }
-    if (message.startsWith("\uE0AD \xa7l\xa76Miner Melvin\xa7r \xa7e\xa7l\xbb\xa7r") && optionHideMelvin.getValue()) { // melvin
+    if (message.startsWith("\uE3AD \xa7l\xa76Miner Melvin\xa7r \xa7e\xa7l\xbb\xa7r") && optionHideMelvin.getValue()) { // melvin
         msg.cancel = true;
     }
-    if (message.startsWith("\uE0BC You are now") && optionHideVisibility.getValue()) { // visibility
+    if (message.startsWith("\uE3BC You are now") && optionHideVisibility.getValue()) { // visibility
         msg.cancel = true;
     }
-    if (message.startsWith("\uE0BC \xa7aWelcome to Galaxite") && optionHideWelcome.getValue()) { // welcomes
+    if (message.startsWith("\uE3BC \xa7aWelcome to Galaxite") && optionHideWelcome.getValue()) { // welcomes
         msg.cancel = true;
     }
 });
