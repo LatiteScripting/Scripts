@@ -96,8 +96,18 @@
       "files": ["main.js", "plugin.json"]
     },
     {
-      "name": "BedwarsMap",
-      "files": ["main.js", "maps.js", "plugin.json"]
+      "name": "HiveBedwarsMap",
+      "files": [
+        "main.js", "maps.js", "plugin.json",
+        "textures/red.png", "textures/red_broken.png", "textures/red_eliminated.png",
+        "textures/yellow.png", "textures/yellow_broken.png", "textures/yellow_eliminated.png",
+        "textures/gray.png", "textures/gray_broken.png", "textures/gray_eliminated.png",
+        "textures/blue.png", "textures/blue_broken.png", "textures/blue_eliminated.png",
+        "textures/orange.png", "textures/orange_broken.png", "textures/orange_eliminated.png",
+        "textures/aqua.png", "textures/aqua_broken.png", "textures/aqua_eliminated.png",
+        "textures/green.png", "textures/green_broken.png", "textures/green_eliminated.png",
+        "textures/magenta.png", "textures/magenta_broken.png", "textures/magenta_eliminated.png"
+      ]
     },
     {
       "name": "DirectionHud",
