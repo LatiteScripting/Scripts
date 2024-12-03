@@ -21,6 +21,7 @@ var GameName;
     GameName[GameName["THE_ENTITY"] = 11] = "THE_ENTITY";
     GameName[GameName["MY_FARM_LIFE"] = 12] = "MY_FARM_LIFE";
     GameName[GameName["ALIEN_BLAST"] = 13] = "ALIEN_BLAST";
+    GameName[GameName["FROST_FIGHT"] = 14] = "FROST_FIGHT";
 })(GameName || (exports.GameName = GameName = {}));
 class WhereAmAPI extends EventEmitter_1.EventEmitter {
     runWhereAmI() {
@@ -50,7 +51,7 @@ class WhereAmAPI extends EventEmitter_1.EventEmitter {
         var _a, _b;
         let cancel = false;
         if (message.includes("ServerUUID:") && message.includes("\n")) { // Check for message (users can't send \n)
-            let formattedMessage = message.replace("\uE6BC \xA7c", ""); // Cache message
+            let formattedMessage = message.replace("\uE3BC \xA7c", ""); // Cache message
             let entries = (_a = formattedMessage.split("\n\xA7c")) !== null && _a !== void 0 ? _a : ""; // Split up the response at this substring, in the process splitting by line and removing color
             let whereAmIPairs = [];
             for (let i = 0; i < entries.length; i++) { // For each entry:
@@ -192,7 +193,8 @@ const nameToGame = new Map([
     ["Farming", GameName.MY_FARM_LIFE],
     ["ParkourLobby", GameName.PARKOUR_HUB],
     ["ParkourBuild", GameName.PARKOUR_BUILD],
-    ["ParkourPlay", GameName.PARKOUR_PLAY]
+    ["ParkourPlay", GameName.PARKOUR_PLAY],
+    ["FrostFight", GameName.FROST_FIGHT]
 ]);
 /**
  * The WhereAmAPI. Use this as a pseudo-API for finding server information.

@@ -75,7 +75,8 @@ let formatMap = new Map([
     ["Farming", "My Farm Life"],
     ["ParkourLobby", "Parkour Builders (Lobby)"],
     ["ParkourBuild", "Parkour Builders (Building)"],
-    ["ParkourPlay", "Parkour Builders (Playing)"]
+    ["ParkourPlay", "Parkour Builders (Playing)"],
+    ["FrostFight", "Frost Fight"]
 ]);
 // Cache new line (very important) (i use it a lot here)
 const NL = "\n";
