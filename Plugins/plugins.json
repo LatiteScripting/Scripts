@@ -120,6 +120,10 @@
     {
       "name": "HiveTranslate",
       "files": ["main.js", "plugin.json"]
+    },
+    {
+      "name": "CubecraftAutoGG",
+      "files": ["main.js", "plugin.json"]
     }
   ]
 }
