@@ -125,5 +125,9 @@
       "name": "CubecraftAutoGG",
       "files": ["main.js", "plugin.json"]
     }
+    {
+      "name": "AutoReQ",
+      "files": ["main.js", "plugin.json"]
+    }
   ]
 }
