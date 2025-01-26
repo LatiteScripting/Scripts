@@ -20,7 +20,8 @@ let reserveCmd = new Command("reserve", "Reserve the next game", "$ [gameCode|ca
 client.getModuleManager().registerModule(module);
 client.getCommandManager().registerCommand(reserveCmd);
 let checkText = "You are connected to ";
-let gameMode = undefined;;
+let gameMode = undefined;
+let previousGameMode = undefined;
 let reserveGame = undefined;
 let teamName = RegExp("^[]$");
 let questComplete = false;
@@ -38,6 +39,9 @@ client.on("receive-chat", msg => {
     if (msg.message.startsWith(checkText) && process == 1) {
         if (msg.message.startsWith(checkText+"server name ")) {
             gameMode = msg.message.replace(checkText+"server name ", "").replace(/\d+/g, "");
+            if (gameMode != previousGameMode) {
+                questComplete = false;
+            }
             if (reserveGame == undefined) {
                 reserveGame = gameMode;
             }
@@ -100,7 +104,7 @@ client.on("join-game", () => {
         process = 1;
         teamName = RegExp("^[]$");
         reserveGame = undefined;
-        questComplete = false;
+        previousGameMode = undefined;
         setTimeout(() => {
             game.executeCommand("/connection");
         }, 400)
@@ -113,10 +117,10 @@ client.on("change-dimension", () => {
     if (process == 0 || process == 2) {
         process = 1;
         teamName = RegExp("^[]$");
+        previousGameMode = gameMode;
         if (reserveGame == gameMode) {
             reserveGame = undefined;
         }
-        questComplete = false;
         setTimeout(() => {
             game.executeCommand("/connection");
         }, 400)
