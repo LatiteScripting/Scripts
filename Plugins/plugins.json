@@ -124,10 +124,14 @@
     {
       "name": "CubecraftAutoGG",
       "files": ["main.js", "plugin.json"]
-    }
+    },
     {
       "name": "AutoReQ",
       "files": ["main.js", "plugin.json"]
+    },
+	{
+      "name": "JesusWarn",
+      "files": ["main.js", "plugin.json", "bell.wav", "Jesus.png"]
     }
   ]
 }
