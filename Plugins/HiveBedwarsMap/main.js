@@ -1,30 +1,46 @@
 "use strict";
 const module = new HudModule("HiveBedwarsMap", "Hive Bedwars Map", "Adds a minimalistic rotating map for The Hive's Bedwars gamemode!", 118, true);
+
 client.getModuleManager().registerModule(module);
 
-const { maps, textures } = require("./maps.js");
+const { maps, teamIcons, textures } = require("./maps.js");
 
 let current = maps.default;
 
-const elimRegex = /(?:\xbb \xa7r\xa7\w)(\w+)(?= Team \xa77has been eliminated!)/;
 const mapRegex = /(?:\xbb \xa7r\xa7e)(.+)(?= \xa77won with \xa7f\d+ \xa77votes!)/;
-const bedRegex = /\xa7\w(\w+)(?= Team Bed Destroyed)/;
 
-const setState = (team, state) =>
-    current.islands.find(i => i.team == team.toLowerCase()).state = state;
+const setState = (team, state) => {
+    let island = current.islands.find(i => i.team == team.toLowerCase());
+    if(island != undefined) island.state = state;
+}
 
 client.on("receive-chat", event => {
     if(!module.isEnabled()) return;
 
     let msg = event.message;
-
-    if(elimRegex.test(msg)) return setState(msg.match(elimRegex)[1], "eliminated");
-    if(bedRegex.test(msg)) return setState(msg.match(bedRegex)[1], "broken");
     
     if(mapRegex.test(msg)) current = maps[msg.match(mapRegex)[1]] || maps.default;
 });
 
+client.on("set-score", event => {
+    if(!module.isEnabled()) return;
+
+    let scores = JSON.parse(event.data).scoreInfo;
+    let teams = scores.find(s => s.scoreValue == -3);
+
+    if(!teams) return;
+
+    for(let team of teamIcons) {
+        if(teams.fakePlayerName.includes(team[1])) setState(team[0], "normal");
+        else if(teams.fakePlayerName.includes(team[2])) setState(team[0], "broken");
+
+        else setState(team[0], "eliminated");
+    }
+})
+
 client.on("change-dimension", () => {
+    if(!module.isEnabled()) return;
+
     if(dimension.getName() != "Overworld") return;
     for(let island of current.islands) island.state = "normal"
 })
@@ -52,7 +68,7 @@ module.on("render", () => {
 
         const texture = textures[island.team][island.state || "normal"]
 
-        graphics.drawTexture(texture, new Vector2(x, y), size, size, new Color(0, 0, 0, 0.25));
+        graphics.drawTexture(texture, new Vector2(x, y), size, size, new Color(0, 0, 0, 1));
     });
 
     const pos = module.getPos();
