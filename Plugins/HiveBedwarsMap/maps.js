@@ -4,14 +4,14 @@ const x = i => Texture.load(i)
 const y = i => String.fromCharCode(i)
 
 exports.textures = {
-    "red":     { normal: x("./red.png"),     broken: x("./red_broken.png"),     eliminated: x("./red_eliminated.png") },
-    "yellow":  { normal: x("./yellow.png"),  broken: x("./yellow_broken.png"),  eliminated: x("./yellow_eliminated.png") },
-    "gray":    { normal: x("./gray.png"),    broken: x("./gray_broken.png"),    eliminated: x("./gray_eliminated.png") },
-    "blue":    { normal: x("./blue.png"),    broken: x("./blue_broken.png"),    eliminated: x("./blue_eliminated.png") },
-    "orange":  { normal: x("./orange.png"),  broken: x("./orange_broken.png"),  eliminated: x("./orange_eliminated.png") },
-    "aqua":    { normal: x("./aqua.png"),    broken: x("./aqua_broken.png"),    eliminated: x("./aqua_eliminated.png") },
-    "green":   { normal: x("./green.png"),   broken: x("./green_broken.png"),   eliminated: x("./green_eliminated.png") },
-    "magenta": { normal: x("./magenta.png"), broken: x("./magenta_broken.png"), eliminated: x("./magenta_eliminated.png") },
+    "red":     { normal: x("./textures/red.png"),     broken: x("./textures/red_broken.png"),     eliminated: x("./textures/red_eliminated.png") },
+    "yellow":  { normal: x("./textures/yellow.png"),  broken: x("./textures/yellow_broken.png"),  eliminated: x("./textures/yellow_eliminated.png") },
+    "gray":    { normal: x("./textures/gray.png"),    broken: x("./textures/gray_broken.png"),    eliminated: x("./textures/gray_eliminated.png") },
+    "blue":    { normal: x("./textures/blue.png"),    broken: x("./textures/blue_broken.png"),    eliminated: x("./textures/blue_eliminated.png") },
+    "orange":  { normal: x("./textures/orange.png"),  broken: x("./textures/orange_broken.png"),  eliminated: x("./textures/orange_eliminated.png") },
+    "aqua":    { normal: x("./textures/aqua.png"),    broken: x("./textures/aqua_broken.png"),    eliminated: x("./textures/aqua_eliminated.png") },
+    "green":   { normal: x("./textures/green.png"),   broken: x("./textures/green_broken.png"),   eliminated: x("./textures/green_eliminated.png") },
+    "magenta": { normal: x("./textures/magenta.png"), broken: x("./textures/magenta_broken.png"), eliminated: x("./textures/magenta_eliminated.png") },
 }
 
 exports.teamIcons = [
