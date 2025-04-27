@@ -99,14 +99,14 @@
       "name": "HiveBedwarsMap",
       "files": [
         "main.js", "maps.js", "plugin.json",
-        "red.png", "red_broken.png", "red_eliminated.png",
-        "yellow.png", "yellow_broken.png", "yellow_eliminated.png",
-        "gray.png", "gray_broken.png", "gray_eliminated.png",
-        "blue.png", "blue_broken.png", "blue_eliminated.png",
-        "orange.png", "orange_broken.png", "orange_eliminated.png",
-        "aqua.png", "aqua_broken.png", "aqua_eliminated.png",
-        "green.png", "green_broken.png", "green_eliminated.png",
-        "magenta.png", "magenta_broken.png", "magenta_eliminated.png"
+        "textures/red.png", "textures/red_broken.png", "textures/red_eliminated.png",
+        "textures/yellow.png", "textures/yellow_broken.png", "textures/yellow_eliminated.png",
+        "textures/gray.png", "textures/gray_broken.png", "textures/gray_eliminated.png",
+        "textures/blue.png", "textures/blue_broken.png", "textures/blue_eliminated.png",
+        "textures/orange.png", "textures/orange_broken.png", "textures/orange_eliminated.png",
+        "textures/aqua.png", "textures/aqua_broken.png", "textures/aqua_eliminated.png",
+        "textures/green.png", "textures/green_broken.png", "textures/green_eliminated.png",
+        "textures/magenta.png", "textures/magenta_broken.png", "textures/magenta_eliminated.png"
       ]
     },
     {
