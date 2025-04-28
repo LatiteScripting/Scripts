@@ -26,7 +26,7 @@ client.on("set-score", event => {
     if(!module.isEnabled()) return;
 
     let scores = JSON.parse(event.data).scoreInfo;
-    let teams = scores.find(s => s.scoreValue == -3);
+    let teams = scores.find(s => s.scoreValue == -2);
 
     if(!teams) return;
 
