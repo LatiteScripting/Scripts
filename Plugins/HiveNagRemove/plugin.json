@@ -1,6 +1,6 @@
 {
-    "author": "ChxrryLeaves & DimitrovN",
-    "description": "Removes the naggy messages on the Hive!",
     "name": "HiveNagRemove",
+    "description": "Removes the naggy messages on the Hive!",
+    "author": "ImTheGoobie & DimitrovN",
     "version": "1.1.0"
 }

@@ -5,7 +5,7 @@ client.getModuleManager().registerModule(module);
 
 const { maps, teamIcons, textures } = require("./maps.js");
 
-let current = maps.default;
+let current = maps.default, scoreIndex = -2;
 
 const mapRegex = /(?:\xbb \xa7r\xa7e)(.+)(?= \xa77won with \xa7f\d+ \xa77votes!)/;
 
@@ -26,7 +26,11 @@ client.on("set-score", event => {
     if(!module.isEnabled()) return;
 
     let scores = JSON.parse(event.data).scoreInfo;
-    let teams = scores.find(s => s.scoreValue == -2);
+
+    let indicator = scores.find(s => s.scoreValue == -1);
+    if(indicator) scoreIndex = indicator.fakePlayerName.includes(String.fromCharCode(0xE177)) ? -3 : -2
+
+    let teams = scores.find(s => s.scoreValue == scoreIndex);
 
     if(!teams) return;
 
@@ -42,7 +46,7 @@ client.on("change-dimension", () => {
     if(!module.isEnabled()) return;
 
     if(dimension.getName() != "Overworld") return;
-    for(let island of current.islands) island.state = "normal"
+    for(let island of current.islands) island.state = "eliminated"
 })
 
 let offset = 0;
