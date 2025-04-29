@@ -1,17 +1,18 @@
+"use strict";
 Object.defineProperty(exports, '__esModule', { value: true })
 
-const x = i => Texture.load(i)
+const x = i => Texture.load(`./textures/${i}.png`)
 const y = i => String.fromCharCode(i)
 
 exports.textures = {
-    "red":     { normal: x("./textures/red.png"),     broken: x("./textures/red_broken.png"),     eliminated: x("./textures/red_eliminated.png") },
-    "yellow":  { normal: x("./textures/yellow.png"),  broken: x("./textures/yellow_broken.png"),  eliminated: x("./textures/yellow_eliminated.png") },
-    "gray":    { normal: x("./textures/gray.png"),    broken: x("./textures/gray_broken.png"),    eliminated: x("./textures/gray_eliminated.png") },
-    "blue":    { normal: x("./textures/blue.png"),    broken: x("./textures/blue_broken.png"),    eliminated: x("./textures/blue_eliminated.png") },
-    "orange":  { normal: x("./textures/orange.png"),  broken: x("./textures/orange_broken.png"),  eliminated: x("./textures/orange_eliminated.png") },
-    "aqua":    { normal: x("./textures/aqua.png"),    broken: x("./textures/aqua_broken.png"),    eliminated: x("./textures/aqua_eliminated.png") },
-    "green":   { normal: x("./textures/green.png"),   broken: x("./textures/green_broken.png"),   eliminated: x("./textures/green_eliminated.png") },
-    "magenta": { normal: x("./textures/magenta.png"), broken: x("./textures/magenta_broken.png"), eliminated: x("./textures/magenta_eliminated.png") },
+    "red":     { normal: x("red"),     broken: x("red_broken"),     eliminated: x("red_eliminated") },
+    "yellow":  { normal: x("yellow"),  broken: x("yellow_broken"),  eliminated: x("yellow_eliminated") },
+    "gray":    { normal: x("gray"),    broken: x("gray_broken"),    eliminated: x("gray_eliminated") },
+    "blue":    { normal: x("blue"),    broken: x("blue_broken"),    eliminated: x("blue_eliminated") },
+    "orange":  { normal: x("orange"),  broken: x("orange_broken"),  eliminated: x("orange_eliminated") },
+    "aqua":    { normal: x("aqua"),    broken: x("aqua_broken"),    eliminated: x("aqua_eliminated") },
+    "green":   { normal: x("green"),   broken: x("green_broken"),   eliminated: x("green_eliminated") },
+    "magenta": { normal: x("magenta"), broken: x("magenta_broken"), eliminated: x("magenta_eliminated") },
 }
 
 exports.teamIcons = [
@@ -160,8 +161,8 @@ exports.maps = {
         "islands": [
             { "angle": 180.0, "team": "red"    },
             { "angle": 270.0, "team": "yellow" },
-            { "angle": 0.000, "team": "blue"   },
-            { "angle": 90.00, "team": "green"  }
+            { "angle": 0.000, "team": "green"   },
+            { "angle": 90.00, "team": "blue"  }
         ]
     },
     "Hanging Gardens": {
