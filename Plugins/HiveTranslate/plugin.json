@@ -1,7 +1,6 @@
 {
-    "author": "ChxrryLeaves",
-    "description": "Translates non English messages to English on the Hive.",
-    "lastLaunch": false,
     "name": "HiveTranslate",
+    "description": "Translates non English messages to English on the Hive.",
+    "author": "ImTheGoobie",
     "version": "1.0.0"
 }
