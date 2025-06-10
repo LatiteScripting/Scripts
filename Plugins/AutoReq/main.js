@@ -82,7 +82,7 @@ client.on("receive-chat", msg => {
     if (hiderRole.getValue() && msg.message == "\u00A7e\u00A7l\u00BB \u00A7rYou are a \u00A7eHIDER") {
         ReQ();
     }
-    if (seekerRole.getValue() && msg.message == "\u00A7c\u00A7l\u00BB \u00A7rYou are a \u00A7cSEEKER") {
+    if (seekerRole.getValue() && msg.message == "\u00A7c\u00A7l\u00BB \u00A7rYou are a \u00A7cSEEKER" || seekerRole.getValue() && msg.message == "\u00A7c\u00A7l\u00BB \u00A7rYou are a\u00A7c SEEKER") { // fix doesn't req when being seeker when game starts
         ReQ();
     }
     if (innocentRole.getValue() && msg.message == "\u00A7a\u00A7l\u00BB \u00A7r\u00A7a\u00A7lInnocent") {
