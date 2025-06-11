@@ -37,15 +37,15 @@ client.on("title", msg => {
 })
 client.on("receive-chat", msg => {
     if (msg.message.startsWith(checkText) && process == 1) {
-        if (msg.message.startsWith(checkText+"server name ")) {
-            gameMode = msg.message.replace(checkText+"server name ", "").replace(/\d+/g, "");
+        if (msg.message.startsWith(checkText + "server name ")) {
+            gameMode = msg.message.replace(checkText + "server name ", "").replace(/\d+/g, "");
             if (gameMode != previousGameMode) {
                 questComplete = false;
             }
             if (reserveGame == undefined) {
                 reserveGame = gameMode;
             }
-        } else if (msg.message.startsWith(checkText+"server ")) {
+        } else if (msg.message.startsWith(checkText + "server ")) {
             process = 0;
         }
         msg.cancel = true;
@@ -55,7 +55,7 @@ client.on("receive-chat", msg => {
     }
     if (/\u00A7.\u00A7l\u00BB \u00A7rYou are on the /.test(msg.message)) {
         teamName = msg.message.replace(/\u00A7.\u00A7l\u00BB \u00A7rYou are on the /, "").replace(/!$/, ""); // §?Color Team
-        teamName = RegExp("\u00A7.\u00A7l\u00BB \u00A7r\u00A7."+teamName+" \u00A77has been \u00A7cELIMINATED\u00A77!"); // §?§l» §r§?${teamName} §7has been §cELIMINATED§7!
+        teamName = RegExp("\u00A7.\u00A7l\u00BB \u00A7r\u00A7." + teamName + " \u00A77has been \u00A7cELIMINATED\u00A77!"); // §?§l» §r§?${teamName} §7has been §cELIMINATED§7!
     }
     if (!module.isEnabled()) {
         return;
@@ -82,7 +82,10 @@ client.on("receive-chat", msg => {
     if (hiderRole.getValue() && msg.message == "\u00A7e\u00A7l\u00BB \u00A7rYou are a \u00A7eHIDER") {
         ReQ();
     }
-    if (seekerRole.getValue() && msg.message == "\u00A7c\u00A7l\u00BB \u00A7rYou are a \u00A7cSEEKER" || seekerRole.getValue() && msg.message == "\u00A7c\u00A7l\u00BB \u00A7rYou are a\u00A7c SEEKER") { // fix doesn't req when being seeker when game starts
+    if (seekerRole.getValue() && msg.message == "\u00A7c\u00A7l\u00BB \u00A7rYou are a \u00A7cSEEKER") {
+        ReQ();
+    }
+    if (seekerRole.getValue() && msg.message == "\u00A7c\u00A7l\u00BB \u00A7rYou are a\u00A7c SEEKER") {
         ReQ();
     }
     if (innocentRole.getValue() && msg.message == "\u00A7a\u00A7l\u00BB \u00A7r\u00A7a\u00A7lInnocent") {
@@ -133,8 +136,8 @@ reserveCmd.on("execute", (label, args, commandLine) => {
                 if (reserveGame == gameMode) {
                     clientMessage("\u00A7cCannot cancel reserved game because it is the same as the default game");
                 } else {
-                reserveGame = gameMode;
-                clientMessage(`Cancelled reserved game and set to default game (${reserveGame})`);
+                    reserveGame = gameMode;
+                    clientMessage(`Cancelled reserved game and set to default game (${reserveGame})`);
                 }
             } else if (args[0] == reserveGame) {
                 clientMessage("\u00A7cReserved game is already set to that game");
@@ -148,7 +151,7 @@ reserveCmd.on("execute", (label, args, commandLine) => {
     } else {
         if (!module.isEnabled()) {
             clientMessage("\u00A7cThis command cannot be used because module is disabled");
-        } else if (questMode.getValue()){
+        } else if (questMode.getValue()) {
             clientMessage("\u00A7cThis command cannot be used because Quest mode is enabled");
         } else if (hubMode.getValue()) {
             clientMessage("\u00A7cThis command cannot be used because Hub mode is enabled");
@@ -160,7 +163,7 @@ reserveCmd.on("execute", (label, args, commandLine) => {
 })
 
 function ReQ() {
-    if (process == 0){
+    if (process == 0) {
         process = 2;
         if (questMode.getValue()) {
             if (questComplete) {
@@ -177,10 +180,10 @@ function ReQ() {
                         client.showNotification(`ReQueueing ${gameMode}`);
                         game.executeCommand(`/q ${gameMode}`);
                     }
-                }, Number(queueMs.getValue())+400);
+                }, Number(queueMs.getValue()) + 400);
             }
         } else {
-            setTimeout(() =>{
+            setTimeout(() => {
                 if (!hubMode.getValue()) {
                     client.showNotification(`ReQueueing ${reserveGame}`);
                     game.executeCommand(`/q ${reserveGame}`);
