@@ -16,7 +16,7 @@ Other things like world manipulation are only possible on local worlds.
 
 You need to have [Latite Client](https://latite.net) to use the latest iteration of the Latite Plugin API.
 
-Join the [Latite Discord](https://discord.gg/latite) for more information.
+Join the [Latite Discord](https://latite.net/discord) for more information.
 
 Latite's scripting API uses JavaScript.
 
