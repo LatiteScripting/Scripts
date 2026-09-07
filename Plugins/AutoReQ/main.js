@@ -31,10 +31,15 @@ if (!fs.exists("./config.json")) {
 
 let module = new Module("AutoReQ", "Auto ReQ", "Automatically requeue with The Hive", 0);
 let manuallyReq = module.addKeySetting("ManuallyReQ", "ReQ key", "Manually requeue", 80 /* P key */);
-let soloMode = module.addBoolSetting("SoloMode", "Solo mode", "ReQ when you finish or die in a game. please dont use while in a party", false);
+let soloMode = module.addBoolSetting("SoloMode", "Solo mode", "ReQ when you finish or die in a game.", false);
+soloMode.setCondition("PartyMode", false);
 soloMode.setCondition("TeamMode", false);
+let partyMode = module.addBoolSetting("PartyMode", "Party mode", "ReQ when all members of your party are spectating.", false);
+partyMode.setCondition("SoloMode", false);
+partyMode.setCondition("TeamMode", false);
 let teamMode = module.addBoolSetting("TeamMode", "Team mode", "ReQ when your team eliminated.", false);
 teamMode.setCondition("SoloMode", false);
+teamMode.setCondition("PartyMode", false);
 let questMode = module.addBoolSetting("QuestMode", "Quest mode", "If the game ends with the quest completed, it will return to the hub", false);
 questMode.setCondition("HubMode", false);
 let hubMode = module.addBoolSetting("HubMode", "Hub mode", "Return to hub without requeue", false);
@@ -226,6 +231,13 @@ client.on("receive-chat", msg => {
 
     if (chatText.startsWith("\u00A7a\u00A7l\u00BB \u00A7r\u00A7eYou finished all maps and came in") || chatText.startsWith("\u00A7a\u00A7l\u00BB \u00A7r\u00A7eYou finished in")) {
         if (soloMode.getValue()) {
+            req();
+        }
+        return;
+    }
+
+    if (chatText === "\u00A7a\u00A7l\u00BB \u00A7r\u00A7aAll members of your party are now spectating.") {
+        if (partyMode.getValue()) {
             req();
         }
         return;
